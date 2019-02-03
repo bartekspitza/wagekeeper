@@ -11,29 +11,18 @@ import Foundation
 var calcIndex = [0,0]
 
 class LaunchCalc: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    struct Period {
-        var date: String
-        var salary: String
-        var grossSalary: String
-        var totalHours: String
-        var shiftsWorked: String
-        var avgShift: String
-        var currency: String
-    }
     
     var totalHoursLbl = CountingLabel()
     var totalMinutesLbl = CountingLabel()
     var periodLbl = UILabel()
-    var menuisShowing = false
     var btn: UIButton!
     @IBOutlet weak var grossLbl: CountingLabel!
     @IBOutlet weak var salaryLbl: CountingLabel!
     
-    let statsDescs = ["TOTAL WORK-TIME", "AVERAGE SHIFT LENGTH", "TOTAL SHIFTS", "TOTAL DAYS WORKED", "OVERTIME WORKED"]
-    var statsInfo = [String]()
-    // Other variables
-    var period = Period(date: "", salary: "", grossSalary: "0", totalHours: "", shiftsWorked: "", avgShift: "", currency: "")
-    let color = UIColor(displayP3Red: 28/255, green: 112/255, blue: 127/255, alpha: 0.7)
+    
+    var stats = [String]()
+    
+    
     var seperatorLineHorizontal = UIView()
     var seperatorLineVertical = UIView()
     var seperatorLineVertical1 = UIView()
@@ -41,6 +30,10 @@ class LaunchCalc: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var menuTable = UITableView()
     
     var appStarted = true
+    var menuisShowing = false
+    
+    var period = Period()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initiateUserDefaultsForNewUser()
@@ -55,9 +48,9 @@ class LaunchCalc: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        period = Period(date: "", salary: "0", grossSalary: "0", totalHours: "", shiftsWorked: "", avgShift: "", currency: "")
+        period = Period()
         appStarted = false
-        statsInfo.removeAll()
+        stats.removeAll()
         fillTable()
         insertExampleShift()
         makePeriod()
@@ -174,7 +167,6 @@ class LaunchCalc: UIViewController, UITableViewDelegate, UITableViewDataSource {
         btn.center = CGPoint(x: Int(self.view.frame.width/2), y: Int(gradientMaxY-btn.frame.height/2))
         btn.addTarget(self, action: #selector(btnPressed(sender:)), for: UIControl.Event.touchUpInside)
         btn.adjustsImageWhenHighlighted = false
-        //        btn.backgroundColor = .blue
         self.view.addSubview(btn)
     }
     
@@ -248,7 +240,7 @@ class LaunchCalc: UIViewController, UITableViewDelegate, UITableViewDataSource {
             cellPressed.tintColor = .white
             if indexPath.section != calcIndex[0] || indexPath.row != calcIndex[1] {
                 calcIndex = [indexPath.section, indexPath.row]
-                statsInfo.removeAll()
+                stats.removeAll()
                 makePeriod()
                 statsTable.reloadData()
                 startCountingLabels()
@@ -301,9 +293,9 @@ class LaunchCalc: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if tableView.tag == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! LaunchCell
             
-            cell.insertStatsDesc(width: (self.view.frame.width), text: statsDescs[indexPath.row].uppercased())
-            if statsInfo.count > 0 {
-                cell.insertStatsInfo(width: self.view.frame.width, text: statsInfo[indexPath.row].uppercased())
+            cell.insertStatsDesc(width: (self.view.frame.width), text: Stats.descriptions[indexPath.row].uppercased())
+            if stats.count > 0 {
+                cell.insertStatsInfo(width: self.view.frame.width, text: stats[indexPath.row].uppercased())
             } else {
                 cell.insertStatsInfo(width: self.view.frame.width, text: "0")
             }
@@ -332,7 +324,7 @@ class LaunchCalc: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView.tag == 1 {
-            return statsDescs.count
+            return Stats.descriptions.count
         } else {
             return tableList[section].count
         }
@@ -469,12 +461,12 @@ class LaunchCalc: UIViewController, UITableViewDelegate, UITableViewDataSource {
             period.shiftsWorked = shiftsWorked(month: chosenPeriod)
             period.avgShift = calculateAvg(month: chosenPeriod)
             
-            statsInfo.append(period.totalHours)
-            statsInfo.append(period.avgShift)
-            statsInfo.append(chosenPeriod.count.description)
-            statsInfo.append((salaryInfo[5] as! Int).description)
-            statsInfo.append(formatTime(minutes: salaryInfo[3] as! Int))
-            statsInfo.append(formatMoneyInOT(amount: salaryInfo[4] as! Int))
+            stats.append(period.totalHours)
+            stats.append(period.avgShift)
+            stats.append(chosenPeriod.count.description)
+            stats.append((salaryInfo[5] as! Int).description)
+            stats.append(formatTime(minutes: salaryInfo[3] as! Int))
+            stats.append(formatMoneyInOT(amount: salaryInfo[4] as! Int))
         }
     }
     

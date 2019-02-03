@@ -11,6 +11,8 @@
 		9820A5551FBCBF6B00EAEE6A /* MainNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9820A5541FBCBF6B00EAEE6A /* MainNav.swift */; };
 		9830C1FD220793CB0023B582 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9830C1FB220793CB0023B582 /* LaunchScreen.storyboard */; };
 		9830C1FE220793CB0023B582 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9830C1FC220793CB0023B582 /* Main.storyboard */; };
+		9830C2012207A0EF0023B582 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9830C2002207A0EF0023B582 /* Period.swift */; };
+		9830C2032207A4020023B582 /* Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9830C2022207A4020023B582 /* Stats.swift */; };
 		984319182207923E00C9B6FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988FDEB91F9F7AFA0090DEF1 /* AppDelegate.swift */; };
 		9852F1071FA2309B00E7BDB5 /* MainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9852F1061FA2309B00E7BDB5 /* MainCell.swift */; };
 		985CAA381FA87C3F00AE6993 /* EditingTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985CAA371FA87C3F00AE6993 /* EditingTable.swift */; };
@@ -32,7 +34,6 @@
 		98D73AA31FC6481000668630 /* BarlowSemiCondensed-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98D73A9E1FC6481000668630 /* BarlowSemiCondensed-Thin.ttf */; };
 		98E284E31FC70CC1004FD2D2 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E284E21FC70CC1004FD2D2 /* TabBarController.swift */; };
 		98E2EF9A1FB4D657006C3F96 /* CountingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E2EF991FB4D657006C3F96 /* CountingLabel.swift */; };
-		98FD4C5B1FC8327B002B91B1 /* Calc1.0.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98FD4C5A1FC8327B002B91B1 /* Calc1.0.swift */; };
 		98FD4C5D1FC8390F002B91B1 /* LaunchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98FD4C5C1FC8390F002B91B1 /* LaunchCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +42,8 @@
 		9820A5541FBCBF6B00EAEE6A /* MainNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNav.swift; sourceTree = "<group>"; };
 		9830C1FB220793CB0023B582 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9830C1FC220793CB0023B582 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		9830C2002207A0EF0023B582 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
+		9830C2022207A4020023B582 /* Stats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stats.swift; sourceTree = "<group>"; };
 		9843191422078EC000C9B6FF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9852F1061FA2309B00E7BDB5 /* MainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCell.swift; sourceTree = "<group>"; };
 		985CAA371FA87C3F00AE6993 /* EditingTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingTable.swift; sourceTree = "<group>"; };
@@ -64,7 +67,6 @@
 		98D73A9E1FC6481000668630 /* BarlowSemiCondensed-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BarlowSemiCondensed-Thin.ttf"; sourceTree = "<group>"; };
 		98E284E21FC70CC1004FD2D2 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		98E2EF991FB4D657006C3F96 /* CountingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountingLabel.swift; sourceTree = "<group>"; };
-		98FD4C5A1FC8327B002B91B1 /* Calc1.0.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calc1.0.swift; sourceTree = "<group>"; };
 		98FD4C5C1FC8390F002B91B1 /* LaunchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -79,15 +81,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		980600FF1FC5A7680067F0B4 /* CalculatorTab */ = {
+		980600FF1FC5A7680067F0B4 /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
 				98E284E21FC70CC1004FD2D2 /* TabBarController.swift */,
-				98FD4C5A1FC8327B002B91B1 /* Calc1.0.swift */,
 				9864BB0B1FD4700E005DB5F2 /* LaunchCalc.swift */,
 				98FD4C5C1FC8390F002B91B1 /* LaunchCell.swift */,
 			);
-			path = CalculatorTab;
+			path = Calculator;
 			sourceTree = "<group>";
 		};
 		9830C1FF220794CE0023B582 /* utils */ = {
@@ -95,6 +96,8 @@
 			children = (
 				989392DB1FCEF322002475EA /* Extensions.swift */,
 				98E2EF991FB4D657006C3F96 /* CountingLabel.swift */,
+				9830C2002207A0EF0023B582 /* Period.swift */,
+				9830C2022207A4020023B582 /* Stats.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -127,11 +130,11 @@
 		988FDEB81F9F7AFA0090DEF1 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				9830C1FF220794CE0023B582 /* utils */,
 				98D73A991FC647CC00668630 /* Fonts */,
-				98ACD18A1FA39EC700B78C7D /* SettingsTab */,
-				980600FF1FC5A7680067F0B4 /* CalculatorTab */,
-				98ACD18B1FA39EE100B78C7D /* ShiftsTab */,
+				9830C1FF220794CE0023B582 /* utils */,
+				98ACD18A1FA39EC700B78C7D /* Settings  */,
+				980600FF1FC5A7680067F0B4 /* Calculator */,
+				98ACD18B1FA39EE100B78C7D /* Logger */,
 				9830C1FB220793CB0023B582 /* LaunchScreen.storyboard */,
 				9830C1FC220793CB0023B582 /* Main.storyboard */,
 				988FDEC31F9F7AFA0090DEF1 /* Assets.xcassets */,
@@ -150,7 +153,7 @@
 			path = "Supporting files";
 			sourceTree = "<group>";
 		};
-		98ACD18A1FA39EC700B78C7D /* SettingsTab */ = {
+		98ACD18A1FA39EC700B78C7D /* Settings  */ = {
 			isa = PBXGroup;
 			children = (
 				980D1DCF1FA3A4770091E06D /* SettingsTableNav.swift */,
@@ -158,10 +161,10 @@
 				9862A5701FCC33AA0047671D /* AdvancedSettingsTable.swift */,
 				98ACD1661FA381D800B78C7D /* SettingsTable.swift */,
 			);
-			path = SettingsTab;
+			path = "Settings ";
 			sourceTree = "<group>";
 		};
-		98ACD18B1FA39EE100B78C7D /* ShiftsTab */ = {
+		98ACD18B1FA39EE100B78C7D /* Logger */ = {
 			isa = PBXGroup;
 			children = (
 				9852F1061FA2309B00E7BDB5 /* MainCell.swift */,
@@ -170,7 +173,7 @@
 				98FC55E91FA6768500424AC0 /* Edit shift */,
 				98760E5E1FA647DE000E1A28 /* Add shift */,
 			);
-			path = ShiftsTab;
+			path = Logger;
 			sourceTree = "<group>";
 		};
 		98D73A991FC647CC00668630 /* Fonts */ = {
@@ -273,6 +276,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9852F1071FA2309B00E7BDB5 /* MainCell.swift in Sources */,
+				9830C2032207A4020023B582 /* Stats.swift in Sources */,
 				988FDEC21F9F7AFA0090DEF1 /* adding_shifts.xcdatamodeld in Sources */,
 				988FDED11F9F9B2D0090DEF1 /* Adding.swift in Sources */,
 				980D1DD01FA3A4770091E06D /* SettingsTableNav.swift in Sources */,
@@ -285,12 +289,12 @@
 				98ACD1671FA381D800B78C7D /* SettingsTable.swift in Sources */,
 				98E2EF9A1FB4D657006C3F96 /* CountingLabel.swift in Sources */,
 				9864BB0C1FD4700E005DB5F2 /* LaunchCalc.swift in Sources */,
+				9830C2012207A0EF0023B582 /* Period.swift in Sources */,
 				9820A5551FBCBF6B00EAEE6A /* MainNav.swift in Sources */,
 				985CAA3A1FA8824C00AE6993 /* Editing.swift in Sources */,
 				98E284E31FC70CC1004FD2D2 /* TabBarController.swift in Sources */,
 				989392DC1FCEF322002475EA /* Extensions.swift in Sources */,
 				98760E601FA6488A000E1A28 /* AddingTable.swift in Sources */,
-				98FD4C5B1FC8327B002B91B1 /* Calc1.0.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
