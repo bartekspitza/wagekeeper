@@ -180,9 +180,9 @@ class Main: UIViewController, UITableViewDelegate, UITableViewDataSource {
             }
             
             if self.myTableView.numberOfRows(inSection: indexPath.section) > 1 {
-                self.myTableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+                self.myTableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
             } else {
-                self.myTableView.deleteSections([indexPath.section], with: UITableViewRowAnimation.automatic)
+                self.myTableView.deleteSections([indexPath.section], with: UITableView.RowAnimation.automatic)
             }
             self.showInstructions()
         }

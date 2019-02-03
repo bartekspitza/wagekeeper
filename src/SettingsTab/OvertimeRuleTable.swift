@@ -34,7 +34,7 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
     // Toolbar
     let toolbar = UIToolbar()
     let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
-    let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: self, action: nil)
+    let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: self, action: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,22 +54,22 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
             
             for section in starts {
                 (section[0] as! myTextField).font = UIFont.systemFont(ofSize: 15)
-                (section[0] as! myTextField).attributedPlaceholder = NSAttributedString(string:"Start", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 13)])
+                (section[0] as! myTextField).attributedPlaceholder = NSAttributedString(string:"Start", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
                 (section[0] as! myTextField).borderStyle = .none
                 (section[0] as! myTextField).textAlignment = .center
                 (section[0] as! myTextField).inputAccessoryView = toolbar
-                (section[0] as! myTextField).addTarget(self, action: #selector(STPressed), for: UIControlEvents.editingDidBegin)
+                (section[0] as! myTextField).addTarget(self, action: #selector(STPressed), for: UIControl.Event.editingDidBegin)
                 (section[0] as! myTextField).inputView = timePicker
                 (section[0] as! myTextField).tintColor = UIColor.clear
                 startHasNotRecievedST.append(false)
             }
             for section in ends {
                 (section[0] as! myTextField).font = UIFont.systemFont(ofSize: 15)
-                (section[0] as! myTextField).attributedPlaceholder = NSAttributedString(string:"End", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 13)])
+                (section[0] as! myTextField).attributedPlaceholder = NSAttributedString(string:"End", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
                 (section[0] as! myTextField).borderStyle = .none
                 (section[0] as! myTextField).textAlignment = .center
                 (section[0] as! myTextField).inputAccessoryView = toolbar
-                (section[0] as! myTextField).addTarget(self, action: #selector(ETPressed), for: UIControlEvents.editingDidBegin)
+                (section[0] as! myTextField).addTarget(self, action: #selector(ETPressed), for: UIControl.Event.editingDidBegin)
                 (section[0] as! myTextField).inputView = timePicker
                 (section[0] as! myTextField).tintColor = UIColor.clear
             }
@@ -80,7 +80,7 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
                 field.textAlignment = .right
                 field.borderStyle = .none
                 field.font = UIFont.systemFont(ofSize: 15)
-                field.attributedPlaceholder = NSAttributedString(string:"for this interval", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 13)])
+                field.attributedPlaceholder = NSAttributedString(string:"for this interval", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
             }
             isSectionComplete = [true, true]
         }
@@ -88,7 +88,7 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
         let rightBtn = UIBarButtonItem(title: "Add rule", style: .plain, target: self, action: #selector(addRulePressed))
         self.navigationItem.rightBarButtonItem = rightBtn
         self.navigationItem.title = day
-        timePicker.addTarget(self, action: #selector(timePickerChanged), for: UIControlEvents.valueChanged)
+        timePicker.addTarget(self, action: #selector(timePickerChanged), for: UIControl.Event.valueChanged)
         timePicker.datePickerMode = .time
         
         if starts.isEmpty {
@@ -101,7 +101,7 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        if self.isMovingFromParentViewController {
+        if self.isMovingFromParent {
             var indxCount = 0
             while (indxCount != starts.count) {
                 if !(rateFields[indxCount].text != "" && (starts[indxCount][0] as! myTextField).text != "" && (ends[indxCount][0] as! myTextField).text != "") {
@@ -142,11 +142,11 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
             
             let endField = myTextField(frame: CGRect(x: 0, y: 0, width: self.view.frame.width/7, height: 20))
             endField.font = UIFont.systemFont(ofSize: 15)
-            endField.attributedPlaceholder = NSAttributedString(string:"End", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 13)])
+            endField.attributedPlaceholder = NSAttributedString(string:"End", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
             endField.borderStyle = .none
             endField.textAlignment = .center
             endField.inputAccessoryView = toolbar
-            endField.addTarget(self, action: #selector(ETPressed), for: UIControlEvents.editingDidBegin)
+            endField.addTarget(self, action: #selector(ETPressed), for: UIControl.Event.editingDidBegin)
             endField.inputView = timePicker
             endField.tintColor = UIColor.clear
             ends.append([endField, startDate()])
@@ -155,11 +155,11 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
             
             let startField = myTextField(frame: CGRect(x: 0, y: 0, width: (self.view.frame.width/7), height: 20))
             startField.font = UIFont.systemFont(ofSize: 15)
-            startField.attributedPlaceholder = NSAttributedString(string:"Start", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 13)])
+            startField.attributedPlaceholder = NSAttributedString(string:"Start", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
             startField.borderStyle = .none
             startField.textAlignment = .center
             startField.inputAccessoryView = toolbar
-            startField.addTarget(self, action: #selector(STPressed), for: UIControlEvents.editingDidBegin)
+            startField.addTarget(self, action: #selector(STPressed), for: UIControl.Event.editingDidBegin)
             startField.inputView = timePicker
             startField.tintColor = UIColor.clear
             if starts.isEmpty {
@@ -176,12 +176,12 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
             rateField.textAlignment = .right
             rateField.borderStyle = .none
             rateField.font = UIFont.systemFont(ofSize: 15)
-            rateField.attributedPlaceholder = NSAttributedString(string:"for this interval", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 13)])
+            rateField.attributedPlaceholder = NSAttributedString(string:"for this interval", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
             rateFields.append(rateField)
             
             let indexSet = NSMutableIndexSet()
             indexSet.add(starts.count-1)
-            myTableView.insertSections(indexSet as IndexSet, with: UITableViewRowAnimation.fade)
+            myTableView.insertSections(indexSet as IndexSet, with: UITableView.RowAnimation.fade)
         }
     }
     
@@ -400,7 +400,7 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
             self.rateFields.remove(at: indexPath.section)
             self.starts.remove(at: indexPath.section)
             self.ends.remove(at: indexPath.section)
-            self.myTableView.deleteSections([indexPath.section], with: UITableViewRowAnimation.fade)
+            self.myTableView.deleteSections([indexPath.section], with: UITableView.RowAnimation.fade)
             self.myTableView.reloadData()
             
         }

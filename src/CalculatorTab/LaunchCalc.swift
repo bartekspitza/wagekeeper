@@ -172,7 +172,7 @@ class LaunchCalc: UIViewController, UITableViewDelegate, UITableViewDataSource {
         btn.setImage(btnImage, for: .normal)
         btn.frame = CGRect(x: 0, y: 0, width: Int(gradientMaxY-(horizontalY + gradientMaxY*0.25)), height: Int(gradientMaxY-(horizontalY + gradientMaxY*0.25)))
         btn.center = CGPoint(x: Int(self.view.frame.width/2), y: Int(gradientMaxY-btn.frame.height/2))
-        btn.addTarget(self, action: #selector(btnPressed(sender:)), for: UIControlEvents.touchUpInside)
+        btn.addTarget(self, action: #selector(btnPressed(sender:)), for: UIControl.Event.touchUpInside)
         btn.adjustsImageWhenHighlighted = false
         //        btn.backgroundColor = .blue
         self.view.addSubview(btn)

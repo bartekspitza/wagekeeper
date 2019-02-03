@@ -38,7 +38,7 @@ class SettingsTable: UITableViewController, UITextFieldDelegate, UIPickerViewDel
     // Toolbar
     let toolbar = UIToolbar()
     let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
-    let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: self, action: nil)
+    let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: self, action: nil)
     
     var currentField = 0
     @IBOutlet var myTableView: UITableView!
@@ -262,8 +262,8 @@ class SettingsTable: UITableViewController, UITextFieldDelegate, UIPickerViewDel
         let imageUp = UIImage(named: "upBtn")
         let size = 45
         
-        let downBtn = UIBarButtonItem(image: imageDown?.imageResize(sizeChange: CGSize(width: size, height: size)), style: UIBarButtonItemStyle.done, target: self, action: #selector(nextField(sender:)))
-        let upBtn = UIBarButtonItem(image: imageUp?.imageResize(sizeChange: CGSize(width: size, height: size)), style: UIBarButtonItemStyle.done, target: self, action: #selector(prevField(sender:)))
+        let downBtn = UIBarButtonItem(image: imageDown?.imageResize(sizeChange: CGSize(width: size, height: size)), style: UIBarButtonItem.Style.done, target: self, action: #selector(nextField(sender:)))
+        let upBtn = UIBarButtonItem(image: imageUp?.imageResize(sizeChange: CGSize(width: size, height: size)), style: UIBarButtonItem.Style.done, target: self, action: #selector(prevField(sender:)))
         
         upBtn.tintColor = navColor
         downBtn.tintColor = navColor

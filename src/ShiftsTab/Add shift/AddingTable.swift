@@ -52,7 +52,7 @@ class AddingTable: UITableViewController, UITextFieldDelegate {
     // Toolbar
     let toolbar = UIToolbar()
     let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
-    let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: self, action: nil)
+    let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: self, action: nil)
     
     override func viewDidLoad() {
         
@@ -232,7 +232,7 @@ class AddingTable: UITableViewController, UITextFieldDelegate {
         dateField.tintColor = UIColor.clear
     }
     func createTimePicker() {
-        timePicker.addTarget(self, action: #selector(timePickerChanged), for: UIControlEvents.valueChanged)
+        timePicker.addTarget(self, action: #selector(timePickerChanged), for: UIControl.Event.valueChanged)
         timePicker.datePickerMode = .time
         
         ETField.inputAccessoryView = toolbar
@@ -241,16 +241,16 @@ class AddingTable: UITableViewController, UITextFieldDelegate {
         STField.tintColor = UIColor.clear
         ETField.inputView = timePicker
         STField.inputView = timePicker
-        ETField.addTarget(self, action: #selector(ETPressed(_:)), for: UIControlEvents.editingDidBegin)
-        STField.addTarget(self, action: #selector(STPressed(_:)), for: UIControlEvents.editingDidBegin)
+        ETField.addTarget(self, action: #selector(ETPressed(_:)), for: UIControl.Event.editingDidBegin)
+        STField.addTarget(self, action: #selector(STPressed(_:)), for: UIControl.Event.editingDidBegin)
     }
     func createLunchNoteField() {
         let imageDown = UIImage(named: "downBtn")
         let imageUp = UIImage(named: "upBtn")
         let size = 45
         
-        let downBtn = UIBarButtonItem(image: imageDown?.imageResize(sizeChange: CGSize(width: size, height: size)), style: UIBarButtonItemStyle.done, target: self, action: #selector(nextField(sender:)))
-        let upBtn = UIBarButtonItem(image: imageUp?.imageResize(sizeChange: CGSize(width: size, height: size)), style: UIBarButtonItemStyle.done, target: self, action: #selector(prevField(sender:)))
+        let downBtn = UIBarButtonItem(image: imageDown?.imageResize(sizeChange: CGSize(width: size, height: size)), style: UIBarButtonItem.Style.done, target: self, action: #selector(nextField(sender:)))
+        let upBtn = UIBarButtonItem(image: imageUp?.imageResize(sizeChange: CGSize(width: size, height: size)), style: UIBarButtonItem.Style.done, target: self, action: #selector(prevField(sender:)))
 
         upBtn.tintColor = navColor
         downBtn.tintColor = navColor

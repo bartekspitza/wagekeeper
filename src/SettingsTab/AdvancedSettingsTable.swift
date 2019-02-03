@@ -35,7 +35,7 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
     // Toolbar
     let toolbar = UIToolbar()
     let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
-    let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: self, action: nil)
+    let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: self, action: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,7 +59,7 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        if self.isMovingFromParentViewController {
+        if self.isMovingFromParent {
             if autoTextField.text == "" && mySwitch.isOn == false || mySwitch.isOn {
                 UserDefaults().set(true, forKey: "manuallyNewMonth")
                 UserDefaults().set("1", forKey: "newMonth")
@@ -95,7 +95,7 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
             completion(UIApplication.shared.openURL(url))
             return
         }
-        UIApplication.shared.open(url, options: [:], completionHandler: completion)
+        UIApplication.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: completion)
     }
     
     func configureToolbar() {
@@ -176,7 +176,7 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
             }), completion: nil)
             UIView.transition(with: autoTextField, duration: duration, options: .transitionCrossDissolve, animations: ({
                 self.autoTextField.textColor = UIColor.lightGray
-                self.autoTextField.attributedPlaceholder = NSAttributedString(string:"Tap to enter..", attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
+                self.autoTextField.attributedPlaceholder = NSAttributedString(string:"Tap to enter..", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
             }), completion: nil)
             
         } else {
@@ -188,7 +188,7 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
             
             UIView.transition(with: autoTextField, duration: duration, options: .transitionCrossDissolve, animations: ({
                 self.autoTextField.textColor = UIColor.black
-                self.autoTextField.attributedPlaceholder = NSAttributedString(string:"Tap to enter..", attributes: [NSAttributedStringKey.foregroundColor: UIColor.black])
+                self.autoTextField.attributedPlaceholder = NSAttributedString(string:"Tap to enter..", attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
             }), completion: nil)
             
         }
@@ -281,8 +281,8 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
     override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
         if indexPath.section == 3 {
             let message = "Only change this setting if you sometimes work less hours than you actually get paid for. For example, changing this to 4 will cause any shifts shorter than 4 hours to be considered as 4 hours in length in calculations."
-            let alert = UIAlertController(title: "Warning!", message: message, preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.cancel, handler: { (action) in
+            let alert = UIAlertController(title: "Warning!", message: message, preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.cancel, handler: { (action) in
                 alert.dismiss(animated: true, completion: nil)
             }))
             self.present(alert, animated: true, completion: nil)
@@ -290,8 +290,8 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
         // Closing date detailbutton
         } else if indexPath.section == 2 {
             let message = "Turning this on enables you to manually choose which shift should be the beginning of a new period, regardless of the shifts date."
-            let alert = UIAlertController(title: "Warning!", message: message, preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.cancel, handler: { (action) in
+            let alert = UIAlertController(title: "Warning!", message: message, preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.cancel, handler: { (action) in
                 alert.dismiss(animated: true, completion: nil)
             }))
             self.present(alert, animated: true, completion: nil)
@@ -367,7 +367,7 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
     
     
     func createTimePicker() {
-        timePicker.addTarget(self, action: #selector(timePickerChanged), for: UIControlEvents.valueChanged)
+        timePicker.addTarget(self, action: #selector(timePickerChanged), for: UIControl.Event.valueChanged)
         timePicker.datePickerMode = .time
         
         ETField.inputAccessoryView = toolbar
@@ -376,8 +376,8 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
         STField.tintColor = UIColor.clear
         ETField.inputView = timePicker
         STField.inputView = timePicker
-        ETField.addTarget(self, action: #selector(ETPressed(_:)), for: UIControlEvents.editingDidBegin)
-        STField.addTarget(self, action: #selector(STPressed(_:)), for: UIControlEvents.editingDidBegin)
+        ETField.addTarget(self, action: #selector(ETPressed(_:)), for: UIControl.Event.editingDidBegin)
+        STField.addTarget(self, action: #selector(STPressed(_:)), for: UIControl.Event.editingDidBegin)
     }
     
     func createTime(Date: Date) -> String {
@@ -409,4 +409,9 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return indexPath.section == 0 && (UserDefaults().value(forKey: days[indexPath.row]) != nil)
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [UIApplication.OpenExternalURLOptionsKey: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value)})
 }
