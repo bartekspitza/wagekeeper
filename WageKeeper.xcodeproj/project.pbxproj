@@ -20,7 +20,7 @@
 		9862A5711FCC33AA0047671D /* AdvancedSettingsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9862A5701FCC33AA0047671D /* AdvancedSettingsTable.swift */; };
 		9864BB0C1FD4700E005DB5F2 /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9864BB0B1FD4700E005DB5F2 /* Calculator.swift */; };
 		98760E601FA6488A000E1A28 /* AddingTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98760E5F1FA6488A000E1A28 /* AddingTable.swift */; };
-		988FDEBC1F9F7AFA0090DEF1 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988FDEBB1F9F7AFA0090DEF1 /* Main.swift */; };
+		988FDEBC1F9F7AFA0090DEF1 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988FDEBB1F9F7AFA0090DEF1 /* Logger.swift */; };
 		988FDEC21F9F7AFA0090DEF1 /* adding_shifts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 988FDEC01F9F7AFA0090DEF1 /* adding_shifts.xcdatamodeld */; };
 		988FDEC41F9F7AFA0090DEF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 988FDEC31F9F7AFA0090DEF1 /* Assets.xcassets */; };
 		988FDED11F9F9B2D0090DEF1 /* Adding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988FDED01F9F9B2D0090DEF1 /* Adding.swift */; };
@@ -53,7 +53,7 @@
 		98760E5F1FA6488A000E1A28 /* AddingTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddingTable.swift; sourceTree = "<group>"; };
 		988FDEB61F9F7AFA0090DEF1 /* WageKeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WageKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		988FDEB91F9F7AFA0090DEF1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		988FDEBB1F9F7AFA0090DEF1 /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
+		988FDEBB1F9F7AFA0090DEF1 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		988FDEC11F9F7AFA0090DEF1 /* adding_shifts.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = adding_shifts.xcdatamodel; sourceTree = "<group>"; };
 		988FDEC31F9F7AFA0090DEF1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		988FDED01F9F9B2D0090DEF1 /* Adding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Adding.swift; sourceTree = "<group>"; };
@@ -168,7 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				9852F1061FA2309B00E7BDB5 /* MainCell.swift */,
-				988FDEBB1F9F7AFA0090DEF1 /* Main.swift */,
+				988FDEBB1F9F7AFA0090DEF1 /* Logger.swift */,
 				9820A5541FBCBF6B00EAEE6A /* MainNav.swift */,
 				98FC55E91FA6768500424AC0 /* Edit shift */,
 				98760E5E1FA647DE000E1A28 /* Add shift */,
@@ -280,7 +280,7 @@
 				988FDEC21F9F7AFA0090DEF1 /* adding_shifts.xcdatamodeld in Sources */,
 				988FDED11F9F9B2D0090DEF1 /* Adding.swift in Sources */,
 				980D1DD01FA3A4770091E06D /* SettingsTableNav.swift in Sources */,
-				988FDEBC1F9F7AFA0090DEF1 /* Main.swift in Sources */,
+				988FDEBC1F9F7AFA0090DEF1 /* Logger.swift in Sources */,
 				98FD4C5D1FC8390F002B91B1 /* LaunchCell.swift in Sources */,
 				9862A5711FCC33AA0047671D /* AdvancedSettingsTable.swift in Sources */,
 				985CAA381FA87C3F00AE6993 /* EditingTable.swift in Sources */,

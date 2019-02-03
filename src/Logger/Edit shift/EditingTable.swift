@@ -28,7 +28,7 @@ class EditingTable: UITableViewController, UITextFieldDelegate {
     var startFieldIsFocused = Bool()
     var STDate = Date()
     var ETDate = Date()
-    let shift = shifts[indexx[0]][indexx[1]]
+    let shift = shifts[shiftToEdit[0]][shiftToEdit[1]]
     let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     var currentField = 0
     

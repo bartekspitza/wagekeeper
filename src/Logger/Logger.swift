@@ -9,26 +9,17 @@
 import UIKit
 import CoreData
 
-var viewX = CGFloat(0)
-var indexx = [0,0]
+var shiftToEdit = [0,0]
 
-class Main: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    // IB Outlets
-    
-    // Table view
+class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
+ 
+    // Views
     @IBOutlet weak var myTableView: UITableView!
     var cells = [UITableViewCell]()
     let instructionsLabel = UILabel()
-    let formatter = DateFormatter()
-    let calendar = Calendar.current
     
-    // Other variables
-    var deleteHappened = false
-    var detailView = false
-    var hideDetail = false
-    var hoursWorked = 0
-    var minutesWorked = 0
-    var firstCell = true
+    // Others
+    let formatter = DateFormatter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,23 +29,11 @@ class Main: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        getShifts()
+        getShiftsFromLocal()
         if !(shifts.isEmpty) {
             myTableView.backgroundView = UIView()
         }
         myTableView.reloadData()
-    }
-    
-    func calculateDetailsDistanceTravel() {
-        for cell in myTableView.visibleCells {
-            let cell = cell as! MainCell
-            if cell.timeLbl.frame.width > viewX {
-                viewX = cell.timeLbl.frame.width
-            }
-            if cell.accessoryLbl.frame.width > viewX {
-                viewX = cell.accessoryLbl.frame.width
-            }
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -65,7 +44,7 @@ class Main: UIViewController, UITableViewDelegate, UITableViewDataSource {
         myTableView.reloadData()
         myTableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: myTableView.frame.width, height: 1))
         myTableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        detailView = false
+
         if shifts.isEmpty {
             let view = UIView()
             let image = UIImage(named: "test instructor")
@@ -108,50 +87,8 @@ class Main: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBAction func unwindSegue(_ sender: UIStoryboardSegue) {
         
     }
-
-    
-//    @IBAction func details(_ sender: UIBarButtonItem) {
-//        let animationDuration = 0.4
-//        if !detailView {
-//            detailView = true
-//            UIView.transition(with: sender.value(forKey: "view") as! UIView, duration: 0.3, options: .transitionCrossDissolve, animations: ({
-//                sender.tintColor = UIColor.white.withAlphaComponent(0.5)
-//            }), completion: nil)
-//
-//            for cell in myTableView.visibleCells {
-//                let cell = cell as! MainCell
-//                cell.isDetailed = true
-//
-//                UIView.animate(withDuration: animationDuration, animations: ({
-//                    cell.noteLbl.center.x += viewX
-//                    cell.accessoryLbl.center.x = self.view.frame.width*0.02 + cell.accessoryLbl.frame.width/2
-//                    cell.timeLbl.center.x = self.view.frame.width*0.02 + cell.timeLbl.frame.width/2
-//                }))
-//            }
-//        } else {
-//            detailView = false
-//            UIView.transition(with: sender.value(forKey: "view") as! UIView, duration: 0.3, options: .transitionCrossDissolve, animations: ({
-//                sender.tintColor = UIColor.white
-//            }), completion: nil)
-//
-//            for cell in myTableView.visibleCells {
-//                let cell = cell as! MainCell
-//                cell.isDetailed = false
-//
-//                UIView.animate(withDuration: animationDuration, animations: ({
-//                    cell.noteLbl.center.x -= viewX
-//                    cell.accessoryLbl.center.x = 0 - cell.accessoryLbl.frame.width/2
-//                    cell.timeLbl.center.x = 0 - cell.timeLbl.frame.width/2
-//                }))
-//            }
-//        }
-//    }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let delete = UITableViewRowAction()
-        
-        delete.title = "Delete"
-        delete.backgroundColor = UIColor.gray
         let deleteAction = UITableViewRowAction(style: .normal, title: "Delete")   { (_ rowAction: UITableViewRowAction, _ indexPath: IndexPath) in
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             let context = appDelegate.persistentContainer.viewContext
@@ -192,8 +129,8 @@ class Main: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        indexx[0] = indexPath.section
-        indexx[1] = indexPath.row
+        shiftToEdit[0] = indexPath.section
+        shiftToEdit[1] = indexPath.row
         performSegue(withIdentifier: "gotoedit", sender: self)
     }
     
@@ -259,9 +196,7 @@ class Main: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return 40
     }
     
-    // NEW METHOD
-    
-    func getShifts() {
+    func getShiftsFromLocal() {
         shifts.removeAll()
         var tempList = [Shift]()
         var tempAppendList = [Shift]()
@@ -416,7 +351,6 @@ class Main: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 totalHours = "\(hoursWorked)h \(minutesWorked)m"
             }
         }
-
 
         return totalHours
     }

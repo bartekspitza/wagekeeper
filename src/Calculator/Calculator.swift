@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 var calcIndex = [0,0]
 
-class LaunchCalc: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var totalHoursLbl = CountingLabel()
     var totalMinutesLbl = CountingLabel()

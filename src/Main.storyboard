@@ -685,10 +685,10 @@
             </objects>
             <point key="canvasLocation" x="1372" y="589"/>
         </scene>
-        <!--Launch Calc-->
+        <!--Calculator-->
         <scene sceneID="Qcu-RA-9Ck">
             <objects>
-                <viewController id="ju2-gX-Szv" customClass="LaunchCalc" customModule="WageKeeper" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ju2-gX-Szv" customClass="Calculator" customModule="WageKeeper" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Kg4-ZH-WRA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1160,7 +1160,7 @@
         <!--Main-->
         <scene sceneID="ZOT-aN-ZbX">
             <objects>
-                <viewController title="Main" id="Zef-H6-hLs" customClass="Main" customModule="WageKeeper" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Main" id="Zef-H6-hLs" customClass="Logger" customModule="WageKeeper" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="41y-Lt-agn">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
