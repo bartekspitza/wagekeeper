@@ -19,13 +19,10 @@ class LaunchCalc: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var grossLbl: CountingLabel!
     @IBOutlet weak var salaryLbl: CountingLabel!
     
-    
     var stats = [String]()
     
-    
     var seperatorLineHorizontal = UIView()
-    var seperatorLineVertical = UIView()
-    var seperatorLineVertical1 = UIView()
+    var upperLineOfArrowButton = UIView()
     var statsTable = UITableView()
     var menuTable = UITableView()
     
@@ -40,7 +37,7 @@ class LaunchCalc: UIViewController, UITableViewDelegate, UITableViewDataSource {
         makeDesign()
         makeMenuBtn()
         designLabels()
-        designLines()
+        addUpperLineOfArrowButtonSection()
         grossLbl.text = "PRE-TAX: 0"
         if appStarted {
             getShifts()
@@ -353,21 +350,17 @@ class LaunchCalc: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return .lightContent
     }
     
-    func designLines() {
+    func addUpperLineOfArrowButtonSection() {
         let gradientMaxY = (self.view.frame.height*0.4)
         let horizontalY = gradientMaxY * 0.60
         seperatorLineHorizontal.frame = CGRect(x: self.view.frame.width/2, y: 0, width: 1, height: gradientMaxY * 0.25)
         seperatorLineHorizontal.center.y = horizontalY + seperatorLineHorizontal.frame.height/2
         seperatorLineHorizontal.backgroundColor = UIColor.white.withAlphaComponent(0.15)
-        seperatorLineVertical.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 1)
-        seperatorLineVertical.backgroundColor = UIColor.white.withAlphaComponent(0.15)
-        seperatorLineVertical.center.x = self.view.frame.width/2
-        seperatorLineVertical.center.y = (self.view.frame.height * 0.4) * 0.60
-        seperatorLineVertical1.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 1)
-        seperatorLineVertical1.center.y = seperatorLineHorizontal.center.y + seperatorLineHorizontal.frame.height/2
-        seperatorLineVertical1.backgroundColor = UIColor.white.withAlphaComponent(0.15)
+        upperLineOfArrowButton.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 1)
+        upperLineOfArrowButton.center.y = seperatorLineHorizontal.center.y + seperatorLineHorizontal.frame.height/2
+        upperLineOfArrowButton.backgroundColor = UIColor.white.withAlphaComponent(0.15)
 
-        self.view.addSubview(seperatorLineVertical1)
+        self.view.addSubview(upperLineOfArrowButton)
     }
     
     func designLabels() {
@@ -844,14 +837,6 @@ class LaunchCalc: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func calculateDate(month: [Shift]) -> String {
         var date = ""
         
-        //        if month.count == 1 {
-        //            date = String(Array(createDateString(Date: month[0].date!))[0..<createDateString(Date: month[0].date!).count-5])
-        //        } else {
-        //            let firstDate = String(Array(createDateString(Date: month[0].date!))[0..<createDateString(Date: month[0].date!).count-5])
-        //            let secondDate = String(Array(createDateString(Date: (month.last?.date)!))[0..<createDateString(Date: (month.last?.date)!).count-5])
-        //            date = secondDate + " - " + firstDate
-        //        }
-        
         let firstDate = String(Array(createDateString(Date: month[0].date!))[0..<createDateString(Date: month[0].date!).count-5])
         let secondDate = String(Array(createDateString(Date: (month.last?.date)!))[0..<createDateString(Date: (month.last?.date)!).count-5])
         date = secondDate + " - " + firstDate
@@ -1009,5 +994,3 @@ class LaunchCalc: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return date
     }
 }
-
-

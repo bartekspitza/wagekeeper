@@ -18,7 +18,7 @@
 		985CAA381FA87C3F00AE6993 /* EditingTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985CAA371FA87C3F00AE6993 /* EditingTable.swift */; };
 		985CAA3A1FA8824C00AE6993 /* Editing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985CAA391FA8824C00AE6993 /* Editing.swift */; };
 		9862A5711FCC33AA0047671D /* AdvancedSettingsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9862A5701FCC33AA0047671D /* AdvancedSettingsTable.swift */; };
-		9864BB0C1FD4700E005DB5F2 /* LaunchCalc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9864BB0B1FD4700E005DB5F2 /* LaunchCalc.swift */; };
+		9864BB0C1FD4700E005DB5F2 /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9864BB0B1FD4700E005DB5F2 /* Calculator.swift */; };
 		98760E601FA6488A000E1A28 /* AddingTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98760E5F1FA6488A000E1A28 /* AddingTable.swift */; };
 		988FDEBC1F9F7AFA0090DEF1 /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988FDEBB1F9F7AFA0090DEF1 /* Main.swift */; };
 		988FDEC21F9F7AFA0090DEF1 /* adding_shifts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 988FDEC01F9F7AFA0090DEF1 /* adding_shifts.xcdatamodeld */; };
@@ -49,7 +49,7 @@
 		985CAA371FA87C3F00AE6993 /* EditingTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingTable.swift; sourceTree = "<group>"; };
 		985CAA391FA8824C00AE6993 /* Editing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Editing.swift; sourceTree = "<group>"; };
 		9862A5701FCC33AA0047671D /* AdvancedSettingsTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsTable.swift; sourceTree = "<group>"; };
-		9864BB0B1FD4700E005DB5F2 /* LaunchCalc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchCalc.swift; sourceTree = "<group>"; };
+		9864BB0B1FD4700E005DB5F2 /* Calculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculator.swift; sourceTree = "<group>"; };
 		98760E5F1FA6488A000E1A28 /* AddingTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddingTable.swift; sourceTree = "<group>"; };
 		988FDEB61F9F7AFA0090DEF1 /* WageKeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WageKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		988FDEB91F9F7AFA0090DEF1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -85,7 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				98E284E21FC70CC1004FD2D2 /* TabBarController.swift */,
-				9864BB0B1FD4700E005DB5F2 /* LaunchCalc.swift */,
+				9864BB0B1FD4700E005DB5F2 /* Calculator.swift */,
 				98FD4C5C1FC8390F002B91B1 /* LaunchCell.swift */,
 			);
 			path = Calculator;
@@ -288,7 +288,7 @@
 				98CA61941FB0A6D900463FF7 /* OvertimeRuleTable.swift in Sources */,
 				98ACD1671FA381D800B78C7D /* SettingsTable.swift in Sources */,
 				98E2EF9A1FB4D657006C3F96 /* CountingLabel.swift in Sources */,
-				9864BB0C1FD4700E005DB5F2 /* LaunchCalc.swift in Sources */,
+				9864BB0C1FD4700E005DB5F2 /* Calculator.swift in Sources */,
 				9830C2012207A0EF0023B582 /* Period.swift in Sources */,
 				9820A5551FBCBF6B00EAEE6A /* MainNav.swift in Sources */,
 				985CAA3A1FA8824C00AE6993 /* Editing.swift in Sources */,
