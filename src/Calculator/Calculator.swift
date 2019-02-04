@@ -22,37 +22,39 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var menuTable = UITableView()
     
     var stats = [String]()
-    var period = Period()
+    var periodsSeperatedByYear = [[[ShiftModel]]]()
+    var period: Period!
     var menuisShowing = false
     var indexForChosenPeriod = [0,0]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureNewUser()
         getShifts(fromCloud: false)
+        makePeriodsSeperatedByYear()
+        makePeriod()
         makeDesign()
         makeMenuBtn()
         designLabels()
         addUpperLineOfArrowButtonSection()
+        configureStatsTable()
+        configureMenuTable()
+        centerTotalTimeLabels()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        period = Period()
         stats.removeAll()
         labelsForNoShifts()
-        
-        fillTable()
+
+        makePeriodsSeperatedByYear()
         makePeriod()
         fillLabelsWithStats()
         startCountingLabels()
-        designLabels()
-        configureStatsTable()
-        configureMenuTable()
         
         menuTable.reloadData()
         statsTable.reloadData()
-        centerTotalTimeLabels()
+        
+        // centerTotalTimeLabels() might need this here
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -66,7 +68,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func configureNewUser() {
-        if !tableList.isEmpty && UserDefaults().value(forKey: "FirstTime") == nil {
+        if !periodsSeperatedByYear.isEmpty && UserDefaults().value(forKey: "FirstTime") == nil {
             UserDefaults().set("Visited", forKey: "FirstTime")
         }
         
@@ -89,7 +91,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         shift.note = "Example (Delete this)"
         shift.newMonth = Int16(0)
         
-        shifts.append([shift])
+        shifts.append([ShiftModel.createFromCoreData(s: shift)])
         
         do {
             try context.save()
@@ -160,7 +162,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if tableView.tag == 2 {
-            let startingString = String(Array(tableList[section][0][tableList[section][0].count-1].date!.description)[0..<4])
+            let startingString = String(Array(periodsSeperatedByYear[section][0][periodsSeperatedByYear[section][0].count-1].date.description)[0..<4])
             let headerView = UIView()
             headerView.backgroundColor = headerColor
             
@@ -209,7 +211,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 makePeriod()
                 statsTable.reloadData()
                 startCountingLabels()
-                periodLbl.text = period.date.uppercased()
+                periodLbl.text = period.duration
             }
         }
     }
@@ -271,9 +273,9 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
             // Periods table
         } else {
             let cell = UITableViewCell()
-            let section = tableList[indexPath.section][indexPath.row]
-            let end = String(Array(createDateString(Date: section[0].date!))[0..<createDateString(Date: section[0].date!).count-4])
-            let start = String(Array(createDateString(Date: section[section.count-1].date!))[0..<createDateString(Date: section[section.count-1].date!).count-4])
+            let section = periodsSeperatedByYear[indexPath.section][indexPath.row]
+            let end = String(Array(Time.dateToString(date: section[0].date, withDayName: false))[0..<Time.dateToString(date: section[0].date, withDayName: false).count-4])
+            let start = String(Array(Time.dateToString(date: section[section.count-1].date, withDayName: false))[0..<Time.dateToString(date: section[section.count-1].date, withDayName: false).count-4])
             cell.textLabel?.text = start + " - " + end
             cell.textLabel?.textColor = .white
             cell.textLabel?.font = UIFont.systemFont(ofSize: 17)
@@ -292,7 +294,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if tableView.tag == 1 {
             return Stats.descriptions.count
         } else {
-            return tableList[section].count
+            return periodsSeperatedByYear[section].count
         }
     }
     
@@ -300,7 +302,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if tableView.tag == 1 {
             return 1
         } else {
-            return tableList.count
+            return periodsSeperatedByYear.count
         }
     }
     
@@ -376,7 +378,8 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         periodLbl.textColor = .white
         periodLbl.font = UIFont.systemFont(ofSize: 11)
-        periodLbl.text = period.date.uppercased()
+        
+        periodLbl.text = period.duration
         periodLbl.textAlignment = .right
         periodLbl.frame = CGRect(x: 0, y: 0, width: Int(self.view.frame.width/3), height: Int(30))
         periodLbl.center = CGPoint(x: Int(self.view.frame.width*0.95 - periodLbl.frame.width/2), y: Int(btn.center.y))
@@ -386,25 +389,25 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func startCountingLabels() {
         if shifts.count > 0 {
-            if Int(period.grossSalary)! > 0 {
-                grossLbl.count(fromValue: 0, to: Float(period.grossSalary)!, withDuration: 1.5, andAnimationtype: .EaseOut, andCounterType: .Int, currency: period.currency, preString: "PRE-TAX: ", afterString: "")
-                salaryLbl.count(fromValue: 0, to: Float(period.salary)!, withDuration: TimeInterval(1.5 * (Float(period.salary)!/Float(period.grossSalary)!)), andAnimationtype: .EaseOut, andCounterType: .Int, currency: period.currency, preString: "", afterString: "")
+            if Int(period.grossSalary) > 0 {
+                grossLbl.count(fromValue: 0, to: Float(period.grossSalary), withDuration: 1.5, andAnimationtype: .EaseOut, andCounterType: .Int, currency: UserSettings.getCurrencySymbol(), preString: "PRE-TAX: ", afterString: "")
+                salaryLbl.count(fromValue: 0, to: Float(period.salary), withDuration: TimeInterval(1.5 * (Float(period.salary)/Float(period.grossSalary))), andAnimationtype: .EaseOut, andCounterType: .Int, currency: UserSettings.getCurrencySymbol(), preString: "", afterString: "")
             }
         }
         
     }
     
-    var tableList = [[[Shift]]]()
-    func fillTable() {
-        tableList.removeAll()
+    
+    func makePeriodsSeperatedByYear() {
+        periodsSeperatedByYear.removeAll()
         var year = 4000
         for section in shifts {
-            let decider = Int(String(Array(section[section.count-1].date!.description)[0..<4]))
+            let decider = Int(String(Array(section[section.count-1].date.description)[0..<4]))
             
             if year == decider! {
-                tableList[tableList.count-1].append(section)
+                periodsSeperatedByYear[periodsSeperatedByYear.count-1].append(section)
             } else {
-                tableList.append([section])
+                periodsSeperatedByYear.append([section])
                 year = decider!
             }
         }
@@ -412,480 +415,442 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func makePeriod() {
         if shifts.count > 0 {
-            let chosenPeriod = tableList[indexForChosenPeriod[0]][indexForChosenPeriod[1]]
-            let salaryInfo = calculateSalary(month: chosenPeriod)
+            period = Period(month: periodsSeperatedByYear[indexForChosenPeriod[0]][indexForChosenPeriod[1]])
             
-            period.date = calculateDate(month: chosenPeriod)
-            period.salary = (salaryInfo[1] as! Int).description
-            period.grossSalary = (salaryInfo[0] as! Int).description
-            period.totalHours = calculateTotalHours(month: chosenPeriod)
-            period.currency = salaryInfo[2] as! String
-            period.shiftsWorked = shiftsWorked(month: chosenPeriod)
-            period.avgShift = calculateAvg(month: chosenPeriod)
-            
-            stats.append(period.totalHours)
-            stats.append(period.avgShift)
-            stats.append(chosenPeriod.count.description)
-            stats.append((salaryInfo[5] as! Int).description)
-            stats.append(formatTime(minutes: salaryInfo[3] as! Int))
-            stats.append(formatMoneyInOT(amount: salaryInfo[4] as! Int))
+            stats.append(StringFormatter.stringFromHoursAndMinutes(a: period.amountHoursMinutesWorked))
+            stats.append(StringFormatter.stringFromHoursAndMinutes(a: period.avgShift))
+            stats.append(String(period.shiftsWorked))
+            stats.append(String(period.daysWorked))
+            stats.append(StringFormatter.stringFromHoursAndMinutes(a: Time.minutesToHoursAndMinutes(minutes: period.minutesInOvertime)))
+            stats.append(StringFormatter.addCurrencyToNumber(amount: period.moneyFromOvertime))
         }
     }
     
     func fillLabelsWithStats() {
         totalHoursLbl.text = "HOURS: 0"
         totalMinutesLbl.text = "MINUTES: 0"
-        salaryLbl.text = period.salary
+        salaryLbl.text = StringFormatter.addCurrencyToNumber(amount: period.salary)
     }
     
-    func formatMoneyInOT(amount: Int) -> String {
-        if period.currency == "kr" {
-            return amount.description + "kr"
-        } else {
-            return period.currency + amount.description
-        }
-    }
+//    func formatTime(minutes: Int) -> String {
+//        var totalHours = ""
+//        var hoursWorked = 0
+//        var minutesWorked = 0
+//
+//        minutesWorked = minutes
+//
+//        hoursWorked = Int(minutes/60)
+//        minutesWorked -= Int(minutes/60) * 60
+//
+//        if hoursWorked == 0 {
+//            if minutesWorked == 1 {
+//                totalHours = "\(minutesWorked)M"
+//            } else {
+//                totalHours = "\(minutesWorked)M"
+//            }
+//
+//        } else if minutesWorked == 0 {
+//            if hoursWorked == 1 {
+//                totalHours = "\(hoursWorked)H"
+//            } else {
+//                totalHours = "\(hoursWorked)H"
+//            }
+//
+//        } else {
+//            if hoursWorked == 1 && minutesWorked != 1 {
+//                totalHours = "\(hoursWorked)H \(minutesWorked)M"
+//            } else if hoursWorked != 1 && minutesWorked == 1 {
+//                totalHours = "\(hoursWorked)H \(minutesWorked)M"
+//            } else if hoursWorked == 1 && minutesWorked == 1 {
+//                totalHours = "\(hoursWorked)H \(minutesWorked)M"
+//            } else {
+//                totalHours = "\(hoursWorked)H \(minutesWorked)M"
+//            }
+//        }
+//
+//        if minutesWorked == 0 && hoursWorked == 0 {
+//            totalHours = "0"
+//        }
+//
+//        return totalHours
+//    }
+//
+//    func calculateAvg(month: [Shift]) -> String {
+//        var totalHours = ""
+//        var hoursWorked = 0
+//        var minutesWorked = 0
+//
+//
+//        for day in month {
+//            hoursWorked += calcHours(day: day)[0]
+//            minutesWorked += calcHours(day: day)[1]
+//        }
+//
+//        minutesWorked += hoursWorked * 60
+//
+//        minutesWorked /= month.count
+//
+//        hoursWorked = Int(minutesWorked/60)
+//        minutesWorked -= Int(minutesWorked/60) * 60
+//
+//        if minutesWorked == 0 {
+//            totalHours = String(hoursWorked) + "H"
+//        } else {
+//            totalHours = "\(hoursWorked)H \(minutesWorked)M"
+//        }
+//
+//        return totalHours
+//    }
+//
+//    func calculateSalary(month: [Shift]) -> [Any] {
+//        var grossSalary = 0
+//        var salary = 0
+//        var symbol = ""
+//        var taxRate: Float = 1.0
+//        var minutesInOT = 0
+//        var moneyInOT = 0
+//        var daysWorked = 0
+//
+//        // Loads taxrate
+//        if UserDefaults().string(forKey: "baseTaxRate") != nil {
+//            taxRate -= Float(UserDefaults().string(forKey: "baseTaxRate")!)! / 100
+//        }
+//
+//        // Computes month gross salary
+//        var prevDay = 100
+//        for shift in month {
+//            let calendar = Calendar.current
+//            let currentDayComp = calendar.dateComponents([.day], from: shift.date!)
+//            let currentDay = currentDayComp.day!
+//
+//            if currentDay != prevDay {
+//                daysWorked += 1
+//            }
+//            let shiftSalaryInfo = calcShiftSalary(shift: shift)
+//            grossSalary += shiftSalaryInfo[0]
+//            minutesInOT += shiftSalaryInfo[1]
+//            moneyInOT += shiftSalaryInfo[2]
+//            let prevDayComp = calendar.dateComponents([.day], from: shift.date!)
+//            prevDay = prevDayComp.day!
+//        }
+//
+//        // Computes month salary after taxes
+//        salary = Int(Float(grossSalary) * taxRate)
+//
+//        // Loads the currency and sets appropriate symbol
+//        if UserDefaults().string(forKey: "currency") != nil && UserDefaults().string(forKey: "currency") != "" {
+//            symbol = currencies[UserDefaults().string(forKey: "currency")!]!
+//        }
+//
+//        return [grossSalary, salary, symbol, minutesInOT, moneyInOT, daysWorked]
+//    }
     
-    func formatTime(minutes: Int) -> String {
-        var totalHours = ""
-        var hoursWorked = 0
-        var minutesWorked = 0
-        
-        minutesWorked = minutes
-        
-        hoursWorked = Int(minutes/60)
-        minutesWorked -= Int(minutes/60) * 60
-        
-        if hoursWorked == 0 {
-            if minutesWorked == 1 {
-                totalHours = "\(minutesWorked)M"
-            } else {
-                totalHours = "\(minutesWorked)M"
-            }
-            
-        } else if minutesWorked == 0 {
-            if hoursWorked == 1 {
-                totalHours = "\(hoursWorked)H"
-            } else {
-                totalHours = "\(hoursWorked)H"
-            }
-            
-        } else {
-            if hoursWorked == 1 && minutesWorked != 1 {
-                totalHours = "\(hoursWorked)H \(minutesWorked)M"
-            } else if hoursWorked != 1 && minutesWorked == 1 {
-                totalHours = "\(hoursWorked)H \(minutesWorked)M"
-            } else if hoursWorked == 1 && minutesWorked == 1 {
-                totalHours = "\(hoursWorked)H \(minutesWorked)M"
-            } else {
-                totalHours = "\(hoursWorked)H \(minutesWorked)M"
-            }
-        }
-        
-        if minutesWorked == 0 && hoursWorked == 0 {
-            totalHours = "0"
-        }
-        
-        return totalHours
-    }
-    
-    func calculateAvg(month: [Shift]) -> String {
-        var totalHours = ""
-        var hoursWorked = 0
-        var minutesWorked = 0
-        
-        
-        for day in month {
-            hoursWorked += calcHours(day: day)[0]
-            minutesWorked += calcHours(day: day)[1]
-        }
-        
-        minutesWorked += hoursWorked * 60
-        
-        minutesWorked /= month.count
-        
-        hoursWorked = Int(minutesWorked/60)
-        minutesWorked -= Int(minutesWorked/60) * 60
-        
-        if minutesWorked == 0 {
-            totalHours = String(hoursWorked) + "H"
-        } else {
-            totalHours = "\(hoursWorked)H \(minutesWorked)M"
-        }
-        
-        return totalHours
-    }
-    
-    func calculateSalary(month: [Shift]) -> [Any] {
-        var grossSalary = 0
-        var salary = 0
-        var symbol = ""
-        var taxRate: Float = 1.0
-        var minutesInOT = 0
-        var moneyInOT = 0
-        var daysWorked = 0
-        
-        // Loads taxrate
-        if UserDefaults().string(forKey: "baseTaxRate") != nil {
-            taxRate -= Float(UserDefaults().string(forKey: "baseTaxRate")!)! / 100
-        }
-        
-        // Computes month gross salary
-        var prevDay = 100
-        for shift in month {
-            let calendar = Calendar.current
-            let currentDayComp = calendar.dateComponents([.day], from: shift.date!)
-            let currentDay = currentDayComp.day!
-            
-            if currentDay != prevDay {
-                daysWorked += 1
-            }
-            let shiftSalaryInfo = calcShiftSalary(shift: shift)
-            grossSalary += shiftSalaryInfo[0]
-            minutesInOT += shiftSalaryInfo[1]
-            moneyInOT += shiftSalaryInfo[2]
-            let prevDayComp = calendar.dateComponents([.day], from: shift.date!)
-            prevDay = prevDayComp.day!
-        }
-        
-        // Computes month salary after taxes
-        salary = Int(Float(grossSalary) * taxRate)
-        
-        // Loads the currency and sets appropriate symbol
-        if UserDefaults().string(forKey: "currency") != nil && UserDefaults().string(forKey: "currency") != "" {
-            symbol = currencies[UserDefaults().string(forKey: "currency")!]!
-        }
-        
-        return [grossSalary, salary, symbol, minutesInOT, moneyInOT, daysWorked]
-    }
-    
-    func calcShiftSalary(shift: Shift) -> [Int] {
-        var remainingMinutes: Float = 0.0
-        var minutesWorked: Float = 0.0
-        var minutesInOT: Float = 0.0
-        var moneyInOT: Float = 0.0
-        var salary: Float = 0.0
-        var baseRate: Float = 0.0
-        var lunchMinutes: Float = 0.0
-        var weekDayInt: Int
-        var weekDay: String
-        var weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-        var starts = [[Any]]()
-        var ends = [[Any]]()
-        var rateFields = [myTextField]()
-        var starts1 = [[Any]]()
-        var ends1 = [[Any]]()
-        var rateFields1 = [myTextField]()
-        var extendsOver2Days = false
-        var shouldSubstractLunch = true
-        let calendar = Calendar.current
-        var fakeStartingTime = Date(timeIntervalSinceReferenceDate: 0)
-        var fakeEndingTime = Date(timeIntervalSinceReferenceDate: 0)
-        let fakeStartingTimeComponents = calendar.dateComponents([.hour, .minute], from: shift.startingTime!)
-        fakeStartingTime = calendar.date(byAdding: fakeStartingTimeComponents, to: fakeStartingTime)!
-        
-        // Computes total minutes in shift
-        let timeWorked = calcHours(day: shift)
-        remainingMinutes = (Float(timeWorked[1])) + (Float(timeWorked[0]) * 60)
-        minutesWorked = calculateMinutes(from: shift.startingTime!, to: shift.endingTime!)
-        
-        // Computes day of the week
-        let myCalendar = Calendar(identifier: .gregorian)
-        weekDayInt = (myCalendar.component(.weekday, from: shift.date!)) - 1
-        weekDay = weekDays[weekDayInt]
-        
-        // Loads baseRate
-        if UserDefaults().string(forKey: "wageRate") != nil {
-            baseRate = Float(UserDefaults().string(forKey: "wageRate")!)! / 60
-        }
-        
-        // Loads rules arrays
-        let rules1 = OTRulesForDay(day: weekDay)
-        starts = rules1[0] as! [[Any]]
-        ends = rules1[1] as! [[Any]]
-        rateFields = rules1[2] as! [myTextField]
-        
-        if UserDefaults().string(forKey: "minHours") != nil && UserDefaults().string(forKey: "minHours") != "" {
-            let minimum = Float(UserDefaults().string(forKey: "minHours")!)! * 60
-            if (minimum) >= (minutesWorked) {
-                shouldSubstractLunch = false
-                minutesWorked = Float(minimum)
-                var tempDate: Date
-                tempDate = calendar.date(byAdding: .hour, value: Int(minimum/60), to: shift.startingTime!)!
-                
-                let fakeEndingComponents = calendar.dateComponents([.hour, .minute], from: tempDate)
-                fakeEndingTime = calendar.date(byAdding: fakeEndingComponents, to: fakeEndingTime)!
-                
-            } else {
-                let fakeEndingComponents = calendar.dateComponents([.hour, .minute], from: shift.endingTime!)
-                fakeEndingTime = calendar.date(byAdding: fakeEndingComponents, to: fakeEndingTime)!
-            }
-        } else {
-            let fakeEndingComponents = calendar.dateComponents([.hour, .minute], from: shift.endingTime!)
-            fakeEndingTime = calendar.date(byAdding: fakeEndingComponents, to: fakeEndingTime)!
-        }
-        
-        
-        var shiftEnd = Date()
-        var shiftStart1 = Date()
-        var shiftEnd1 = Date()
-        let startOfDay = Date(timeIntervalSinceReferenceDate: 0)
-        var endOfDay = Date(timeIntervalSinceReferenceDate: 0)
-        var componentsForEndOfDay = DateComponents()
-        componentsForEndOfDay.hour = 23
-        componentsForEndOfDay.minute = 59
-        endOfDay = calendar.date(byAdding: componentsForEndOfDay, to: endOfDay)!
-        
-        // Loads rules arrays for the next day if the shift extends over 2 days
-        if fakeEndingTime < fakeStartingTime {
-            extendsOver2Days = true
-            let rules2 = OTRulesForDay(day: weekDays[weekDayInt+1])
-            starts1 = rules2[0] as! [[Any]]
-            ends1 = rules2[1] as! [[Any]]
-            rateFields1 = rules2[2] as! [myTextField]
-        }
-        
-        
-        let shiftStart = fakeStartingTime
-        if extendsOver2Days {
-            shiftEnd = endOfDay
-            shiftStart1 = startOfDay
-            shiftEnd1 = fakeEndingTime
-        } else {
-            shiftEnd = fakeEndingTime
-        }
-        
-        for i in 0..<starts.count {
-            var intervalStart = Date(timeIntervalSinceReferenceDate: 0) // 2001...
-            var intervalEnd = Date(timeIntervalSinceReferenceDate: 0) // 2001..
-            
-            let intervalStartComponents = calendar.dateComponents([.hour, .minute], from: starts[i][1] as! Date)
-            let intervalEndComponents = calendar.dateComponents([.hour, .minute], from: ends[i][1] as! Date)
-            
-            intervalStart = calendar.date(byAdding: intervalStartComponents, to: intervalStart)!
-            intervalEnd = calendar.date(byAdding: intervalEndComponents, to: intervalEnd)!
-            
-            var endTime: Date
-            var startTime: Date
-            
-            if shiftStart > intervalStart {
-                if intervalEnd > shiftStart {
-                    startTime = shiftStart
-                    
-                    if intervalEnd >= shiftEnd {
-                        endTime = shiftEnd
-                    } else {
-                        endTime = intervalEnd
-                    }
-                    
-                    let minutesInThisInterval = calculateMinutes(from: startTime, to: endTime)
-                    remainingMinutes -= minutesInThisInterval
-                    salary += minutesInThisInterval * (Float(Int(rateFields[i].text!)!) / 60)
-                }
-                
-            } else {
-                if intervalStart < shiftEnd {
-                    startTime = intervalStart
-                    if intervalEnd < shiftEnd {
-                        endTime = intervalEnd
-                    } else {
-                        endTime = shiftEnd
-                        
-                    }
-                    
-                    let minutesInThisInterval = calculateMinutes(from: startTime, to: endTime)
-                    remainingMinutes -= minutesInThisInterval
-                    salary += minutesInThisInterval * (Float(Int(rateFields[i].text!)!) / 60)
-                }
-            }
-        }
-        if extendsOver2Days {
-            for i in 0..<starts1.count {
-                var intervalStart = Date(timeIntervalSinceReferenceDate: 0) // 2001...
-                var intervalEnd = Date(timeIntervalSinceReferenceDate: 0) // 2001..
-                
-                let intervalStartComponents = calendar.dateComponents([.hour, .minute], from: starts1[i][1] as! Date)
-                let intervalEndComponents = calendar.dateComponents([.hour, .minute], from: ends1[i][1] as! Date)
-                
-                intervalStart = calendar.date(byAdding: intervalStartComponents, to: intervalStart)!
-                intervalEnd = calendar.date(byAdding: intervalEndComponents, to: intervalEnd)!
-                
-                var endTime: Date
-                var startTime: Date
-                
-                if shiftStart1 > intervalStart {
-                    if intervalEnd > shiftStart1 {
-                        startTime = shiftStart1
-                        
-                        if intervalEnd >= shiftEnd1 {
-                            endTime = shiftEnd1
-                        } else {
-                            endTime = intervalEnd
-                        }
-                        
-                        let minutesInThisInterval = calculateMinutes(from: startTime, to: endTime)
-                        remainingMinutes -= minutesInThisInterval
-                        salary += minutesInThisInterval * (Float(Int(rateFields1[i].text!)!) / 60)
-                    }
-                    
-                } else {
-                    if intervalStart < shiftEnd1 {
-                        startTime = intervalStart
-                        if intervalEnd < shiftEnd1 {
-                            endTime = intervalEnd
-                        } else {
-                            endTime = shiftEnd1
-                            
-                        }
-                        
-                        let minutesInThisInterval = calculateMinutes(from: startTime, to: endTime)
-                        remainingMinutes -= minutesInThisInterval
-                        salary += minutesInThisInterval * (Float(Int(rateFields1[i].text!)!) / 60)
-                    }
-                }
-            }
-        }
-        moneyInOT = salary
-        salary += remainingMinutes * baseRate
-        minutesInOT = minutesWorked - remainingMinutes
-        
-        // Substracts lunchTime with the average money/minute rate
-        if shift.lunchTime != "" && shouldSubstractLunch {
-            lunchMinutes = Float(Int(shift.lunchTime!)!)
-            salary -= (lunchMinutes * (salary/minutesWorked))
-            moneyInOT -= (lunchMinutes * (salary/minutesWorked))
-        }
-        
-        return [Int(roundf(salary)), Int(minutesInOT), Int(moneyInOT) ]
-    }
-    
-    func calculateMinutes(from: Date, to: Date) -> Float {
-        var minutesWorked = 0
-        var hoursWorked = 0
-        
-        let startingHour = Int(String(Array(from.description)[11...12]))
-        let startingMin = Int(String(Array(from.description)[14...15]))
-        let endingHour = Int(String(Array(to.description)[11...12]))
-        let endingMin = Int(String(Array(to.description)[14...15]))
-        
-        if endingHour! - startingHour! > 0 {
-            hoursWorked = endingHour! - startingHour!
-        } else if endingHour! - startingHour! < 0 {
-            hoursWorked = 24 + (endingHour! - startingHour!)
-        }
-        
-        if endingMin! - startingMin! < 0 {
-            hoursWorked -= 1
-            minutesWorked = 60 - (startingMin! - endingMin!)
-        } else if endingMin! - startingMin! > 0 {
-            minutesWorked = endingMin! - startingMin!
-        }
-        
-        minutesWorked += (hoursWorked * 60)
-        
-        return Float(minutesWorked)
-    }
-    
-    func OTRulesForDay(day: String) -> [Any] {
-        if UserDefaults().value(forKey: day) != nil {
-            let instanceEncoded: [NSData] = UserDefaults().object(forKey: day) as! [NSData]
-            let startsUnpacked = NSKeyedUnarchiver.unarchiveObject(with: instanceEncoded[0] as Data)
-            let endsUnpacked = NSKeyedUnarchiver.unarchiveObject(with: instanceEncoded[1] as Data)
-            let rateFieldsUnpacked = NSKeyedUnarchiver.unarchiveObject(with: instanceEncoded[2] as Data)
-            
-            return [startsUnpacked!, endsUnpacked!, rateFieldsUnpacked!]
-        } else {
-            return [[], [], []]
-        }
-    }
-    
-    func shiftsWorked(month: [Shift]) -> String {
-        return String(tableList[indexForChosenPeriod[0]][indexForChosenPeriod[1]].count)
-    }
-    
-    func calculateDate(month: [Shift]) -> String {
-        var date = ""
-        
-        let firstDate = String(Array(createDateString(Date: month[0].date!))[0..<createDateString(Date: month[0].date!).count-5])
-        let secondDate = String(Array(createDateString(Date: (month.last?.date)!))[0..<createDateString(Date: (month.last?.date)!).count-5])
-        date = secondDate + " - " + firstDate
-        
-        return date
-    }
-    
-    func calculateTotalHours(month: [Shift]) -> String {
-        var returnString = ""
-        var hoursWorked = 0
-        var minutesWorked = 0
-        
-        
-        for day in month {
-            hoursWorked += calcHours(day: day)[0]
-            minutesWorked += calcHours(day: day)[1]
-        }
-        
-        hoursWorked += Int(minutesWorked/60)
-        minutesWorked -= Int(minutesWorked/60) * 60
-        if minutesWorked == 0 {
-            returnString = String(hoursWorked) + "H"
-        } else {
-            returnString = "\(hoursWorked)H \(minutesWorked)M"
-        }
-        
-        return returnString
-    }
-    
-    func calcHours(day: Shift) -> [Int] {
-        var hoursWorked = 0
-        var minutesWorked = 0
-        
-        let startingHour = Int(String(Array(day.startingTime!.description)[11...12]))
-        let startingMin = Int(String(Array(day.startingTime!.description)[14...15]))
-        let endingHour = Int(String(Array(day.endingTime!.description)[11...12]))
-        let endingMin = Int(String(Array(day.endingTime!.description)[14...15]))
-        
-        if endingHour! - startingHour! > 0 {
-            hoursWorked = endingHour! - startingHour!
-        } else if endingHour! - startingHour! < 0 {
-            hoursWorked = 24 + (endingHour! - startingHour!)
-        }
-        
-        if endingMin! - startingMin! < 0 {
-            hoursWorked -= 1
-            minutesWorked = 60 - (startingMin! - endingMin!)
-        } else if endingMin! - startingMin! > 0 {
-            minutesWorked = endingMin! - startingMin!
-        }
-        
-        minutesWorked += (hoursWorked * 60)
-        if UserDefaults().string(forKey: "minHours") != nil {
-            let minimum = Float(UserDefaults().string(forKey: "minHours")!)! * 60
-            if Int(minimum) > minutesWorked {
-                minutesWorked = Int(minimum)
-            }
-        }
-        hoursWorked = Int(minutesWorked/60)
-        minutesWorked -= Int(minutesWorked/60) * 60
-        
-        return [hoursWorked, minutesWorked]
-    }
-    
-    func createDateString(Date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .none
-        
-        let dateString = formatter.string(from: Date)
-        return dateString.replacingOccurrences(of: ",", with: "")
-    }
+//    func calcShiftSalary(shift: Shift) -> [Int] {
+//        var remainingMinutes: Float = 0.0
+//        var minutesWorked: Float = 0.0
+//        var minutesInOT: Float = 0.0
+//        var moneyInOT: Float = 0.0
+//        var salary: Float = 0.0
+//        var baseRate: Float = 0.0
+//        var lunchMinutes: Float = 0.0
+//        var weekDayInt: Int
+//        var weekDay: String
+//        var weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+//        var starts = [[Any]]()
+//        var ends = [[Any]]()
+//        var rateFields = [myTextField]()
+//        var starts1 = [[Any]]()
+//        var ends1 = [[Any]]()
+//        var rateFields1 = [myTextField]()
+//        var extendsOver2Days = false
+//        var shouldSubstractLunch = true
+//        let calendar = Calendar.current
+//        var fakeStartingTime = Date(timeIntervalSinceReferenceDate: 0)
+//        var fakeEndingTime = Date(timeIntervalSinceReferenceDate: 0)
+//        let fakeStartingTimeComponents = calendar.dateComponents([.hour, .minute], from: shift.startingTime!)
+//        fakeStartingTime = calendar.date(byAdding: fakeStartingTimeComponents, to: fakeStartingTime)!
+//
+//        // Computes total minutes in shift
+//        let timeWorked = calcHours(day: shift)
+//        remainingMinutes = (Float(timeWorked[1])) + (Float(timeWorked[0]) * 60)
+//        minutesWorked = calculateMinutes(from: shift.startingTime!, to: shift.endingTime!)
+//
+//        // Computes day of the week
+//        let myCalendar = Calendar(identifier: .gregorian)
+//        weekDayInt = (myCalendar.component(.weekday, from: shift.date!)) - 1
+//        weekDay = weekDays[weekDayInt]
+//
+//        // Loads baseRate
+//        if UserDefaults().string(forKey: "wageRate") != nil {
+//            baseRate = Float(UserDefaults().string(forKey: "wageRate")!)! / 60
+//        }
+//
+//        // Loads rules arrays
+//        let rules1 = OTRulesForDay(day: weekDay)
+//        starts = rules1[0] as! [[Any]]
+//        ends = rules1[1] as! [[Any]]
+//        rateFields = rules1[2] as! [myTextField]
+//
+//        if UserDefaults().string(forKey: "minHours") != nil && UserDefaults().string(forKey: "minHours") != "" {
+//            let minimum = Float(UserDefaults().string(forKey: "minHours")!)! * 60
+//            if (minimum) >= (minutesWorked) {
+//                shouldSubstractLunch = false
+//                minutesWorked = Float(minimum)
+//                var tempDate: Date
+//                tempDate = calendar.date(byAdding: .hour, value: Int(minimum/60), to: shift.startingTime!)!
+//
+//                let fakeEndingComponents = calendar.dateComponents([.hour, .minute], from: tempDate)
+//                fakeEndingTime = calendar.date(byAdding: fakeEndingComponents, to: fakeEndingTime)!
+//
+//            } else {
+//                let fakeEndingComponents = calendar.dateComponents([.hour, .minute], from: shift.endingTime!)
+//                fakeEndingTime = calendar.date(byAdding: fakeEndingComponents, to: fakeEndingTime)!
+//            }
+//        } else {
+//            let fakeEndingComponents = calendar.dateComponents([.hour, .minute], from: shift.endingTime!)
+//            fakeEndingTime = calendar.date(byAdding: fakeEndingComponents, to: fakeEndingTime)!
+//        }
+//
+//
+//        var shiftEnd = Date()
+//        var shiftStart1 = Date()
+//        var shiftEnd1 = Date()
+//        let startOfDay = Date(timeIntervalSinceReferenceDate: 0)
+//        var endOfDay = Date(timeIntervalSinceReferenceDate: 0)
+//        var componentsForEndOfDay = DateComponents()
+//        componentsForEndOfDay.hour = 23
+//        componentsForEndOfDay.minute = 59
+//        endOfDay = calendar.date(byAdding: componentsForEndOfDay, to: endOfDay)!
+//
+//        // Loads rules arrays for the next day if the shift extends over 2 days
+//        if fakeEndingTime < fakeStartingTime {
+//            extendsOver2Days = true
+//            let rules2 = OTRulesForDay(day: weekDays[weekDayInt+1])
+//            starts1 = rules2[0] as! [[Any]]
+//            ends1 = rules2[1] as! [[Any]]
+//            rateFields1 = rules2[2] as! [myTextField]
+//        }
+//
+//
+//        let shiftStart = fakeStartingTime
+//        if extendsOver2Days {
+//            shiftEnd = endOfDay
+//            shiftStart1 = startOfDay
+//            shiftEnd1 = fakeEndingTime
+//        } else {
+//            shiftEnd = fakeEndingTime
+//        }
+//
+//        for i in 0..<starts.count {
+//            var intervalStart = Date(timeIntervalSinceReferenceDate: 0) // 2001...
+//            var intervalEnd = Date(timeIntervalSinceReferenceDate: 0) // 2001..
+//
+//            let intervalStartComponents = calendar.dateComponents([.hour, .minute], from: starts[i][1] as! Date)
+//            let intervalEndComponents = calendar.dateComponents([.hour, .minute], from: ends[i][1] as! Date)
+//
+//            intervalStart = calendar.date(byAdding: intervalStartComponents, to: intervalStart)!
+//            intervalEnd = calendar.date(byAdding: intervalEndComponents, to: intervalEnd)!
+//
+//            var endTime: Date
+//            var startTime: Date
+//
+//            if shiftStart > intervalStart {
+//                if intervalEnd > shiftStart {
+//                    startTime = shiftStart
+//
+//                    if intervalEnd >= shiftEnd {
+//                        endTime = shiftEnd
+//                    } else {
+//                        endTime = intervalEnd
+//                    }
+//
+//                    let minutesInThisInterval = calculateMinutes(from: startTime, to: endTime)
+//                    remainingMinutes -= minutesInThisInterval
+//                    salary += minutesInThisInterval * (Float(Int(rateFields[i].text!)!) / 60)
+//                }
+//
+//            } else {
+//                if intervalStart < shiftEnd {
+//                    startTime = intervalStart
+//                    if intervalEnd < shiftEnd {
+//                        endTime = intervalEnd
+//                    } else {
+//                        endTime = shiftEnd
+//
+//                    }
+//
+//                    let minutesInThisInterval = calculateMinutes(from: startTime, to: endTime)
+//                    remainingMinutes -= minutesInThisInterval
+//                    salary += minutesInThisInterval * (Float(Int(rateFields[i].text!)!) / 60)
+//                }
+//            }
+//        }
+//        if extendsOver2Days {
+//            for i in 0..<starts1.count {
+//                var intervalStart = Date(timeIntervalSinceReferenceDate: 0) // 2001...
+//                var intervalEnd = Date(timeIntervalSinceReferenceDate: 0) // 2001..
+//
+//                let intervalStartComponents = calendar.dateComponents([.hour, .minute], from: starts1[i][1] as! Date)
+//                let intervalEndComponents = calendar.dateComponents([.hour, .minute], from: ends1[i][1] as! Date)
+//
+//                intervalStart = calendar.date(byAdding: intervalStartComponents, to: intervalStart)!
+//                intervalEnd = calendar.date(byAdding: intervalEndComponents, to: intervalEnd)!
+//
+//                var endTime: Date
+//                var startTime: Date
+//
+//                if shiftStart1 > intervalStart {
+//                    if intervalEnd > shiftStart1 {
+//                        startTime = shiftStart1
+//
+//                        if intervalEnd >= shiftEnd1 {
+//                            endTime = shiftEnd1
+//                        } else {
+//                            endTime = intervalEnd
+//                        }
+//
+//                        let minutesInThisInterval = calculateMinutes(from: startTime, to: endTime)
+//                        remainingMinutes -= minutesInThisInterval
+//                        salary += minutesInThisInterval * (Float(Int(rateFields1[i].text!)!) / 60)
+//                    }
+//
+//                } else {
+//                    if intervalStart < shiftEnd1 {
+//                        startTime = intervalStart
+//                        if intervalEnd < shiftEnd1 {
+//                            endTime = intervalEnd
+//                        } else {
+//                            endTime = shiftEnd1
+//
+//                        }
+//
+//                        let minutesInThisInterval = calculateMinutes(from: startTime, to: endTime)
+//                        remainingMinutes -= minutesInThisInterval
+//                        salary += minutesInThisInterval * (Float(Int(rateFields1[i].text!)!) / 60)
+//                    }
+//                }
+//            }
+//        }
+//        moneyInOT = salary
+//        salary += remainingMinutes * baseRate
+//        minutesInOT = minutesWorked - remainingMinutes
+//
+//        // Substracts lunchTime with the average money/minute rate
+//        if shift.lunchTime != "" && shouldSubstractLunch {
+//            lunchMinutes = Float(Int(shift.lunchTime!)!)
+//            salary -= (lunchMinutes * (salary/minutesWorked))
+//            moneyInOT -= (lunchMinutes * (salary/minutesWorked))
+//        }
+//
+//        return [Int(roundf(salary)), Int(minutesInOT), Int(moneyInOT) ]
+//    }
+//
+//    func calculateMinutes(from: Date, to: Date) -> Float {
+//        var minutesWorked = 0
+//        var hoursWorked = 0
+//
+//        let startingHour = Int(String(Array(from.description)[11...12]))
+//        let startingMin = Int(String(Array(from.description)[14...15]))
+//        let endingHour = Int(String(Array(to.description)[11...12]))
+//        let endingMin = Int(String(Array(to.description)[14...15]))
+//
+//        if endingHour! - startingHour! > 0 {
+//            hoursWorked = endingHour! - startingHour!
+//        } else if endingHour! - startingHour! < 0 {
+//            hoursWorked = 24 + (endingHour! - startingHour!)
+//        }
+//
+//        if endingMin! - startingMin! < 0 {
+//            hoursWorked -= 1
+//            minutesWorked = 60 - (startingMin! - endingMin!)
+//        } else if endingMin! - startingMin! > 0 {
+//            minutesWorked = endingMin! - startingMin!
+//        }
+//
+//        minutesWorked += (hoursWorked * 60)
+//
+//        return Float(minutesWorked)
+//    }
+//
+//    func shiftsWorked(month: [Shift]) -> String {
+//        return String(periodsSeperatedByYear[indexForChosenPeriod[0]][indexForChosenPeriod[1]].count)
+//    }
+//
+//    func calculateDate(month: [Shift]) -> String {
+//        var date = ""
+//
+//        let firstDate = String(Array(Time.dateToString(date: month[0].date!, withDayName: true))[0..<Time.dateToString(date: month[0].date!, withDayName: true).count-5])
+//        let secondDate = String(Array(Time.dateToString(date: (month.last?.date)!, withDayName: true))[0..<Time.dateToString(date: (month.last?.date)!, withDayName: true).count-5])
+//        date = secondDate + " - " + firstDate
+//
+//        return date
+//    }
+//
+//    func calculateTotalHours(month: [Shift]) -> String {
+//        var returnString = ""
+//        var hoursWorked = 0
+//        var minutesWorked = 0
+//
+//
+//        for day in month {
+//
+//            hoursWorked += calcHours(day: day)[0]
+//            minutesWorked += calcHours(day: day)[1]
+//        }
+//
+//        hoursWorked += Int(minutesWorked/60)
+//        minutesWorked -= Int(minutesWorked/60) * 60
+//        if minutesWorked == 0 {
+//            returnString = String(hoursWorked) + "H"
+//        } else {
+//            returnString = "\(hoursWorked)H \(minutesWorked)M"
+//        }
+//
+//        return returnString
+//    }
+//
+//    func calcHours(day: Shift) -> [Int] {
+//        var hoursWorked = 0
+//        var minutesWorked = 0
+//
+//        let startingHour = Int(String(Array(day.startingTime!.description)[11...12]))
+//        let startingMin = Int(String(Array(day.startingTime!.description)[14...15]))
+//        let endingHour = Int(String(Array(day.endingTime!.description)[11...12]))
+//        let endingMin = Int(String(Array(day.endingTime!.description)[14...15]))
+//
+//        if endingHour! - startingHour! > 0 {
+//            hoursWorked = endingHour! - startingHour!
+//        } else if endingHour! - startingHour! < 0 {
+//            hoursWorked = 24 + (endingHour! - startingHour!)
+//        }
+//
+//        if endingMin! - startingMin! < 0 {
+//            hoursWorked -= 1
+//            minutesWorked = 60 - (startingMin! - endingMin!)
+//        } else if endingMin! - startingMin! > 0 {
+//            minutesWorked = endingMin! - startingMin!
+//        }
+//
+//        minutesWorked += (hoursWorked * 60)
+//        if UserDefaults().string(forKey: "minHours") != nil {
+//            let minimum = Float(UserDefaults().string(forKey: "minHours")!)! * 60
+//            if Int(minimum) > minutesWorked {
+//                minutesWorked = Int(minimum)
+//            }
+//        }
+//        hoursWorked = Int(minutesWorked/60)
+//        minutesWorked -= Int(minutesWorked/60) * 60
+//
+//        return [hoursWorked, minutesWorked]
+//    }
     
     func getShifts(fromCloud: Bool) {
-        var tmp = [Shift]()
+        var tmp = [ShiftModel]()
         
         if fromCloud {
             // do something
         } else {
-            tmp = LocalStorage.getAllShifts()
+            tmp = Period.convertShiftsFromCoreDataToModels(arr: LocalStorage.getAllShifts())
         }
         shifts = Period.organizeShiftsIntoPeriods(ar: &tmp)
     }

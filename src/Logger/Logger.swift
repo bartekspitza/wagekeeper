@@ -91,7 +91,7 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             let context = appDelegate.persistentContainer.viewContext
             
-            let shift = shifts[indexPath.section][indexPath.row]
+            let shift = shifts[indexPath.section][indexPath.row].toCoreData()
             context.delete(shift)
             
             do {
@@ -136,10 +136,10 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MainCell") as! MainCell
         let shiftForRow = shifts[indexPath.section][indexPath.row]
         cell.noteLbl.text = shiftForRow.note
-        cell.dateLbl.text = createDateForCell(Date: shiftForRow.date!)
-        cell.accessoryLbl.text = calcHours(shift: shiftForRow)
-        cell.timeLbl.text = createTime(Date: shiftForRow.startingTime!) + " - " + createTime(Date: shiftForRow.endingTime!)
-        cell.lunchLbl.text = shiftForRow.lunchTime! + "m break"
+        cell.dateLbl.text = createDateForCell(Date: shiftForRow.date)
+        cell.accessoryLbl.text = shiftForRow.durationToString()
+        cell.timeLbl.text = createTime(Date: shiftForRow.startingTime) + " - " + createTime(Date: shiftForRow.endingTime)
+        cell.lunchLbl.text = shiftForRow.lunchTime + "m break"
         
         cell.timeLbl.sizeToFit()
         cell.accessoryLbl.sizeToFit()
@@ -154,7 +154,7 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let text = (createDateForHeader(Date: shifts[section][shifts[section].count-1].date!) + " - " +  createDateForHeader(Date: shifts[section][0].date!)).uppercased()
+        let text = (createDateForHeader(Date: shifts[section][shifts[section].count-1].date) + " - " +  createDateForHeader(Date: shifts[section][0].date)).uppercased()
         let headerView = UIView()
         headerView.backgroundColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
 
@@ -195,12 +195,12 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func getShifts(fromCloud: Bool) {
-        var tmp = [Shift]()
+        var tmp = [ShiftModel]()
         
         if fromCloud {
             // do something
         } else {
-            tmp = LocalStorage.getAllShifts()
+            tmp = Period.convertShiftsFromCoreDataToModels(arr: LocalStorage.getAllShifts())
         }
         shifts = Period.organizeShiftsIntoPeriods(ar: &tmp)
     }

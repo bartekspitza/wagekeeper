@@ -93,7 +93,7 @@ class AddingTable: UITableViewController, UITextFieldDelegate {
         }
     }
     @objc func datePickerChanged(sender: UIDatePicker) {
-        dateField.text = Time.dateToDateString(date: sender.date)
+        dateField.text = Time.dateToString(date: sender.date, withDayName: true)
         if currentTempShift.shiftComplete[1]{
             currentTempShift.date = Time.combineDateWithTime(date: datePicker.date, time: STDate)!
         }
@@ -117,7 +117,7 @@ class AddingTable: UITableViewController, UITextFieldDelegate {
     // Initiates textfields when pressed
     @IBAction func datePressed(_ sender: UITextField) {
         currentField = 0
-        dateField.text = Time.dateToDateString(date: datePicker.date)
+        dateField.text = Time.dateToString(date: datePicker.date, withDayName: true)
         datePicker.addTarget(self, action: #selector(datePickerChanged(sender:)), for: .valueChanged)
         currentTempShift.shiftComplete[0] = true
         currentTempShift.date = datePicker.date

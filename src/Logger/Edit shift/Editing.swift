@@ -39,11 +39,11 @@ class Editing: UIViewController {
         shifts[shiftToEdit[0]][shiftToEdit[1]].endingTime = currentTempShift.endingTime
         shifts[shiftToEdit[0]][shiftToEdit[1]].lunchTime = currentTempShift.lunchTime
         shifts[shiftToEdit[0]][shiftToEdit[1]].note = currentTempShift.note
-        shifts[shiftToEdit[0]][shiftToEdit[1]].newMonth = currentTempShift.newPeriod
+        shifts[shiftToEdit[0]][shiftToEdit[1]].beginsNewPeriod = currentTempShift.newPeriod
         
         for section in shifts {
             for shift in section {
-                context.insert(shift)
+                context.insert(shift.toCoreData())
             }
         }
         

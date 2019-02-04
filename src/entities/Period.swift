@@ -9,19 +9,108 @@
 import Foundation
 
 class Period {
-    var date = ""
-    var salary = ""
-    var grossSalary = ""
-    var totalHours = ""
-    var shiftsWorked = ""
-    var avgShift = ""
-    var currency = ""
+    var shifts = [ShiftModel]()
+    var duration = ""
+    var salary = 0
+    var grossSalary: Int = 0
+    var amountHoursMinutesWorked: [Int] = [0,0]
+    var shiftsWorked: Int = 0
+    var daysWorked: Int = 0
+    var minutesInOvertime: Int = 0
+    var moneyFromOvertime: Int = 0
+    var avgShift: [Int] = [0,0]
     
-    static func organizeShiftsIntoPeriods(ar: inout [Shift]) -> [[Shift]]{
-        ar.sort(by: {$0.date! > $1.date!})
+    init(month: [ShiftModel]) {
+        self.shifts = month
         
-        var tempPeriod = [Shift]()
-        var organizedPeriods = [[Shift]]()
+        let salaryInfo = self.salaryInfo()
+        
+        self.grossSalary = salaryInfo[0]
+        self.minutesInOvertime = salaryInfo[1]
+        self.moneyFromOvertime = salaryInfo[2]
+        self.daysWorked = salaryInfo[3]
+        self.salary = self.netSalary()
+        self.duration = StringFormatter.durationToString(month: self.shifts)
+        self.amountHoursMinutesWorked = self.calculateHoursMinutesWorked()
+        self.avgShift = self.calculateAvgShiftLength()
+        self.shiftsWorked = self.shifts.count
+    }
+    
+    func netSalary() -> Int {
+        return Int(Float(self.grossSalary) * UserSettings.taxRate())
+    }
+    
+    func calculateAvgShiftLength() -> [Int] {
+        var hoursWorked = self.amountHoursMinutesWorked[0]
+        var minutesWorked = self.amountHoursMinutesWorked[1]
+        
+        minutesWorked += hoursWorked * 60
+        
+        minutesWorked /= self.shifts.count
+        
+        hoursWorked = Int(minutesWorked/60)
+        minutesWorked -= Int(minutesWorked/60) * 60
+        
+        return [hoursWorked, minutesWorked]
+    }
+    
+    func calculateHoursMinutesWorked() -> [Int] {
+        var hoursWorked = 0
+        var minutesWorked = 0
+        
+        for day in self.shifts {
+            let tmp = day.calcHours()
+            hoursWorked += tmp[0]
+            minutesWorked += tmp[1]
+        }
+        
+        hoursWorked += Int(minutesWorked/60)
+        minutesWorked -= Int(minutesWorked/60) * 60
+        
+        
+        return [hoursWorked, minutesWorked]
+    }
+    
+    func salaryInfo() -> [Int] {
+        var grossSalary = 0
+        var minutesInOT = 0
+        var moneyInOT = 0
+        var daysWorked = 0
+        
+        // Computes month gross salary
+        var prevDay = 100
+        for shift in self.shifts {
+            let calendar = Calendar.current
+            let currentDayComp = calendar.dateComponents([.day], from: shift.date)
+            let currentDay = currentDayComp.day!
+            
+            if currentDay != prevDay {
+                daysWorked += 1
+            }
+            let shiftSalaryInfo = shift.salary()
+            grossSalary += shiftSalaryInfo[0]
+            minutesInOT += shiftSalaryInfo[1]
+            moneyInOT += shiftSalaryInfo[2]
+            let prevDayComp = calendar.dateComponents([.day], from: shift.date)
+            prevDay = prevDayComp.day!
+        }
+        
+        return [grossSalary, minutesInOT, moneyInOT, daysWorked]
+    }
+    
+    static func convertShiftsFromCoreDataToModels(arr: [Shift]) -> [ShiftModel] {
+        var ar = [ShiftModel]()
+        for s in arr {
+            ar.append(ShiftModel(date: s.date!, endingTime: s.startingTime!, startingTime: s.endingTime!, lunchTime: s.lunchTime!, note: s.note!, newPeriod: s.newMonth))
+        }
+        return ar
+    }
+    
+    static func organizeShiftsIntoPeriods(ar: inout [ShiftModel]) -> [[ShiftModel]]{
+        ar.sort(by: {$0.date > $1.date})
+        
+        var tempPeriod = [ShiftModel]()
+        var organizedPeriods = [[ShiftModel]]()
     
         if UserDefaults().bool(forKey: "manuallyNewMonth") {
             for i in 0..<ar.count {
@@ -30,7 +119,7 @@ class Period {
                     tempPeriod.append(ar[i])
                     organizedPeriods.append(tempPeriod)
                     
-                } else if ar[i].newMonth == Int16(1) {
+                } else if ar[i].beginsNewPeriod == Int16(1) {
                     tempPeriod.append(ar[i])
                     organizedPeriods.append(tempPeriod)
                     tempPeriod.removeAll()
@@ -46,9 +135,9 @@ class Period {
                 let seperator = Int(UserDefaults().string(forKey: "newMonth")!)!
                 
                 for shift in ar {
-                    let year = Int(String((Array(shift.date!.description))[0..<4]))!
-                    let month = Int(String((Array(shift.date!.description))[5..<7]))!
-                    let day = Int(String((Array(shift.date!.description))[8..<10]))!
+                    let year = Int(String((Array(shift.date.description))[0..<4]))!
+                    let month = Int(String((Array(shift.date.description))[5..<7]))!
+                    let day = Int(String((Array(shift.date.description))[8..<10]))!
                     
                     
                     if year >= compare[0] && ((month == compare[1] && day >= seperator) || (month == compare[1]+1 && day < seperator) || (month == 1 && compare[1] == 12 && day < seperator))  {
@@ -71,5 +160,4 @@ class Period {
         }
     return organizedPeriods
     }
-    
 }

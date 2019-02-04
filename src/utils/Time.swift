@@ -13,14 +13,54 @@ class Time {
     static let formatter = DateFormatter()
     static let calendar = Calendar.current
     
-    static func dateToDateString(date: Date) -> String {
+    static func calculateMinutes(from: Date, to: Date) -> Float {
+        var minutesWorked = 0
+        var hoursWorked = 0
+        
+        let startingHour = Int(String(Array(from.description)[11...12]))
+        let startingMin = Int(String(Array(from.description)[14...15]))
+        let endingHour = Int(String(Array(to.description)[11...12]))
+        let endingMin = Int(String(Array(to.description)[14...15]))
+        
+        if endingHour! - startingHour! > 0 {
+            hoursWorked = endingHour! - startingHour!
+        } else if endingHour! - startingHour! < 0 {
+            hoursWorked = 24 + (endingHour! - startingHour!)
+        }
+        
+        if endingMin! - startingMin! < 0 {
+            hoursWorked -= 1
+            minutesWorked = 60 - (startingMin! - endingMin!)
+        } else if endingMin! - startingMin! > 0 {
+            minutesWorked = endingMin! - startingMin!
+        }
+        
+        minutesWorked += (hoursWorked * 60)
+        
+        return Float(minutesWorked)
+    }
+    
+    static func minutesToHoursAndMinutes(minutes: Int) -> [Int] {
+        var minutesWorked = minutes
+        
+        let hoursWorked = Int(minutes/60)
+        minutesWorked -= Int(minutes/60) * 60
+        
+        return [hoursWorked, minutesWorked]
+    }
+    
+    static func dateToString(date: Date, withDayName: Bool) -> String {
         formatter.dateStyle = .medium
         formatter.timeStyle = .none
         
         let dateString = formatter.string(from: date)
-        let dayName = days[calendar.component(.weekday, from: date)-1]
+
+        if withDayName {
+            let dayName = days[calendar.component(.weekday, from: date)-1]
+            return dayName + ", " + dateString.replacingOccurrences(of: ",", with: "")
+        }
         
-        return dayName + ", " + dateString.replacingOccurrences(of: ",", with: "")
+        return dateString.replacingOccurrences(of: ",", with: "")
     }
     
     static func dateToTimeString(date: Date) -> String {

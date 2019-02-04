@@ -52,7 +52,7 @@ class EditingTable: UITableViewController, UITextFieldDelegate {
     
     // Textfield functions triggered when change in that textfield occurs
     @objc func datePickerChanged(sender: UIDatePicker) {
-        dateField.text = Time.dateToDateString(date: sender.date)
+        dateField.text = Time.dateToString(date: sender.date, withDayName: true)
         currentTempShift.date = Time.combineDateWithTime(date: datePicker.date, time: STDate)!
     }
     @objc func timePickerChanged(sender: UIDatePicker) {
@@ -185,14 +185,14 @@ class EditingTable: UITableViewController, UITextFieldDelegate {
     }
     
     func initiateFieldsToMatchShift() {
-        dateField.text = Time.dateToDateString(date: shift.date!)
-        STField.text = Time.dateToTimeString(date: shift.startingTime!)
-        ETField.text = Time.dateToTimeString(date: shift.endingTime!)
+        dateField.text = Time.dateToString(date: shift.date, withDayName: true)
+        STField.text = Time.dateToTimeString(date: shift.startingTime)
+        ETField.text = Time.dateToTimeString(date: shift.endingTime)
         lunchField.text = shift.lunchTime
         noteField.text = shift.note
-        datePicker.date = shift.date!
-        STDate = shift.startingTime!
-        ETDate = shift.endingTime!
+        datePicker.date = shift.date
+        STDate = shift.startingTime
+        ETDate = shift.endingTime
         
         currentTempShift.date = Time.combineDateWithTime(date: datePicker.date, time: STDate)!
         currentTempShift.startingTime = STDate
@@ -204,7 +204,7 @@ class EditingTable: UITableViewController, UITextFieldDelegate {
     }
     
     func switchState() {
-        if shift.newMonth == Int16(1) {
+        if shift.beginsNewPeriod == Int16(1) {
             mySwitch.isOn = true
             currentTempShift.newPeriod = Int16(1)
         } else {

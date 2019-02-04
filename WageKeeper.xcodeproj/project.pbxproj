@@ -10,6 +10,10 @@
 		980D1DD01FA3A4770091E06D /* SettingsTableNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980D1DCF1FA3A4770091E06D /* SettingsTableNav.swift */; };
 		9820A5551FBCBF6B00EAEE6A /* MainNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9820A5541FBCBF6B00EAEE6A /* MainNav.swift */; };
 		982F934B22087796005D9C99 /* LocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934A22087796005D9C99 /* LocalStorage.swift */; };
+		982F934E220884DA005D9C99 /* ShiftModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934D220884DA005D9C99 /* ShiftModel.swift */; };
+		982F93502208B103005D9C99 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934F2208B103005D9C99 /* UserSettings.swift */; };
+		982F93522208BBCC005D9C99 /* Salary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F93512208BBCC005D9C99 /* Salary.swift */; };
+		982F93542208C386005D9C99 /* StringFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F93532208C386005D9C99 /* StringFormatter.swift */; };
 		9830C1FD220793CB0023B582 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9830C1FB220793CB0023B582 /* LaunchScreen.storyboard */; };
 		9830C1FE220793CB0023B582 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9830C1FC220793CB0023B582 /* Main.storyboard */; };
 		9830C2012207A0EF0023B582 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9830C2002207A0EF0023B582 /* Period.swift */; };
@@ -39,6 +43,10 @@
 		980D1DCF1FA3A4770091E06D /* SettingsTableNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableNav.swift; sourceTree = "<group>"; };
 		9820A5541FBCBF6B00EAEE6A /* MainNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNav.swift; sourceTree = "<group>"; };
 		982F934A22087796005D9C99 /* LocalStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorage.swift; sourceTree = "<group>"; };
+		982F934D220884DA005D9C99 /* ShiftModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftModel.swift; sourceTree = "<group>"; };
+		982F934F2208B103005D9C99 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
+		982F93512208BBCC005D9C99 /* Salary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Salary.swift; sourceTree = "<group>"; };
+		982F93532208C386005D9C99 /* StringFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringFormatter.swift; sourceTree = "<group>"; };
 		9830C1FB220793CB0023B582 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9830C1FC220793CB0023B582 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		9830C2002207A0EF0023B582 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
@@ -91,6 +99,9 @@
 			isa = PBXGroup;
 			children = (
 				9830C2002207A0EF0023B582 /* Period.swift */,
+				982F934D220884DA005D9C99 /* ShiftModel.swift */,
+				982F934F2208B103005D9C99 /* UserSettings.swift */,
+				982F93512208BBCC005D9C99 /* Salary.swift */,
 			);
 			path = entities;
 			sourceTree = "<group>";
@@ -104,6 +115,7 @@
 				9830C2052207B3AD0023B582 /* Time.swift */,
 				9858E0EB220866D7007600C3 /* Version.swift */,
 				982F934A22087796005D9C99 /* LocalStorage.swift */,
+				982F93532208C386005D9C99 /* StringFormatter.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -282,10 +294,14 @@
 				98E2EF9A1FB4D657006C3F96 /* CountingLabel.swift in Sources */,
 				9864BB0C1FD4700E005DB5F2 /* Calculator.swift in Sources */,
 				9830C2012207A0EF0023B582 /* Period.swift in Sources */,
+				982F934E220884DA005D9C99 /* ShiftModel.swift in Sources */,
 				9820A5551FBCBF6B00EAEE6A /* MainNav.swift in Sources */,
 				985CAA3A1FA8824C00AE6993 /* Editing.swift in Sources */,
 				98E284E31FC70CC1004FD2D2 /* TabBarController.swift in Sources */,
+				982F93542208C386005D9C99 /* StringFormatter.swift in Sources */,
 				989392DC1FCEF322002475EA /* Extensions.swift in Sources */,
+				982F93522208BBCC005D9C99 /* Salary.swift in Sources */,
+				982F93502208B103005D9C99 /* UserSettings.swift in Sources */,
 				98760E601FA6488A000E1A28 /* AddingTable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
