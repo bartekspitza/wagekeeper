@@ -16,8 +16,6 @@ class MainCell: UITableViewCell {
     @IBOutlet weak var timeLbl: UILabel!
     @IBOutlet weak var lunchLbl: UILabel!
     
-    var isDetailed = false
-    
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -27,7 +25,4 @@ class MainCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
-    
-
 }

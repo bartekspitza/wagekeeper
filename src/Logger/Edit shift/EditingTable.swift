@@ -29,25 +29,18 @@ class EditingTable: UITableViewController, UITextFieldDelegate {
     var STDate = Date()
     var ETDate = Date()
     let shift = shifts[shiftToEdit[0]][shiftToEdit[1]]
-    let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     var currentField = 0
     
-    // Toolbar
     let toolbar = UIToolbar()
-    let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
-    let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: self, action: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.noteField.delegate = self
         self.lunchField.delegate = self
         
-        createDatePicker()
-        createTimePicker()
-        initiateFieldsAndPickers() //Initiates all fields and date from the chosen shift, and sets the currentTempShift accordingly
+        createPickers()
+        initiateFieldsToMatchShift()
         createLunchAndNoteField()
-        switchState() // Changes the switch to on or off depending if that shift starts a new month
-        
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -59,18 +52,18 @@ class EditingTable: UITableViewController, UITextFieldDelegate {
     
     // Textfield functions triggered when change in that textfield occurs
     @objc func datePickerChanged(sender: UIDatePicker) {
-        dateField.text = createDateString(Date: sender.date)
-        currentTempShift.date = combineDateWithTime(date: datePicker.date, time: STDate)!
+        dateField.text = Time.dateToDateString(date: sender.date)
+        currentTempShift.date = Time.combineDateWithTime(date: datePicker.date, time: STDate)!
     }
     @objc func timePickerChanged(sender: UIDatePicker) {
         if startFieldIsFocused {
             STDate = timePicker.date
-            STField.text = createTimeString(Date: STDate)
+            STField.text = Time.dateToTimeString(date: STDate)
             currentTempShift.startingTime = STDate
-            currentTempShift.date = combineDateWithTime(date: datePicker.date, time: STDate)!
+            currentTempShift.date = Time.combineDateWithTime(date: datePicker.date, time: STDate)!
         } else {
             ETDate = timePicker.date
-            ETField.text = createTimeString(Date: ETDate)
+            ETField.text = Time.dateToTimeString(date: ETDate)
             currentTempShift.endingTime = ETDate
         }
     }
@@ -122,39 +115,7 @@ class EditingTable: UITableViewController, UITextFieldDelegate {
         currentTempShift.lunchTime = ""
     }
     
-    // Date functions
-    func createDateString(Date: Date) -> String {
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .none
-        
-        let dateString = formatter.string(from: Date)
-        let dayName = days[calendar.component(.weekday, from: Date)-1]
-        
-        return dayName + ", " + dateString.replacingOccurrences(of: ",", with: "")
-    }
-    func createTimeString(Date: Date) -> String {
-        formatter.dateStyle = .none
-        formatter.timeStyle = .short
-        
-        let timeString = formatter.string(from: Date)
-        return timeString
-    }
-    func combineDateWithTime(date: Date, time: Date) -> Date? {
-        
-        let dateComponents = calendar.dateComponents([.year, .month, .day], from: date)
-        let timeComponents = calendar.dateComponents([.hour, .minute], from: time)
-        
-        var mergedComponments = DateComponents()
-        mergedComponments.year = dateComponents.year!
-        mergedComponments.month = dateComponents.month!
-        mergedComponments.day = dateComponents.day!
-        mergedComponments.hour = timeComponents.hour!
-        mergedComponments.minute = timeComponents.minute!
-        
-        return calendar.date(from: mergedComponments)
-    }
-    
-    @objc func prevField(sender: UIBarButtonItem) {
+    @objc func previousField(sender: UIBarButtonItem) {
         if currentField == 1 {
             dateField.becomeFirstResponder()
         } else if currentField == 2 {
@@ -177,17 +138,15 @@ class EditingTable: UITableViewController, UITextFieldDelegate {
         }
     }
     
-    // Create textfield pickers (Called in viewDidLoad)
-    func createDatePicker() {
+    func createPickers() {
+        timePicker.addTarget(self, action: #selector(timePickerChanged), for: UIControl.Event.valueChanged)
+        timePicker.datePickerMode = .time
+        
         dateField.inputAccessoryView = toolbar
         dateField.inputView = datePicker
         datePicker.datePickerMode = .date
         dateField.tintColor = UIColor.clear
         datePicker.addTarget(self, action: #selector(datePickerChanged(sender:)), for: .valueChanged)
-    }
-    func createTimePicker() {
-        timePicker.addTarget(self, action: #selector(timePickerChanged), for: UIControl.Event.valueChanged)
-        timePicker.datePickerMode = .time
         
         ETField.inputAccessoryView = toolbar
         STField.inputAccessoryView = toolbar
@@ -204,12 +163,14 @@ class EditingTable: UITableViewController, UITextFieldDelegate {
         let size = 45
         
         let downBtn = UIBarButtonItem(image: imageDown?.imageResize(sizeChange: CGSize(width: size, height: size)), style: UIBarButtonItem.Style.done, target: self, action: #selector(nextField(sender:)))
-        let upBtn = UIBarButtonItem(image: imageUp?.imageResize(sizeChange: CGSize(width: size, height: size)), style: UIBarButtonItem.Style.done, target: self, action: #selector(prevField(sender:)))
+        let upBtn = UIBarButtonItem(image: imageUp?.imageResize(sizeChange: CGSize(width: size, height: size)), style: UIBarButtonItem.Style.done, target: self, action: #selector(previousField(sender:)))
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
         
         upBtn.tintColor = navColor
         downBtn.tintColor = navColor
         doneButton.tintColor = navColor
         
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: self, action: nil)
         toolbar.setItems([upBtn, downBtn, flexSpace, doneButton], animated: false)
         toolbar.sizeToFit()
         lunchField.inputAccessoryView = toolbar
@@ -222,10 +183,40 @@ class EditingTable: UITableViewController, UITextFieldDelegate {
         lunchField.tintColor = navColor
         noteField.tintColor = navColor
     }
+    
+    func initiateFieldsToMatchShift() {
+        dateField.text = Time.dateToDateString(date: shift.date!)
+        STField.text = Time.dateToTimeString(date: shift.startingTime!)
+        ETField.text = Time.dateToTimeString(date: shift.endingTime!)
+        lunchField.text = shift.lunchTime
+        noteField.text = shift.note
+        datePicker.date = shift.date!
+        STDate = shift.startingTime!
+        ETDate = shift.endingTime!
+        
+        currentTempShift.date = Time.combineDateWithTime(date: datePicker.date, time: STDate)!
+        currentTempShift.startingTime = STDate
+        currentTempShift.endingTime = ETDate
+        currentTempShift.note = noteField.text!
+        currentTempShift.lunchTime = lunchField.text!
+        
+        switchState()
+    }
+    
+    func switchState() {
+        if shift.newMonth == Int16(1) {
+            mySwitch.isOn = true
+            currentTempShift.newPeriod = Int16(1)
+        } else {
+            mySwitch.isOn = false
+            currentTempShift.newPeriod = Int16(0)
+        }
+        mySwitch.onTintColor = navColor
+    }
+    
     @objc func donePressed() {
         self.view.endEditing(true)
     }
-    
     
     // Tableview functions
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -255,32 +246,5 @@ class EditingTable: UITableViewController, UITextFieldDelegate {
         } else {
             return 5
         }
-    }
-    func initiateFieldsAndPickers() {
-        dateField.text = createDateString(Date: shift.date!)
-        STField.text = createTimeString(Date: shift.startingTime!)
-        ETField.text = createTimeString(Date: shift.endingTime!)
-        lunchField.text = shift.lunchTime
-        noteField.text = shift.note
-        datePicker.date = shift.date!
-        STDate = shift.startingTime!
-        ETDate = shift.endingTime!
-        
-        currentTempShift.date = combineDateWithTime(date: datePicker.date, time: STDate)!
-        currentTempShift.startingTime = STDate
-        currentTempShift.endingTime = ETDate
-        currentTempShift.note = noteField.text!
-        currentTempShift.lunchTime = lunchField.text!
-    }
-    
-    func switchState() {
-        if shift.newMonth == Int16(1) {
-            mySwitch.isOn = true
-            currentTempShift.newPeriod = Int16(1)
-        } else {
-            mySwitch.isOn = false
-            currentTempShift.newPeriod = Int16(0)
-        }
-        mySwitch.onTintColor = navColor
     }
 }

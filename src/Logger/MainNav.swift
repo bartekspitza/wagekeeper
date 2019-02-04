@@ -7,7 +7,7 @@
 //
 
 import UIKit
-var navBarHeight: CGFloat?
+
 class MainNav: UINavigationController {
 
     override func viewDidLoad() {
@@ -15,7 +15,6 @@ class MainNav: UINavigationController {
         self.setNeedsStatusBarAppearanceUpdate()
         // Do any additional setup after loading the view.
 
-        navBarHeight = self.navigationBar.frame.height
         self.navigationBar.barTintColor = navColor
     }
 

@@ -11,8 +11,7 @@ import MessageUI
 import StoreKit
 
 class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, MFMailComposeViewControllerDelegate {
-
-    // IBOutlets
+    
     @IBOutlet var daysCells: [UITableViewCell]!
     @IBOutlet weak var minHoursField: UITextField!
     @IBOutlet weak var noteField: UITextField!

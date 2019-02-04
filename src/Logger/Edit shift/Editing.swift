@@ -9,11 +9,10 @@
 import UIKit
 import CoreData
 
-//var shifts = [[Shift]]()
-
 class Editing: UIViewController {
 
     @IBOutlet weak var saveBtn: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.

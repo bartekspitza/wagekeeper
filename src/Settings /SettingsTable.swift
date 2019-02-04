@@ -10,9 +10,6 @@ import UIKit
 
 class SettingsTable: UITableViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
-    let titles = ["TAX", "WAGE", "GENERAL"]
-    
-    // Other
     let currencyPicker = UIPickerView()
     let taxPicker = UIPickerView()
     let currencies = ["SEK", "EUR", "GPD", "NOR", "USD"]
@@ -35,10 +32,7 @@ class SettingsTable: UITableViewController, UITextFieldDelegate, UIPickerViewDel
     @IBOutlet weak var wageRateField: UITextField!
     @IBOutlet weak var currencyField: UITextField!
     
-    // Toolbar
     let toolbar = UIToolbar()
-    let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
-    let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: self, action: nil)
     
     var currentField = 0
     @IBOutlet var myTableView: UITableView!
@@ -123,7 +117,7 @@ class SettingsTable: UITableViewController, UITextFieldDelegate, UIPickerViewDel
             tableView.bounds.size.width, height: tableView.bounds.size.height))
         headerLabel.font = UIFont.boldSystemFont(ofSize: 10)
         headerLabel.textColor = textColor
-        headerLabel.text = titles[section]
+        headerLabel.text = ["TAX", "WAGE", "GENERAL"][section]
         headerLabel.sizeToFit()
         headerLabel.textAlignment = .center
         headerView.addSubview(headerLabel)
@@ -264,11 +258,13 @@ class SettingsTable: UITableViewController, UITextFieldDelegate, UIPickerViewDel
         
         let downBtn = UIBarButtonItem(image: imageDown?.imageResize(sizeChange: CGSize(width: size, height: size)), style: UIBarButtonItem.Style.done, target: self, action: #selector(nextField(sender:)))
         let upBtn = UIBarButtonItem(image: imageUp?.imageResize(sizeChange: CGSize(width: size, height: size)), style: UIBarButtonItem.Style.done, target: self, action: #selector(prevField(sender:)))
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
         
         upBtn.tintColor = navColor
         downBtn.tintColor = navColor
         doneButton.tintColor = navColor
         
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: self, action: nil)
         toolbar.setItems([upBtn, downBtn, flexSpace, doneButton], animated: false)
         toolbar.sizeToFit()
 

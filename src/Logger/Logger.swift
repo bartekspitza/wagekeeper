@@ -12,13 +12,10 @@ import CoreData
 var shiftToEdit = [0,0]
 
 class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
- 
-    // Views
     @IBOutlet weak var myTableView: UITableView!
     var cells = [UITableViewCell]()
     let instructionsLabel = UILabel()
     
-    // Others
     let formatter = DateFormatter()
     
     override func viewDidLoad() {

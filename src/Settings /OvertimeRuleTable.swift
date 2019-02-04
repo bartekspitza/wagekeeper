@@ -15,26 +15,19 @@ var day = ""
 
 class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
     
-
     let timePicker = UIDatePicker()
     var sectionFlag = 0
     var startFocused = Bool()
     
-    // Arrays
     var rateFields = [myTextField]()
     var ends = [[Any]]()
     var starts = [[Any]]()
-    var leftBtnView = UIView()
     
-    // Other variables
     @IBOutlet var myTableView: UITableView!
     var isSectionComplete = [false, false]
     var startHasNotRecievedST = [Bool]()
     
-    // Toolbar
     let toolbar = UIToolbar()
-    let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
-    let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: self, action: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -128,6 +121,9 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
     }
     
     func configureToolbar() {
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: self, action: nil)
+        
         toolbar.sizeToFit()
         toolbar.setItems([flexSpace, doneButton], animated: false)
         doneButton.tintColor = navColor

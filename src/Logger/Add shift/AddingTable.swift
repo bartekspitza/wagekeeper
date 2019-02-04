@@ -44,7 +44,6 @@ class AddingTable: UITableViewController, UITextFieldDelegate {
     var startFieldIsFocused = Bool()
     var STDate = Date()
     var ETDate = Date()
-    let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     
     var currentField = 0
     
@@ -82,21 +81,21 @@ class AddingTable: UITableViewController, UITextFieldDelegate {
     @objc func timePickerChanged(sender: UIDatePicker) {
         if startFieldIsFocused {
             STDate = timePicker.date
-            STField.text = createTimeString(Date: STDate)
+            STField.text = Time.dateToTimeString(date: STDate)
             currentTempShift.startingTime = STDate
             if currentTempShift.shiftComplete[0] {
-                currentTempShift.date = combineDateWithTime(date: datePicker.date, time: STDate)!
+                currentTempShift.date = Time.combineDateWithTime(date: datePicker.date, time: STDate)!
             }
         } else {
             ETDate = timePicker.date
-            ETField.text = createTimeString(Date: ETDate)
+            ETField.text = Time.dateToTimeString(date: ETDate)
             currentTempShift.endingTime = ETDate
         }
     }
     @objc func datePickerChanged(sender: UIDatePicker) {
-        dateField.text = createDateString(Date: sender.date)
+        dateField.text = Time.dateToDateString(date: sender.date)
         if currentTempShift.shiftComplete[1]{
-            currentTempShift.date = combineDateWithTime(date: datePicker.date, time: STDate)!
+            currentTempShift.date = Time.combineDateWithTime(date: datePicker.date, time: STDate)!
         }
     }
     @objc func lunchFieldChanged(sender: UITextField) {
@@ -118,34 +117,34 @@ class AddingTable: UITableViewController, UITextFieldDelegate {
     // Initiates textfields when pressed
     @IBAction func datePressed(_ sender: UITextField) {
         currentField = 0
-        dateField.text = createDateString(Date: datePicker.date)
+        dateField.text = Time.dateToDateString(date: datePicker.date)
         datePicker.addTarget(self, action: #selector(datePickerChanged(sender:)), for: .valueChanged)
         currentTempShift.shiftComplete[0] = true
         currentTempShift.date = datePicker.date
         if currentTempShift.shiftComplete[1]{
-            currentTempShift.date = combineDateWithTime(date: datePicker.date, time: STDate)!
+            currentTempShift.date = Time.combineDateWithTime(date: datePicker.date, time: STDate)!
         } else if UserDefaults().value(forKey: "defaultST") != nil {
-            currentTempShift.date = combineDateWithTime(date: datePicker.date, time: STDate)!
+            currentTempShift.date = Time.combineDateWithTime(date: datePicker.date, time: STDate)!
         }
         animateToBlack()
     }
     @IBAction func STPressed(_ sender: UITextField) {
         currentField = 1
         startFieldIsFocused = true
-        STField.text = createTimeString(Date: STDate)
+        STField.text = Time.dateToTimeString(date: STDate)
         timePicker.date = STDate
         
         currentTempShift.startingTime = STDate
         currentTempShift.shiftComplete[1] = true
         animateToBlack()
         if currentTempShift.shiftComplete[0]{
-            currentTempShift.date = combineDateWithTime(date: datePicker.date, time: STDate)!
+            currentTempShift.date = Time.combineDateWithTime(date: datePicker.date, time: STDate)!
         }
     }
     @IBAction func ETPressed(_ sender: UITextField) {
         currentField = 2
         startFieldIsFocused = false
-        ETField.text = createTimeString(Date: ETDate)
+        ETField.text = Time.dateToTimeString(date: ETDate)
         timePicker.date = ETDate
         
         currentTempShift.endingTime = ETDate
@@ -167,38 +166,6 @@ class AddingTable: UITableViewController, UITextFieldDelegate {
     @IBAction func lunchPressed(_ sender: UITextField) {
         currentField = 3
         currentTempShift.lunchTime = ""
-    }
-    
-    // Date functions
-    func createDateString(Date: Date) -> String {
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .none
-        
-        let dateString = formatter.string(from: Date)
-        let dayName = days[calendar.component(.weekday, from: Date)-1]
-        
-        return dayName + ", " + dateString.replacingOccurrences(of: ",", with: "")
-    }
-    func createTimeString(Date: Date) -> String {
-        formatter.dateStyle = .none
-        formatter.timeStyle = .short
-        
-        let timeString = formatter.string(from: Date)
-        
-        return timeString
-    }
-    func combineDateWithTime(date: Date, time: Date) -> Date? {
-        let dateComponents = calendar.dateComponents([.year, .month, .day], from: date)
-        let timeComponents = calendar.dateComponents([.hour, .minute], from: time)
-        
-        var mergedComponments = DateComponents()
-        mergedComponments.year = dateComponents.year!
-        mergedComponments.month = dateComponents.month!
-        mergedComponments.day = dateComponents.day!
-        mergedComponments.hour = timeComponents.hour!
-        mergedComponments.minute = timeComponents.minute!
-        
-        return calendar.date(from: mergedComponments)
     }
     
     @objc func prevField(sender: UIBarButtonItem) {
@@ -287,14 +254,14 @@ class AddingTable: UITableViewController, UITextFieldDelegate {
         if UserDefaults().value(forKey: "defaultST") != nil {
             STDate = UserDefaults().value(forKey: "defaultST") as! Date
             currentTempShift.startingTime = STDate
-            STField.text = createTimeString(Date: STDate)
+            STField.text = Time.dateToTimeString(date: STDate)
             STLbl.textColor = UIColor.black
         }
         // Ending Time
         if UserDefaults().value(forKey: "defaultET") != nil {
             ETDate = UserDefaults().value(forKey: "defaultET") as! Date
             currentTempShift.endingTime = ETDate
-            ETField.text = createTimeString(Date: ETDate)
+            ETField.text = Time.dateToTimeString(date: ETDate)
             ETLbl.textColor = UIColor.black
         }
         // Note
