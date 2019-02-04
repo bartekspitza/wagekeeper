@@ -1,4 +1,3 @@
-// BUILD 1.1
 //  LaunchCalc.swift
 //  SalaryCalc
 //
@@ -8,9 +7,8 @@
 
 import UIKit
 import Foundation
-var calcIndex = [0,0]
 
-class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource, UIApplicationDelegate {
     
     var totalHoursLbl = CountingLabel()
     var totalMinutesLbl = CountingLabel()
@@ -18,78 +16,43 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var btn: UIButton!
     @IBOutlet weak var grossLbl: CountingLabel!
     @IBOutlet weak var salaryLbl: CountingLabel!
-    
-    var stats = [String]()
-    
     var seperatorLineHorizontal = UIView()
     var upperLineOfArrowButton = UIView()
     var statsTable = UITableView()
     var menuTable = UITableView()
     
-    var appStarted = true
-    var menuisShowing = false
-    
+    var stats = [String]()
     var period = Period()
+    var menuisShowing = false
+    var indexForChosenPeriod = [0,0]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initiateUserDefaultsForNewUser()
+        
+        configureNewUser()
+        getShifts()
         makeDesign()
         makeMenuBtn()
         designLabels()
         addUpperLineOfArrowButtonSection()
-        grossLbl.text = "PRE-TAX: 0"
-        if appStarted {
-            getShifts()
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         period = Period()
-        appStarted = false
         stats.removeAll()
+        labelsForNoShifts()
+        
         fillTable()
-        insertExampleShift()
         makePeriod()
         fillLabelsWithStats()
         startCountingLabels()
         designLabels()
         configureStatsTable()
         configureMenuTable()
-        labelsForNoShifts()
+        
         menuTable.reloadData()
         statsTable.reloadData()
         centerTotalTimeLabels()
-        
-    }
-    
-    func insertExampleShift() {
-        if !tableList.isEmpty && UserDefaults().value(forKey: "FirstTime") == nil {
-            UserDefaults().set("Visited", forKey: "FirstTime")
-        }
-        
-        if UserDefaults().value(forKey: "FirstTime") == nil {
-            UserDefaults().set("Visited", forKey: "FirstTime")
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            let context = appDelegate.persistentContainer.viewContext
-            
-            let shift = Shift(context: context)
-            shift.date = Date()
-            shift.endingTime = createDefaultET()
-            shift.startingTime = createDefaultST()
-            shift.lunchTime = "60"
-            shift.note = "Example (Delete this)"
-            shift.newMonth = Int16(0)
-            
-            shifts.append([shift])
-            
-            do {
-                try context.save()
-            } catch {
-                print(error)
-            }
-            fillTable()
-        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -99,7 +62,53 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
             menuTable.frame = CGRect(x: 0, y: (btn.center.y + btn.frame.height/2), width: self.view.frame.width, height: 0)
             menuisShowing = false
         }
-        calcIndex = [0, 0]
+        indexForChosenPeriod = [0, 0]
+    }
+    
+    func configureNewUser() {
+        if !tableList.isEmpty && UserDefaults().value(forKey: "FirstTime") == nil {
+            UserDefaults().set("Visited", forKey: "FirstTime")
+        }
+        
+        if UserDefaults().value(forKey: "FirstTime") == nil {
+            insertExampleShift()
+            initiateUserDefualts()
+            UserDefaults().set("Visited", forKey: "FirstTime")
+        }
+    }
+    
+    func insertExampleShift() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        
+        let shift = Shift(context: context)
+        shift.date = Date()
+        shift.endingTime = Time.createDefaultET()
+        shift.startingTime = Time.createDefaultST()
+        shift.lunchTime = "60"
+        shift.note = "Example (Delete this)"
+        shift.newMonth = Int16(0)
+        
+        shifts.append([shift])
+        
+        do {
+            try context.save()
+        } catch {
+            print(error)
+        }
+    }
+    
+    func initiateUserDefualts() {
+        UserDefaults().set("0.0", forKey: "taxRate")
+        UserDefaults().set("10", forKey: "wageRate")
+        UserDefaults().set("USD", forKey: "currency")
+        UserDefaults().set(false, forKey: "manuallyNewMonth")
+        UserDefaults().set("1", forKey: "newMonth")
+        UserDefaults().set("0", forKey: "minHours")
+        UserDefaults().set(Time.createDefaultST(), forKey: "defaultST")
+        UserDefaults().set(Time.createDefaultET(), forKey: "defaultET")
+        UserDefaults().set("Example (Delete this)", forKey: "defaultNote")
+        UserDefaults().set("0", forKey: "defaultLunch")
     }
     
     func centerTotalTimeLabels() {
@@ -110,47 +119,6 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         totalHoursLbl.center.x = totalHoursLblPoint
         totalMinutesLbl.center.x = totalMinutesLblPoint
-    }
-    
-    func initiateUserDefaultsForNewUser() {
-        // Tax
-        if UserDefaults().value(forKey: "taxRate") == nil {
-            UserDefaults().set("0.0", forKey: "taxRate")
-        }
-        // WAGE
-        if UserDefaults().value(forKey: "wageRate") == nil {
-            UserDefaults().set("10", forKey: "wageRate")
-        }
-        // CURRENCY
-        if UserDefaults().value(forKey: "currency") == nil {
-            UserDefaults().set("USD", forKey: "currency")
-        }
-        // Closing Date
-        if UserDefaults().value(forKey: "manuallyNewMonth") == nil {
-            UserDefaults().set(false, forKey: "manuallyNewMonth")
-            UserDefaults().set("1", forKey: "newMonth")
-        }
-        
-        // Mininum hours
-        if UserDefaults().value(forKey: "minHours") == nil {
-            UserDefaults().set("0", forKey: "minHours")
-        }
-        // Starting time
-        if UserDefaults().value(forKey: "defaultST") == nil {
-            UserDefaults().set(createDefaultST(), forKey: "defaultST")
-        }
-        // Ending time
-        if UserDefaults().value(forKey: "defaultET") == nil {
-            UserDefaults().set(createDefaultET(), forKey: "defaultET")
-        }
-        // Note
-        if UserDefaults().value(forKey: "defaultNote") == nil {
-            UserDefaults().set("Example (Delete this)", forKey: "defaultNote")
-        }
-        // Lunch
-        if UserDefaults().value(forKey: "defaultLunch") == nil {
-            UserDefaults().set("0", forKey: "defaultLunch")
-        }
     }
     
     func makeMenuBtn() {
@@ -230,13 +198,13 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 self.btn.transform = .identity
             })
             
-            let prevCell = menuTable.cellForRow(at: IndexPath(row: calcIndex[1], section: calcIndex[0]))
+            let prevCell = menuTable.cellForRow(at: IndexPath(row: indexForChosenPeriod[1], section: indexForChosenPeriod[0]))
             prevCell?.accessoryType = .none
             let cellPressed = menuTable.cellForRow(at: indexPath)!
             cellPressed.accessoryType = .checkmark
             cellPressed.tintColor = .white
-            if indexPath.section != calcIndex[0] || indexPath.row != calcIndex[1] {
-                calcIndex = [indexPath.section, indexPath.row]
+            if indexPath.section != indexForChosenPeriod[0] || indexPath.row != indexForChosenPeriod[1] {
+                indexForChosenPeriod = [indexPath.section, indexPath.row]
                 stats.removeAll()
                 makePeriod()
                 statsTable.reloadData()
@@ -247,18 +215,19 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func labelsForNoShifts() {
-        if let currency = UserDefaults().string(forKey: "currency") {
-            let symbol = currencies[currency]!
-            if salaryLbl.text == "0" {
-                if symbol == "kr" {
-                    salaryLbl.text = "0KR"
-                    grossLbl.text = "PRE-TAX: 0KR"
-                } else {
-                    salaryLbl.text = symbol + "0"
-                    grossLbl.text = "PRE-TAX: " + symbol + "0"
-                }
+        let currency = UserDefaults().string(forKey: "currency")!
+        let symbol = currencies[currency]!
+        
+        
+            if symbol == "kr" {
+                salaryLbl.text = "0kr"
+                grossLbl.text = "PRE-TAX: 0kr"
+            } else {
+                salaryLbl.text = symbol + "0"
+                grossLbl.text = "PRE-TAX: " + symbol + "0"
             }
-        }
+        
+
     }
     func configureMenuTable() {
         menuTable.backgroundColor = headerColor
@@ -310,7 +279,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
             cell.textLabel?.font = UIFont.systemFont(ofSize: 17)
             cell.selectionStyle = .none
             cell.backgroundColor = headerColor
-            if indexPath.section == calcIndex[0] && indexPath.row == calcIndex[1] {
+            if indexPath.section == indexForChosenPeriod[0] && indexPath.row == indexForChosenPeriod[1] {
                 cell.tintColor = .white
                 cell.accessoryType = .checkmark
             }
@@ -443,7 +412,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func makePeriod() {
         if shifts.count > 0 {
-            let chosenPeriod = tableList[calcIndex[0]][calcIndex[1]]
+            let chosenPeriod = tableList[indexForChosenPeriod[0]][indexForChosenPeriod[1]]
             let salaryInfo = calculateSalary(month: chosenPeriod)
             
             period.date = calculateDate(month: chosenPeriod)
@@ -831,7 +800,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func shiftsWorked(month: [Shift]) -> String {
-        return String(tableList[calcIndex[0]][calcIndex[1]].count)
+        return String(tableList[indexForChosenPeriod[0]][indexForChosenPeriod[1]].count)
     }
     
     func calculateDate(month: [Shift]) -> String {
@@ -911,44 +880,43 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func getShifts() {
-        var tempList = [Shift]()
+        var shiftsFromLocalStorage = [Shift]()
         var tempAppendList = [Shift]()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         
         do {
-            tempList = try context.fetch(Shift.fetchRequest())
+            shiftsFromLocalStorage = try context.fetch(Shift.fetchRequest())
         } catch {
             print("could not get the shift object")
         }
-        tempList.sort(by: {$0.date! > $1.date!})
+        shiftsFromLocalStorage.sort(by: {$0.date! > $1.date!})
         
         
         if UserDefaults().bool(forKey: "manuallyNewMonth") {
-            if tempList.count > 0 {
-                for i in 0..<tempList.count {
-                    
-                    if i == (tempList.count-1) {
-                        tempAppendList.append(tempList[i])
-                        shifts.append(tempAppendList)
-                        
-                    } else if tempList[i].newMonth == Int16(1) {
-                        tempAppendList.append(tempList[i])
-                        shifts.append(tempAppendList)
-                        tempAppendList.removeAll()
-                        
-                    } else {
-                        tempAppendList.append(tempList[i])
-                    }
-                }
+            
+            for i in 0..<shiftsFromLocalStorage.count {
                 
+                if i == (shiftsFromLocalStorage.count-1) {
+                    tempAppendList.append(shiftsFromLocalStorage[i])
+                    shifts.append(tempAppendList)
+                    
+                } else if shiftsFromLocalStorage[i].newMonth == Int16(1) {
+                    tempAppendList.append(shiftsFromLocalStorage[i])
+                    shifts.append(tempAppendList)
+                    tempAppendList.removeAll()
+                    
+                } else {
+                    tempAppendList.append(shiftsFromLocalStorage[i])
+                }
             }
+            
         } else {
-            if tempList.count > 0 {
+            if shiftsFromLocalStorage.count > 0 {
                 var compare = [4000, 12, 12]
                 let seperator = Int(UserDefaults().string(forKey: "newMonth")!)!
                 
-                for shift in tempList {
+                for shift in shiftsFromLocalStorage {
                     let year = Int(String((Array(shift.date!.description))[0..<4]))!
                     let month = Int(String((Array(shift.date!.description))[5..<7]))!
                     let day = Int(String((Array(shift.date!.description))[8..<10]))!
@@ -975,22 +943,5 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         menuTable.endEditing(true)
-    }
-    
-    func createDefaultST() -> Date {
-        let calendar = Calendar.current
-        
-        var date = Date(timeIntervalSinceReferenceDate: 0)
-        date = calendar.date(byAdding: .hour, value: 7, to: date)!
-        
-        return date
-    }
-    func createDefaultET() -> Date {
-        let calendar = Calendar.current
-        
-        var date = Date(timeIntervalSinceReferenceDate: 0)
-        date = calendar.date(byAdding: .hour, value: 15, to: date)!
-        
-        return date
     }
 }

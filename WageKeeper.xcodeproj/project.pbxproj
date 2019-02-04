@@ -16,6 +16,7 @@
 		9830C2062207B3AD0023B582 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9830C2052207B3AD0023B582 /* Time.swift */; };
 		984319182207923E00C9B6FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988FDEB91F9F7AFA0090DEF1 /* AppDelegate.swift */; };
 		9852F1071FA2309B00E7BDB5 /* MainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9852F1061FA2309B00E7BDB5 /* MainCell.swift */; };
+		9858E0EC220866D7007600C3 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9858E0EB220866D7007600C3 /* Version.swift */; };
 		985CAA381FA87C3F00AE6993 /* EditingTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985CAA371FA87C3F00AE6993 /* EditingTable.swift */; };
 		985CAA3A1FA8824C00AE6993 /* Editing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985CAA391FA8824C00AE6993 /* Editing.swift */; };
 		9862A5711FCC33AA0047671D /* AdvancedSettingsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9862A5701FCC33AA0047671D /* AdvancedSettingsTable.swift */; };
@@ -28,11 +29,6 @@
 		989392DC1FCEF322002475EA /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989392DB1FCEF322002475EA /* Extensions.swift */; };
 		98ACD1671FA381D800B78C7D /* SettingsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98ACD1661FA381D800B78C7D /* SettingsTable.swift */; };
 		98CA61941FB0A6D900463FF7 /* OvertimeRuleTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CA61931FB0A6D900463FF7 /* OvertimeRuleTable.swift */; };
-		98D73A9F1FC6481000668630 /* BarlowSemiCondensed-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98D73A9A1FC6481000668630 /* BarlowSemiCondensed-Medium.ttf */; };
-		98D73AA01FC6481000668630 /* BarlowSemiCondensed-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98D73A9B1FC6481000668630 /* BarlowSemiCondensed-Regular.ttf */; };
-		98D73AA11FC6481000668630 /* BarlowSemiCondensed-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98D73A9C1FC6481000668630 /* BarlowSemiCondensed-Light.ttf */; };
-		98D73AA21FC6481000668630 /* BarlowSemiCondensed-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98D73A9D1FC6481000668630 /* BarlowSemiCondensed-SemiBold.ttf */; };
-		98D73AA31FC6481000668630 /* BarlowSemiCondensed-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 98D73A9E1FC6481000668630 /* BarlowSemiCondensed-Thin.ttf */; };
 		98E284E31FC70CC1004FD2D2 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E284E21FC70CC1004FD2D2 /* TabBarController.swift */; };
 		98E2EF9A1FB4D657006C3F96 /* CountingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E2EF991FB4D657006C3F96 /* CountingLabel.swift */; };
 		98FD4C5D1FC8390F002B91B1 /* LaunchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98FD4C5C1FC8390F002B91B1 /* LaunchCell.swift */; };
@@ -48,6 +44,7 @@
 		9830C2052207B3AD0023B582 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		9843191422078EC000C9B6FF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9852F1061FA2309B00E7BDB5 /* MainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCell.swift; sourceTree = "<group>"; };
+		9858E0EB220866D7007600C3 /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
 		985CAA371FA87C3F00AE6993 /* EditingTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingTable.swift; sourceTree = "<group>"; };
 		985CAA391FA8824C00AE6993 /* Editing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Editing.swift; sourceTree = "<group>"; };
 		9862A5701FCC33AA0047671D /* AdvancedSettingsTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsTable.swift; sourceTree = "<group>"; };
@@ -62,11 +59,6 @@
 		989392DB1FCEF322002475EA /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		98ACD1661FA381D800B78C7D /* SettingsTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTable.swift; sourceTree = "<group>"; };
 		98CA61931FB0A6D900463FF7 /* OvertimeRuleTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OvertimeRuleTable.swift; sourceTree = "<group>"; };
-		98D73A9A1FC6481000668630 /* BarlowSemiCondensed-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BarlowSemiCondensed-Medium.ttf"; sourceTree = "<group>"; };
-		98D73A9B1FC6481000668630 /* BarlowSemiCondensed-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BarlowSemiCondensed-Regular.ttf"; sourceTree = "<group>"; };
-		98D73A9C1FC6481000668630 /* BarlowSemiCondensed-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BarlowSemiCondensed-Light.ttf"; sourceTree = "<group>"; };
-		98D73A9D1FC6481000668630 /* BarlowSemiCondensed-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BarlowSemiCondensed-SemiBold.ttf"; sourceTree = "<group>"; };
-		98D73A9E1FC6481000668630 /* BarlowSemiCondensed-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BarlowSemiCondensed-Thin.ttf"; sourceTree = "<group>"; };
 		98E284E21FC70CC1004FD2D2 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		98E2EF991FB4D657006C3F96 /* CountingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountingLabel.swift; sourceTree = "<group>"; };
 		98FD4C5C1FC8390F002B91B1 /* LaunchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchCell.swift; sourceTree = "<group>"; };
@@ -101,6 +93,7 @@
 				9830C2002207A0EF0023B582 /* Period.swift */,
 				9830C2022207A4020023B582 /* Stats.swift */,
 				9830C2052207B3AD0023B582 /* Time.swift */,
+				9858E0EB220866D7007600C3 /* Version.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -133,7 +126,6 @@
 		988FDEB81F9F7AFA0090DEF1 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				98D73A991FC647CC00668630 /* Fonts */,
 				9830C1FF220794CE0023B582 /* utils */,
 				98ACD18A1FA39EC700B78C7D /* Settings  */,
 				980600FF1FC5A7680067F0B4 /* Calculator */,
@@ -177,18 +169,6 @@
 				98760E5E1FA647DE000E1A28 /* Add shift */,
 			);
 			path = Logger;
-			sourceTree = "<group>";
-		};
-		98D73A991FC647CC00668630 /* Fonts */ = {
-			isa = PBXGroup;
-			children = (
-				98D73A9C1FC6481000668630 /* BarlowSemiCondensed-Light.ttf */,
-				98D73A9A1FC6481000668630 /* BarlowSemiCondensed-Medium.ttf */,
-				98D73A9B1FC6481000668630 /* BarlowSemiCondensed-Regular.ttf */,
-				98D73A9D1FC6481000668630 /* BarlowSemiCondensed-SemiBold.ttf */,
-				98D73A9E1FC6481000668630 /* BarlowSemiCondensed-Thin.ttf */,
-			);
-			path = Fonts;
 			sourceTree = "<group>";
 		};
 		98FC55E91FA6768500424AC0 /* Edit shift */ = {
@@ -260,13 +240,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				98D73AA31FC6481000668630 /* BarlowSemiCondensed-Thin.ttf in Resources */,
-				98D73AA21FC6481000668630 /* BarlowSemiCondensed-SemiBold.ttf in Resources */,
-				98D73AA01FC6481000668630 /* BarlowSemiCondensed-Regular.ttf in Resources */,
 				9830C1FE220793CB0023B582 /* Main.storyboard in Resources */,
-				98D73A9F1FC6481000668630 /* BarlowSemiCondensed-Medium.ttf in Resources */,
 				9830C1FD220793CB0023B582 /* LaunchScreen.storyboard in Resources */,
-				98D73AA11FC6481000668630 /* BarlowSemiCondensed-Light.ttf in Resources */,
 				988FDEC41F9F7AFA0090DEF1 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -288,6 +263,7 @@
 				9862A5711FCC33AA0047671D /* AdvancedSettingsTable.swift in Sources */,
 				985CAA381FA87C3F00AE6993 /* EditingTable.swift in Sources */,
 				9830C2062207B3AD0023B582 /* Time.swift in Sources */,
+				9858E0EC220866D7007600C3 /* Version.swift in Sources */,
 				984319182207923E00C9B6FF /* AppDelegate.swift in Sources */,
 				98CA61941FB0A6D900463FF7 /* OvertimeRuleTable.swift in Sources */,
 				98ACD1671FA381D800B78C7D /* SettingsTable.swift in Sources */,

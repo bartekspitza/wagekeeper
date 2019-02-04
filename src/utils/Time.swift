@@ -44,4 +44,22 @@ class Time {
         
         return calendar.date(from: mergedComponments)
     }
+    
+    static func createDefaultST() -> Date {
+        let calendar = Calendar.current
+        
+        var date = Date(timeIntervalSinceReferenceDate: 0)
+        date = calendar.date(byAdding: .hour, value: 7, to: date)!
+        
+        return date
+    }
+    
+    static func createDefaultET() -> Date {
+        let calendar = Calendar.current
+        
+        var date = Date(timeIntervalSinceReferenceDate: 0)
+        date = calendar.date(byAdding: .hour, value: 15, to: date)!
+        
+        return date
+    }
 }
