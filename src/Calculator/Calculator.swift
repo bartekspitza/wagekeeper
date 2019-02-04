@@ -8,7 +8,7 @@
 import UIKit
 import Foundation
 
-class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource, UIApplicationDelegate {
+class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var totalHoursLbl = CountingLabel()
     var totalMinutesLbl = CountingLabel()
@@ -30,7 +30,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         super.viewDidLoad()
         
         configureNewUser()
-        getShifts()
+        getShifts(fromCloud: false)
         makeDesign()
         makeMenuBtn()
         designLabels()
@@ -879,67 +879,15 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         return dateString.replacingOccurrences(of: ",", with: "")
     }
     
-    func getShifts() {
-        var shiftsFromLocalStorage = [Shift]()
-        var tempAppendList = [Shift]()
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
+    func getShifts(fromCloud: Bool) {
+        var tmp = [Shift]()
         
-        do {
-            shiftsFromLocalStorage = try context.fetch(Shift.fetchRequest())
-        } catch {
-            print("could not get the shift object")
-        }
-        shiftsFromLocalStorage.sort(by: {$0.date! > $1.date!})
-        
-        
-        if UserDefaults().bool(forKey: "manuallyNewMonth") {
-            
-            for i in 0..<shiftsFromLocalStorage.count {
-                
-                if i == (shiftsFromLocalStorage.count-1) {
-                    tempAppendList.append(shiftsFromLocalStorage[i])
-                    shifts.append(tempAppendList)
-                    
-                } else if shiftsFromLocalStorage[i].newMonth == Int16(1) {
-                    tempAppendList.append(shiftsFromLocalStorage[i])
-                    shifts.append(tempAppendList)
-                    tempAppendList.removeAll()
-                    
-                } else {
-                    tempAppendList.append(shiftsFromLocalStorage[i])
-                }
-            }
-            
+        if fromCloud {
+            // do something
         } else {
-            if shiftsFromLocalStorage.count > 0 {
-                var compare = [4000, 12, 12]
-                let seperator = Int(UserDefaults().string(forKey: "newMonth")!)!
-                
-                for shift in shiftsFromLocalStorage {
-                    let year = Int(String((Array(shift.date!.description))[0..<4]))!
-                    let month = Int(String((Array(shift.date!.description))[5..<7]))!
-                    let day = Int(String((Array(shift.date!.description))[8..<10]))!
-                    
-                    
-                    if year >= compare[0] && ((month == compare[1] && day >= seperator) || (month == compare[1]+1 && day < seperator) || (month == 1 && compare[1] == 12 && day < seperator))  {
-                        shifts[shifts.count-1].append(shift)
-                        
-                    } else {
-                        shifts.append([shift])
-                        if day >= seperator {
-                            compare = [year, month, seperator]
-                        } else {
-                            if month - 1 > 0 {
-                                compare = [year, month - 1, seperator]
-                            } else {
-                                compare = [year - 1, 12, seperator]
-                            }
-                        }
-                    }
-                }
-            }
+            tmp = LocalStorage.getAllShifts()
         }
+        shifts = Period.organizeShiftsIntoPeriods(ar: &tmp)
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         menuTable.endEditing(true)
