@@ -118,20 +118,26 @@ class Period {
         return [grossSalary, minutesInOT, moneyInOT, daysWorked]
     }
     
-    static func convertShiftsFromCoreDataToModels(arr: [Shift]) -> [ShiftModel] {
-        var ar = [ShiftModel]()
-        for s in arr {
-            ar.append(ShiftModel(date: s.date!, endingTime: s.endingTime!, startingTime: s.startingTime!, lunchTime: s.lunchTime!, note: s.note!, newPeriod: s.newMonth))
+    static func convertShiftsFromCoreDataToModels(arr: [[Shift]]) -> [[ShiftModel]] {
+        var ar = [[ShiftModel]]()
+        
+        for period in arr {
+            var tmp = [ShiftModel]()
+            for a in period {
+                tmp.append(ShiftModel.createFromCoreData(s: a))
+            }
+            ar.append(tmp)
         }
+        
         return ar
     }
     
-    static func organizeShiftsIntoPeriods(ar: inout [ShiftModel]) -> [[ShiftModel]]{
-        ar.sort(by: {$0.date > $1.date})
+    static func organizeShiftsIntoPeriods(ar: inout [Shift]) -> [[Shift]]{
+        ar.sort(by: {$0.date! > $1.date!})
         
-        var tempPeriod = [ShiftModel]()
-        var organizedPeriods = [[ShiftModel]]()
-    
+        var tempPeriod = [Shift]()
+        var organizedPeriods = [[Shift]]()
+        
         if UserDefaults().bool(forKey: "manuallyNewMonth") {
             for i in 0..<ar.count {
                 
@@ -139,7 +145,7 @@ class Period {
                     tempPeriod.append(ar[i])
                     organizedPeriods.append(tempPeriod)
                     
-                } else if ar[i].beginsNewPeriod == Int16(1) {
+                } else if ar[i].newMonth == Int16(1) {
                     tempPeriod.append(ar[i])
                     organizedPeriods.append(tempPeriod)
                     tempPeriod.removeAll()
@@ -155,9 +161,9 @@ class Period {
                 let seperator = Int(UserDefaults().string(forKey: "newMonth")!)!
                 
                 for shift in ar {
-                    let year = Int(String((Array(shift.date.description))[0..<4]))!
-                    let month = Int(String((Array(shift.date.description))[5..<7]))!
-                    let day = Int(String((Array(shift.date.description))[8..<10]))!
+                    let year = Int(String((Array(shift.date!.description))[0..<4]))!
+                    let month = Int(String((Array(shift.date!.description))[5..<7]))!
+                    let day = Int(String((Array(shift.date!.description))[8..<10]))!
                     
                     
                     if year >= compare[0] && ((month == compare[1] && day >= seperator) || (month == compare[1]+1 && day < seperator) || (month == 1 && compare[1] == 12 && day < seperator))  {
@@ -178,6 +184,6 @@ class Period {
                 }
             }
         }
-    return organizedPeriods
+        return organizedPeriods
     }
 }

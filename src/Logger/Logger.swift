@@ -91,8 +91,8 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             let context = appDelegate.persistentContainer.viewContext
             
-            let shift = shifts[indexPath.section][indexPath.row].toCoreData()
-            context.delete(shift)
+            let shiftToDelete = LocalStorage.organizedValues[indexPath.section][indexPath.row]
+            context.delete(shiftToDelete)
             
             do {
                 try context.save()
@@ -195,13 +195,13 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func getShifts(fromCloud: Bool) {
-        var tmp = [ShiftModel]()
-        
         if fromCloud {
             // do something
         } else {
-            tmp = Period.convertShiftsFromCoreDataToModels(arr: LocalStorage.getAllShifts())
+            LocalStorage.values = LocalStorage.getAllShifts()
+            LocalStorage.organizedValues = Period.organizeShiftsIntoPeriods(ar: &LocalStorage.values)
+            
+            shifts = Period.convertShiftsFromCoreDataToModels(arr: LocalStorage.organizedValues)
         }
-        shifts = Period.organizeShiftsIntoPeriods(ar: &tmp)
     }
 }

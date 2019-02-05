@@ -24,33 +24,19 @@ class Editing: UIViewController {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Shift")
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        let shiftToUpdate = LocalStorage.organizedValues[shiftToEdit[0]][shiftToEdit[1]]
+        context.delete(shiftToUpdate)
         
-        do {
-            try context.execute(deleteRequest)
-            try context.save()
-        } catch {
-            // TODO: handle the error
-        }
+        let newShift = ShiftModel(
+            date: currentTempShift.date,
+            endingTime: currentTempShift.endingTime,
+            startingTime: currentTempShift.startingTime,
+            lunchTime: currentTempShift.lunchTime,
+            note: currentTempShift.note,
+            newPeriod: currentTempShift.newPeriod
+        )
         
-        print(shifts[shiftToEdit[0]][shiftToEdit[1]].note)
-        shifts[shiftToEdit[0]][shiftToEdit[1]].date = currentTempShift.date
-        shifts[shiftToEdit[0]][shiftToEdit[1]].startingTime = currentTempShift.startingTime
-        shifts[shiftToEdit[0]][shiftToEdit[1]].endingTime = currentTempShift.endingTime
-        shifts[shiftToEdit[0]][shiftToEdit[1]].lunchTime = currentTempShift.lunchTime
-        shifts[shiftToEdit[0]][shiftToEdit[1]].note = currentTempShift.note
-        shifts[shiftToEdit[0]][shiftToEdit[1]].beginsNewPeriod = currentTempShift.newPeriod
-        
-        print(currentTempShift.note)
-        print(Time.dateToTimeString(date: currentTempShift.startingTime))
-        print(Time.dateToTimeString(date: currentTempShift.endingTime))
-        
-        for section in shifts {
-            for shift in section {
-                context.insert(shift.toCoreData())
-            }
-        }
+        context.insert(newShift.toCoreData())
         
         do {
             try context.save()
@@ -58,6 +44,7 @@ class Editing: UIViewController {
         } catch {
             print(error)
         }
+        
         performSegue(withIdentifier: "goback", sender: self)
     }
 }

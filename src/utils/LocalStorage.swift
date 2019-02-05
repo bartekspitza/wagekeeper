@@ -10,6 +10,9 @@ import Foundation
 import UIKit
 
 class LocalStorage {
+    static var values = [Shift]()
+    static var organizedValues = [[Shift]]()
+    
     static func getAllShifts() -> [Shift] {
         var shiftsFromLocalStorage = [Shift]()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate

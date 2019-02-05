@@ -361,14 +361,14 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func getShifts(fromCloud: Bool) {
-        var tmp = [ShiftModel]()
-        
         if fromCloud {
             // do something
         } else {
-            tmp = Period.convertShiftsFromCoreDataToModels(arr: LocalStorage.getAllShifts())
+            LocalStorage.values = LocalStorage.getAllShifts()
+            LocalStorage.organizedValues = Period.organizeShiftsIntoPeriods(ar: &LocalStorage.values)
+            
+            shifts = Period.convertShiftsFromCoreDataToModels(arr: LocalStorage.organizedValues)
         }
-        shifts = Period.organizeShiftsIntoPeriods(ar: &tmp)
     }
     
     func makePeriodsSeperatedByYear() {
