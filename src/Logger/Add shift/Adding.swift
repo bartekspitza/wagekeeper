@@ -54,38 +54,19 @@ class Adding: UIViewController, UITextFieldDelegate {
 
     @IBAction func addShift(_ sender: UIButton) {
         if !(currentTempShift.shiftComplete.contains(false)) {
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            let context = appDelegate.persistentContainer.viewContext
             
-            let shift = Shift(context: context)
-            shift.date = currentTempShift.date
-            shift.endingTime = currentTempShift.endingTime
-            shift.startingTime = currentTempShift.startingTime
-            shift.lunchTime = currentTempShift.lunchTime
-            shift.note = currentTempShift.note
-            shift.newMonth = currentTempShift.newPeriod
+            let shift = ShiftModel(
+                date: currentTempShift.date,
+                endingTime: currentTempShift.endingTime,
+                startingTime: currentTempShift.startingTime,
+                lunchTime: currentTempShift.lunchTime,
+                note: currentTempShift.note,
+                newPeriod: currentTempShift.newPeriod
+            )
+            LocalStorage.insertShift(shift: shift)
             
-            do {
-                try context.save()
-            } catch {
-                print(error)
-            }
             performSegue(withIdentifier: "gotoadd", sender: self)
+            shouldFetchAllData = true
         }
-    }
-    func combineDateWithTime(date: Date, time: Date) -> Date? {
-        let calendar = NSCalendar.current
-        
-        let dateComponents = calendar.dateComponents([.year, .month, .day], from: date)
-        let timeComponents = calendar.dateComponents([.hour, .minute], from: time)
-        
-        var mergedComponments = DateComponents()
-        mergedComponments.year = dateComponents.year!
-        mergedComponments.month = dateComponents.month!
-        mergedComponments.day = dateComponents.day!
-        mergedComponments.hour = timeComponents.hour!
-        mergedComponments.minute = timeComponents.minute!
-        
-        return calendar.date(from: mergedComponments)
     }
 }

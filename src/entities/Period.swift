@@ -9,6 +9,8 @@
 import Foundation
 
 class Period {
+    static var statsDescriptions = ["TOTAL WORK-TIME", "AVERAGE SHIFT LENGTH", "TOTAL SHIFTS", "TOTAL DAYS WORKED", "OVERTIME WORKED"]
+    
     var shifts = [ShiftModel]()
     var duration = ""
     var salary = 0
@@ -20,6 +22,7 @@ class Period {
     var moneyFromOvertime: Int = 0
     var avgShift: [Int] = [0,0]
     var stats: [String] = [String]()
+    
     
     init(month: [ShiftModel]) {
         self.shifts = month

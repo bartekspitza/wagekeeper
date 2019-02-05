@@ -34,17 +34,16 @@ class Editing: UIViewController {
             lunchTime: currentTempShift.lunchTime,
             note: currentTempShift.note,
             newPeriod: currentTempShift.newPeriod
-        )
+        ).toCoreData()
         
-        context.insert(newShift.toCoreData())
+        context.insert(newShift)
         
         do {
             try context.save()
-            
         } catch {
             print(error)
         }
-        
+        shouldFetchAllData = true
         performSegue(withIdentifier: "goback", sender: self)
     }
 }

@@ -43,11 +43,13 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        labelsForNoShifts()
+        resetLabels()
         makePeriodsSeperatedByYear()
         makePeriod()
-        fillLabelsWithStats()
-        startCountingLabels()
+        if period != nil {
+            fillLabelsWithStats()
+            startCountingLabels()
+        }
         menuTable.reloadData()
         statsTable.reloadData()
         centerTotalTimeLabels()
@@ -60,6 +62,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
             menuTable.frame = CGRect(x: 0, y: (btn.center.y + btn.frame.height/2), width: self.view.frame.width, height: 0)
             pulldownMenuIsShowing = false
         }
+        period = nil
         indexForChosenPeriod = [0, 0]
     }
     
@@ -122,62 +125,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if tableView.tag == 2 {
-            let startingString = String(Array(periodsSeperatedByYear[section][0][periodsSeperatedByYear[section][0].count-1].date.description)[0..<4])
-            let headerView = UIView()
-            headerView.backgroundColor = headerColor
-            
-            let headerLabel = UILabel(frame: CGRect(x: 15, y: 28, width:
-                tableView.bounds.size.width, height: tableView.bounds.size.height))
-            headerLabel.font = UIFont.boldSystemFont(ofSize: 10)
-            headerLabel.textColor = .white
-            headerLabel.text = startingString
-            headerLabel.font = UIFont.systemFont(ofSize: 12)
-            headerLabel.sizeToFit()
-            headerLabel.textAlignment = .center
-            headerView.addSubview(headerLabel)
-            
-            return headerView
-        } else {
-            return UIView()
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if tableView.tag == 2 {
-            return 40
-        } else {
-            return 0
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if tableView.tag == 2 {
-            pulldownMenuIsShowing = false
-            UIView.animate(withDuration: 0.3, animations: {
-                self.menuTable.frame = CGRect(x: 0, y: (self.btn.center.y + self.btn.frame.height/2), width: self.view.frame.width, height: 0)
-            })
-            UIView.animate(withDuration: 0.3, animations: {
-                self.btn.transform = .identity
-            })
-            
-            let prevCell = menuTable.cellForRow(at: IndexPath(row: indexForChosenPeriod[1], section: indexForChosenPeriod[0]))
-            prevCell?.accessoryType = .none
-            let cellPressed = menuTable.cellForRow(at: indexPath)!
-            cellPressed.accessoryType = .checkmark
-            cellPressed.tintColor = .white
-            if indexPath.section != indexForChosenPeriod[0] || indexPath.row != indexForChosenPeriod[1] {
-                indexForChosenPeriod = [indexPath.section, indexPath.row]
-                makePeriod()
-                statsTable.reloadData()
-                startCountingLabels()
-                periodLbl.text = period.duration
-            }
-        }
-    }
-    
-    func labelsForNoShifts() {
+    func resetLabels() {
         let currency = UserDefaults().string(forKey: "currency")!
         let symbol = currencies[currency]!
         
@@ -188,6 +136,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 salaryLbl.text = symbol + "0"
                 grossLbl.text = "PRE-TAX: " + symbol + "0"
             }
+        periodLbl.text = ""
     }
     func configureMenuTable() {
         menuTable.backgroundColor = headerColor
@@ -214,56 +163,6 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.view.addSubview(statsTable)
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // Stats Table
-        if tableView.tag == 1 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! LaunchCell
-            
-            cell.insertStatsDesc(width: (self.view.frame.width), text: Stats.descriptions[indexPath.row].uppercased())
-            if period.stats.count > 0 {
-                cell.insertStatsInfo(width: self.view.frame.width, text: period.stats[indexPath.row].uppercased())
-            } else {
-                cell.insertStatsInfo(width: self.view.frame.width, text: "0")
-            }
-
-            return cell
-            
-            // Periods table
-        } else {
-            let cell = UITableViewCell()
-            let section = periodsSeperatedByYear[indexPath.section][indexPath.row]
-            let end = String(Array(Time.dateToString(date: section[0].date, withDayName: false))[0..<Time.dateToString(date: section[0].date, withDayName: false).count-4])
-            let start = String(Array(Time.dateToString(date: section[section.count-1].date, withDayName: false))[0..<Time.dateToString(date: section[section.count-1].date, withDayName: false).count-4])
-            cell.textLabel?.text = start + " - " + end
-            cell.textLabel?.textColor = .white
-            cell.textLabel?.font = UIFont.systemFont(ofSize: 17)
-            cell.selectionStyle = .none
-            cell.backgroundColor = headerColor
-            if indexPath.section == indexForChosenPeriod[0] && indexPath.row == indexForChosenPeriod[1] {
-                cell.tintColor = .white
-                cell.accessoryType = .checkmark
-            }
-            
-            return cell
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if tableView.tag == 1 {
-            return Stats.descriptions.count
-        } else {
-            return periodsSeperatedByYear[section].count
-        }
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        if tableView.tag == 1 {
-            return 1
-        } else {
-            return periodsSeperatedByYear.count
-        }
-    }
-    
     func makeDesign() {
         let gradientLayer: CAGradientLayer = CAGradientLayer()
         gradientLayer.colors = [navColor.cgColor, headerColor.cgColor]
@@ -275,9 +174,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.view.layer.insertSublayer(gradientLayer, at: UInt32(0))
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
+    
     
     func addUpperLineOfArrowButtonSection() {
         let gradientMaxY = (self.view.frame.height*0.4)
@@ -337,7 +234,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         periodLbl.textColor = .white
         periodLbl.font = UIFont.systemFont(ofSize: 11)
         
-        periodLbl.text = period.duration
+        periodLbl.text = ""
         periodLbl.textAlignment = .right
         periodLbl.frame = CGRect(x: 0, y: 0, width: Int(self.view.frame.width/3), height: Int(30))
         periodLbl.center = CGPoint(x: Int(self.view.frame.width*0.95 - periodLbl.frame.width/2), y: Int(btn.center.y))
@@ -358,9 +255,11 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         totalHoursLbl.text = "HOURS: 0"
         totalMinutesLbl.text = "MINUTES: 0"
         salaryLbl.text = StringFormatter.addCurrencyToNumber(amount: period.salary)
+        periodLbl.text = period.duration
     }
     
     func getShifts(fromCloud: Bool) {
+        print("fetched shifts")
         if fromCloud {
             // do something
         } else {
@@ -391,7 +290,110 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
             period = Period(month: periodsSeperatedByYear[indexForChosenPeriod[0]][indexForChosenPeriod[1]])
         }
     }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if tableView.tag == 2 {
+            let startingString = String(Array(periodsSeperatedByYear[section][0][periodsSeperatedByYear[section][0].count-1].date.description)[0..<4])
+            let headerView = UIView()
+            headerView.backgroundColor = headerColor
+            
+            let headerLabel = UILabel(frame: CGRect(x: 15, y: 28, width:
+                tableView.bounds.size.width, height: tableView.bounds.size.height))
+            headerLabel.font = UIFont.boldSystemFont(ofSize: 10)
+            headerLabel.textColor = .white
+            headerLabel.text = startingString
+            headerLabel.font = UIFont.systemFont(ofSize: 12)
+            headerLabel.sizeToFit()
+            headerLabel.textAlignment = .center
+            headerView.addSubview(headerLabel)
+            
+            return headerView
+        } else {
+            return UIView()
+        }
+    }
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if tableView.tag == 2 {
+            return 40
+        } else {
+            return 0
+        }
+    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if tableView.tag == 2 {
+            pulldownMenuIsShowing = false
+            UIView.animate(withDuration: 0.3, animations: {
+                self.menuTable.frame = CGRect(x: 0, y: (self.btn.center.y + self.btn.frame.height/2), width: self.view.frame.width, height: 0)
+            })
+            UIView.animate(withDuration: 0.3, animations: {
+                self.btn.transform = .identity
+            })
+            
+            let prevCell = menuTable.cellForRow(at: IndexPath(row: indexForChosenPeriod[1], section: indexForChosenPeriod[0]))
+            prevCell?.accessoryType = .none
+            let cellPressed = menuTable.cellForRow(at: indexPath)!
+            cellPressed.accessoryType = .checkmark
+            cellPressed.tintColor = .white
+            if indexPath.section != indexForChosenPeriod[0] || indexPath.row != indexForChosenPeriod[1] {
+                indexForChosenPeriod = [indexPath.section, indexPath.row]
+                makePeriod()
+                statsTable.reloadData()
+                startCountingLabels()
+                periodLbl.text = period.duration
+            }
+        }
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // Stats Table
+        if tableView.tag == 1 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! LaunchCell
+            
+            cell.insertStatsDesc(width: (self.view.frame.width), text: Period.statsDescriptions[indexPath.row].uppercased())
+            if period != nil {
+                cell.insertStatsInfo(width: self.view.frame.width, text: period.stats[indexPath.row].uppercased())
+            } else {
+                cell.insertStatsInfo(width: self.view.frame.width, text: "0")
+            }
+            
+            return cell
+            
+            // Periods table
+        } else {
+            let cell = UITableViewCell()
+            let section = periodsSeperatedByYear[indexPath.section][indexPath.row]
+            let end = String(Array(Time.dateToString(date: section[0].date, withDayName: false))[0..<Time.dateToString(date: section[0].date, withDayName: false).count-4])
+            let start = String(Array(Time.dateToString(date: section[section.count-1].date, withDayName: false))[0..<Time.dateToString(date: section[section.count-1].date, withDayName: false).count-4])
+            cell.textLabel?.text = start + " - " + end
+            cell.textLabel?.textColor = .white
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 17)
+            cell.selectionStyle = .none
+            cell.backgroundColor = headerColor
+            if indexPath.section == indexForChosenPeriod[0] && indexPath.row == indexForChosenPeriod[1] {
+                cell.tintColor = .white
+                cell.accessoryType = .checkmark
+            }
+            
+            return cell
+        }
+    }
+    func numberOfSections(in tableView: UITableView) -> Int {
+        if tableView.tag == 1 {
+            return 1
+        } else {
+            return periodsSeperatedByYear.count
+        }
+    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if tableView.tag == 1 {
+            return Period.statsDescriptions.count
+        } else {
+            return periodsSeperatedByYear[section].count
+        }
+    }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         menuTable.endEditing(true)
+    }
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
 }

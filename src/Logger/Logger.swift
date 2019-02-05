@@ -10,13 +10,12 @@ import UIKit
 import CoreData
 
 var shiftToEdit = [0,0]
+var shouldFetchAllData = false
 
 class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var myTableView: UITableView!
     var cells = [UITableViewCell]()
     let instructionsLabel = UILabel()
-    
-    let formatter = DateFormatter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,8 +25,11 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        shifts.removeAll()
-        getShifts(fromCloud: false)
+        if shouldFetchAllData {
+            shifts.removeAll()
+            getShifts(fromCloud: false)
+        }
+        
         if !(shifts.isEmpty) {
             myTableView.backgroundView = UIView()
         }
@@ -94,24 +96,27 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
             let shiftToDelete = LocalStorage.organizedValues[indexPath.section][indexPath.row]
             context.delete(shiftToDelete)
             
+            
             do {
                 try context.save()
+                
             } catch {
                 
             }
             
-            // Removing empty lists if there are any
+            // Removes the shift from in memory 'database'
             shifts[indexPath.section].remove(at: indexPath.row)
-            var indexes = [Int]()
-            for i in 0..<shifts.count {
+            LocalStorage.organizedValues[indexPath.section].remove(at: indexPath.row)
+            
+            // Cleans the arrays of empty sub arrays
+            var i = 0
+            while i < shifts.count {
                 if shifts[i].count == 0 {
-                    indexes.append(i)
+                    shifts.remove(at: i)
+                    LocalStorage.organizedValues.remove(at: i)
+                } else {
+                    i += 1
                 }
-            }
-            var count = 0
-            for number in indexes {
-                shifts.remove(at: number-count)
-                count += 1
             }
             
             if self.myTableView.numberOfRows(inSection: indexPath.section) > 1 {
@@ -195,6 +200,7 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func getShifts(fromCloud: Bool) {
+        print("fetched shifts")
         if fromCloud {
             // do something
         } else {
@@ -203,5 +209,6 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
             
             shifts = Period.convertShiftsFromCoreDataToModels(arr: LocalStorage.organizedValues)
         }
+        shouldFetchAllData = false
     }
 }
