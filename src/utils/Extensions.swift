@@ -10,6 +10,18 @@ import Foundation
 import UIKit
 
 
+func getShifts(fromCloud: Bool) {
+    
+    if fromCloud {
+        // do something
+    } else {
+        print("Fetched data from local storage")
+        LocalStorage.values = LocalStorage.getAllShifts()
+        LocalStorage.organizedValues = Period.organizeShiftsIntoPeriods(ar: &LocalStorage.values)
+        shifts = Period.convertShiftsFromCoreDataToModels(arr: LocalStorage.organizedValues)
+    }
+}
+
 // Image resizing
 extension UIImage {
     

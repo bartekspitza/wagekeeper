@@ -28,6 +28,7 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if shouldFetchAllData {
             shifts.removeAll()
             getShifts(fromCloud: false)
+            shouldFetchAllData = false
         }
         
         if !(shifts.isEmpty) {
@@ -197,18 +198,5 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40
-    }
-    
-    func getShifts(fromCloud: Bool) {
-        print("fetched shifts")
-        if fromCloud {
-            // do something
-        } else {
-            LocalStorage.values = LocalStorage.getAllShifts()
-            LocalStorage.organizedValues = Period.organizeShiftsIntoPeriods(ar: &LocalStorage.values)
-            
-            shifts = Period.convertShiftsFromCoreDataToModels(arr: LocalStorage.organizedValues)
-        }
-        shouldFetchAllData = false
     }
 }

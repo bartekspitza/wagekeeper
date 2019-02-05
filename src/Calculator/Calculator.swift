@@ -258,18 +258,6 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         periodLbl.text = period.duration
     }
     
-    func getShifts(fromCloud: Bool) {
-        print("fetched shifts")
-        if fromCloud {
-            // do something
-        } else {
-            LocalStorage.values = LocalStorage.getAllShifts()
-            LocalStorage.organizedValues = Period.organizeShiftsIntoPeriods(ar: &LocalStorage.values)
-            
-            shifts = Period.convertShiftsFromCoreDataToModels(arr: LocalStorage.organizedValues)
-        }
-    }
-    
     func makePeriodsSeperatedByYear() {
         periodsSeperatedByYear.removeAll()
         var year = 4000
