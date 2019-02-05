@@ -1,0 +1,6 @@
+framework module Pods_WageKeeper {
+  umbrella header "Pods-WageKeeper-umbrella.h"
+
+  export *
+  module * { export * }
+}
