@@ -56,12 +56,12 @@ class Editing: UIViewController {
                 newPeriod: currentTempShift.newPeriod
             )
             newShift.ID = shiftToUpdate.ID
-            shifts[shiftToEdit[0]][shiftToEdit[1]] = newShift
-            CloudStorage.updateShift(from: shiftToUpdate, with: newShift, user: userId)
+
+            CloudStorage.updateShift(from: shiftToUpdate, with: newShift, user: userId, completionHandler: {
+                shifts[shiftToEdit[0]][shiftToEdit[1]] = newShift
+            })
         }
         
-        
-        //shouldFetchAllData = true
         performSegue(withIdentifier: "goback", sender: self)
     }
 }

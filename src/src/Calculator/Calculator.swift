@@ -70,7 +70,6 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
             makePeriodsSeperatedByYear()
             makePeriod()
         } else {
-            print("fetched data from cloud")
             CloudStorage.getAllShifts(fromUser: userId) { (s) in
                 var tmp = s
                 shifts = Period.organizeShiftsIntoPeriods(ar: &tmp)
@@ -81,13 +80,9 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 self.startCountingLabels()
                 self.menuTable.reloadData()
                 self.statsTable.reloadData()
-                print(234)
             }
         }
         shouldFetchAllData = false
-    
-        
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -95,7 +90,6 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         makePeriodsSeperatedByYear()
         makePeriod()
         if period != nil {
-            print(period)
             fillLabelsWithStats()
             startCountingLabels()
         }

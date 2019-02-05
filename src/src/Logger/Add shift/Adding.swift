@@ -67,11 +67,13 @@ class Adding: UIViewController, UITextFieldDelegate {
             if usingLocalStorage {
                 LocalStorage.insertShift(shift: shift)
             } else {
-                CloudStorage.addShift(toUser: userId, shift: shift)
+                CloudStorage.addShift(toUser: userId, shift: shift, completionHandler: {
+        
+                })
             }
-            
-            performSegue(withIdentifier: "gotoadd", sender: self)
             shouldFetchAllData = true
+            performSegue(withIdentifier: "gotoadd", sender: self)
+            
         }
     }
 }
