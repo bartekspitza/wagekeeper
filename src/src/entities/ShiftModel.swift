@@ -11,6 +11,7 @@ import CoreData
 import UIKit
 
 class ShiftModel {
+    var ID = ""
     var date: Date
     var endingTime: Date
     var startingTime: Date

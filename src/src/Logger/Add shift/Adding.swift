@@ -64,6 +64,7 @@ class Adding: UIViewController, UITextFieldDelegate {
                 newPeriod: currentTempShift.newPeriod
             )
             LocalStorage.insertShift(shift: shift)
+            CloudStorage.addShift(toUser: userId, shift: shift)
             
             performSegue(withIdentifier: "gotoadd", sender: self)
             shouldFetchAllData = true

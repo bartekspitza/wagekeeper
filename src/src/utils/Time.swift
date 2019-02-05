@@ -111,4 +111,9 @@ class Time {
         
         return date
     }
+    
+    static func stringToDate(date: String) -> Date {
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        return formatter.date(from: date)!
+    }
 }

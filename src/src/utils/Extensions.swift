@@ -10,10 +10,22 @@ import Foundation
 import UIKit
 
 
+extension String
+{
+    func toDateTime() -> Date
+    {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        
+        return dateFormatter.date(from: self)!
+    }
+}
+
 func getShifts(fromCloud: Bool) {
     
     if fromCloud {
         // do something
+        
     } else {
         print("Fetched data from local storage")
         LocalStorage.values = LocalStorage.getAllShifts()

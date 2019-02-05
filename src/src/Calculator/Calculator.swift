@@ -7,6 +7,9 @@
 
 import UIKit
 import Foundation
+import FirebaseAuth
+
+var userId = "TJPdjzkhM5OXXrGIs7G7V6LeyWk2"
 
 class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -27,12 +30,29 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var pulldownMenuIsShowing = false
     var indexForChosenPeriod = [0,0]
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+//        Auth.auth().createUser(withEmail: "test@test.com", password: "test123") { (authResult, error) in
+//            guard let user = authResult?.user else { return }
+//        }
+
+        // adds listener
+//        Auth.auth().addStateDidChangeListener { (auth, user) in
+//            if user != nil {
+//                userId = user!.uid;
+//            }
+//        }
+//
+//        // logs in
+//        Auth.auth().signIn(withEmail: "test@test.com", password: "test123") { (result, error) in
+//
+//        }
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNewUser()
-        getShifts(fromCloud: false)
-        makePeriodsSeperatedByYear()
-        makePeriod()
         makeDesign()
         makeMenuBtn()
         designLabels()
@@ -40,6 +60,34 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         configureStatsTable()
         configureMenuTable()
         centerTotalTimeLabels()
+        
+        shifts.removeAll()
+        if usingLocalStorage {
+            print("Fetched data from local storage")
+            LocalStorage.values = LocalStorage.getAllShifts()
+            LocalStorage.organizedValues = Period.organizeShiftsIntoPeriods(ar: &LocalStorage.values)
+            shifts = Period.convertShiftsFromCoreDataToModels(arr: LocalStorage.organizedValues)
+            makePeriodsSeperatedByYear()
+            makePeriod()
+        } else {
+            print("fetched data from cloud")
+            CloudStorage.getAllShifts(fromUser: userId) { (s) in
+                var tmp = s
+                shifts = Period.organizeShiftsIntoPeriods(ar: &tmp)
+                
+                self.makePeriodsSeperatedByYear()
+                self.makePeriod()
+                self.fillLabelsWithStats()
+                self.startCountingLabels()
+                self.menuTable.reloadData()
+                self.statsTable.reloadData()
+                print(234)
+            }
+        }
+        shouldFetchAllData = false
+    
+        
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -47,6 +95,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         makePeriodsSeperatedByYear()
         makePeriod()
         if period != nil {
+            print(period)
             fillLabelsWithStats()
             startCountingLabels()
         }

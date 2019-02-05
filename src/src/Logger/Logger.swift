@@ -11,6 +11,7 @@ import CoreData
 
 var shiftToEdit = [0,0]
 var shouldFetchAllData = false
+var usingLocalStorage = false
 
 class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var myTableView: UITableView!
@@ -25,9 +26,22 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
         if shouldFetchAllData {
             shifts.removeAll()
-            getShifts(fromCloud: false)
+            
+            if usingLocalStorage {
+                print("Fetched data from local storage")
+                LocalStorage.values = LocalStorage.getAllShifts()
+                LocalStorage.organizedValues = Period.organizeShiftsIntoPeriods(ar: &LocalStorage.values)
+                shifts = Period.convertShiftsFromCoreDataToModels(arr: LocalStorage.organizedValues)
+            } else {
+                CloudStorage.getAllShifts(fromUser: userId) { (s) in
+                    var tmp = s
+                    shifts = Period.organizeShiftsIntoPeriods(ar: &tmp)
+                    self.myTableView.reloadData()
+                }
+            }
             shouldFetchAllData = false
         }
         
@@ -91,30 +105,39 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: .normal, title: "Delete")   { (_ rowAction: UITableViewRowAction, _ indexPath: IndexPath) in
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            let context = appDelegate.persistentContainer.viewContext
             
-            let shiftToDelete = LocalStorage.organizedValues[indexPath.section][indexPath.row]
-            context.delete(shiftToDelete)
-            
-            
-            do {
-                try context.save()
+            if usingLocalStorage {
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                let context = appDelegate.persistentContainer.viewContext
                 
-            } catch {
+                let shiftToDelete = LocalStorage.organizedValues[indexPath.section][indexPath.row]
+                context.delete(shiftToDelete)
                 
+                
+                do {
+                    try context.save()
+                    
+                } catch {
+                    
+                }
+                LocalStorage.organizedValues[indexPath.section].remove(at: indexPath.row)
+            } else {
+                let shiftToDelete = shifts[indexPath.section][indexPath.row]
+                
+                CloudStorage.deleteShift(fromUser: userId, shift: shiftToDelete)
             }
             
-            // Removes the shift from in memory 'database'
-            shifts[indexPath.section].remove(at: indexPath.row)
-            LocalStorage.organizedValues[indexPath.section].remove(at: indexPath.row)
             
+            // Removes the shift from the in memory database
+            shifts[indexPath.section].remove(at: indexPath.row)
             // Cleans the arrays of empty sub arrays
             var i = 0
             while i < shifts.count {
                 if shifts[i].count == 0 {
                     shifts.remove(at: i)
-                    LocalStorage.organizedValues.remove(at: i)
+                    if usingLocalStorage {
+                        LocalStorage.organizedValues.remove(at: i)
+                    }
                 } else {
                     i += 1
                 }

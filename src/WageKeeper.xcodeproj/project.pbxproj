@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		488118C6201405880C9FB4B6 /* Pods_WageKeeper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A2FEDCE8102FEBDF20CDA71 /* Pods_WageKeeper.framework */; };
 		980D1DD01FA3A4770091E06D /* SettingsTableNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980D1DCF1FA3A4770091E06D /* SettingsTableNav.swift */; };
+		981E7FD42209FF0E006A492C /* CloudStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981E7FD32209FF0E006A492C /* CloudStorage.swift */; };
 		9820A5551FBCBF6B00EAEE6A /* MainNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9820A5541FBCBF6B00EAEE6A /* MainNav.swift */; };
 		982F934B22087796005D9C99 /* LocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934A22087796005D9C99 /* LocalStorage.swift */; };
 		982F934E220884DA005D9C99 /* ShiftModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934D220884DA005D9C99 /* ShiftModel.swift */; };
@@ -44,6 +45,7 @@
 		6106A203491D43CA4ED87591 /* Pods-WageKeeper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WageKeeper.release.xcconfig"; path = "Pods/Target Support Files/Pods-WageKeeper/Pods-WageKeeper.release.xcconfig"; sourceTree = "<group>"; };
 		6A2FEDCE8102FEBDF20CDA71 /* Pods_WageKeeper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WageKeeper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		980D1DCF1FA3A4770091E06D /* SettingsTableNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableNav.swift; sourceTree = "<group>"; };
+		981E7FD32209FF0E006A492C /* CloudStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorage.swift; sourceTree = "<group>"; };
 		9820A5541FBCBF6B00EAEE6A /* MainNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNav.swift; sourceTree = "<group>"; };
 		982F934A22087796005D9C99 /* LocalStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorage.swift; sourceTree = "<group>"; };
 		982F934D220884DA005D9C99 /* ShiftModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftModel.swift; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 				9830C2052207B3AD0023B582 /* Time.swift */,
 				9858E0EB220866D7007600C3 /* Version.swift */,
 				982F934A22087796005D9C99 /* LocalStorage.swift */,
+				981E7FD32209FF0E006A492C /* CloudStorage.swift */,
 				982F93532208C386005D9C99 /* StringFormatter.swift */,
 			);
 			path = utils;
@@ -327,14 +330,26 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-WageKeeper/Pods-WageKeeper-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -360,6 +375,7 @@
 				9830C2062207B3AD0023B582 /* Time.swift in Sources */,
 				982F934B22087796005D9C99 /* LocalStorage.swift in Sources */,
 				9858E0EC220866D7007600C3 /* Version.swift in Sources */,
+				981E7FD42209FF0E006A492C /* CloudStorage.swift in Sources */,
 				984319182207923E00C9B6FF /* AppDelegate.swift in Sources */,
 				98CA61941FB0A6D900463FF7 /* OvertimeRuleTable.swift in Sources */,
 				98ACD1671FA381D800B78C7D /* SettingsTable.swift in Sources */,
