@@ -19,6 +19,7 @@ class Period {
     var minutesInOvertime: Int = 0
     var moneyFromOvertime: Int = 0
     var avgShift: [Int] = [0,0]
+    var stats: [String] = [String]()
     
     init(month: [ShiftModel]) {
         self.shifts = month
@@ -34,6 +35,25 @@ class Period {
         self.amountHoursMinutesWorked = self.calculateHoursMinutesWorked()
         self.avgShift = self.calculateAvgShiftLength()
         self.shiftsWorked = self.shifts.count
+        self.stats = self.makeStats()
+    }
+    
+    func makeStats() -> [String] {
+        var ar = [String]()
+        
+        // Total work-time
+        ar.append(StringFormatter.stringFromHoursAndMinutes(a: self.amountHoursMinutesWorked))
+        // Avg Shift length
+        ar.append(StringFormatter.stringFromHoursAndMinutes(a: self.avgShift))
+        // Total shifts worked
+        ar.append(String(self.shiftsWorked))
+        // Total days worked
+        ar.append(String(self.daysWorked))
+        // Overtime worked
+        ar.append(StringFormatter.stringFromHoursAndMinutes(a: Time.minutesToHoursAndMinutes(minutes: self.minutesInOvertime)))
+        // Money from overtime
+        ar.append(StringFormatter.addCurrencyToNumber(amount: self.moneyFromOvertime))
+        return ar
     }
     
     func netSalary() -> Int {
@@ -101,7 +121,7 @@ class Period {
     static func convertShiftsFromCoreDataToModels(arr: [Shift]) -> [ShiftModel] {
         var ar = [ShiftModel]()
         for s in arr {
-            ar.append(ShiftModel(date: s.date!, endingTime: s.startingTime!, startingTime: s.endingTime!, lunchTime: s.lunchTime!, note: s.note!, newPeriod: s.newMonth))
+            ar.append(ShiftModel(date: s.date!, endingTime: s.endingTime!, startingTime: s.startingTime!, lunchTime: s.lunchTime!, note: s.note!, newPeriod: s.newMonth))
         }
         return ar
     }

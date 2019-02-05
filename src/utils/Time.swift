@@ -71,6 +71,15 @@ class Time {
         return timeString
     }
     
+    static func dateToCellString(date: Date) -> String {
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        
+        var dateString = formatter.string(from: date)
+        dateString = String(Array(formatter.string(from: date))[0..<dateString.count-4])
+        return dateString.replacingOccurrences(of: ",", with: "")
+    }
+    
     static func combineDateWithTime(date: Date, time: Date) -> Date? {
         let dateComponents = calendar.dateComponents([.year, .month, .day], from: date)
         let timeComponents = calendar.dateComponents([.hour, .minute], from: time)

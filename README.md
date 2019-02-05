@@ -7,3 +7,4 @@
 
 ### Known bugs
 * Deleting a shift doesnt delete it from core data
+

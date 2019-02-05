@@ -136,9 +136,9 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MainCell") as! MainCell
         let shiftForRow = shifts[indexPath.section][indexPath.row]
         cell.noteLbl.text = shiftForRow.note
-        cell.dateLbl.text = createDateForCell(Date: shiftForRow.date)
+        cell.dateLbl.text = Time.dateToCellString(date: shiftForRow.date)
         cell.accessoryLbl.text = shiftForRow.durationToString()
-        cell.timeLbl.text = createTime(Date: shiftForRow.startingTime) + " - " + createTime(Date: shiftForRow.endingTime)
+        cell.timeLbl.text = Time.dateToTimeString(date: shiftForRow.startingTime) + " - " + Time.dateToTimeString(date: shiftForRow.endingTime)
         cell.lunchLbl.text = shiftForRow.lunchTime + "m break"
         
         cell.timeLbl.sizeToFit()
@@ -154,7 +154,7 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let text = (createDateForHeader(Date: shifts[section][shifts[section].count-1].date) + " - " +  createDateForHeader(Date: shifts[section][0].date)).uppercased()
+        let text = (Time.dateToString(date: shifts[section][shifts[section].count-1].date, withDayName: false) + " - " +  Time.dateToString(date: shifts[section][0].date, withDayName: false)).uppercased()
         let headerView = UIView()
         headerView.backgroundColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
 
@@ -203,99 +203,5 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
             tmp = Period.convertShiftsFromCoreDataToModels(arr: LocalStorage.getAllShifts())
         }
         shifts = Period.organizeShiftsIntoPeriods(ar: &tmp)
-    }
-    
-    func createTime(Date: Date) -> String {
-        formatter.dateStyle = .none
-        formatter.timeStyle = .short
-        
-        let dateString = formatter.string(from: Date)
-        
-        return dateString
-    }
-    
-    func createDateForHeader(Date: Date) -> String {
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .none
-        
-        let dateString = formatter.string(from: Date)
-        
-        return dateString.replacingOccurrences(of: ",", with: "")
-    }
-    
-    func createDateForCell(Date: Date) -> String {
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .none
-        
-        var dateString = formatter.string(from: Date)
-        dateString = String(Array(formatter.string(from: Date))[0..<dateString.count-4])
-        return dateString.replacingOccurrences(of: ",", with: "")
-    }
-    
-    func calcHours(shift: Shift) -> String {
-        var totalHours = ""
-        var hoursWorked = 0
-        var minutesWorked = 0
-        var lunchBreak = 0
-        
-        if shift.lunchTime != "" {
-            lunchBreak = Int(shift.lunchTime!)!
-        }
-        
-        let startingHour = Int(String(Array(shift.startingTime!.description)[11...12]))
-        let startingMin = Int(String(Array(shift.startingTime!.description)[14...15]))
-        let endingHour = Int(String(Array(shift.endingTime!.description)[11...12]))
-        let endingMin = Int(String(Array(shift.endingTime!.description)[14...15]))
-
-        if endingHour! - startingHour! > 0 {
-            hoursWorked = endingHour! - startingHour!
-        } else if endingHour! - startingHour! < 0 {
-            hoursWorked = 24 + (endingHour! - startingHour!)
-        }
-
-        if endingMin! - startingMin! < 0 {
-            hoursWorked -= 1
-            minutesWorked = 60 - (startingMin! - endingMin!)
-        } else if endingMin! - startingMin! > 0 {
-            minutesWorked = endingMin! - startingMin!
-        }
-
-        minutesWorked += (hoursWorked * 60) - lunchBreak
-        if UserDefaults().string(forKey: "minHours") != nil && UserDefaults().string(forKey: "minHours") != "" {
-            let minimum = Float(UserDefaults().string(forKey: "minHours")!)! * 60
-            if minimum > Float(minutesWorked) {
-                minutesWorked = Int(minimum)
-            }
-        }
-        hoursWorked = Int(minutesWorked/60)
-        minutesWorked -= Int(minutesWorked/60) * 60
-
-        if hoursWorked == 0 {
-            if minutesWorked == 1 {
-                totalHours = "\(minutesWorked)m"
-            } else {
-                totalHours = "\(minutesWorked)m"
-            }
-
-        } else if minutesWorked == 0 {
-            if hoursWorked == 1 {
-                totalHours = "\(hoursWorked)h"
-            } else {
-                totalHours = "\(hoursWorked)h"
-            }
-
-        } else {
-            if hoursWorked == 1 && minutesWorked != 1 {
-                totalHours = "\(hoursWorked)h \(minutesWorked)m"
-            } else if hoursWorked != 1 && minutesWorked == 1 {
-                totalHours = "\(hoursWorked)h \(minutesWorked)m"
-            } else if hoursWorked == 1 && minutesWorked == 1 {
-                totalHours = "\(hoursWorked)h \(minutesWorked)m"
-            } else {
-                totalHours = "\(hoursWorked)h \(minutesWorked)m"
-            }
-        }
-
-        return totalHours
     }
 }

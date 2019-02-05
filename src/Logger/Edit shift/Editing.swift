@@ -34,12 +34,17 @@ class Editing: UIViewController {
             // TODO: handle the error
         }
         
+        print(shifts[shiftToEdit[0]][shiftToEdit[1]].note)
         shifts[shiftToEdit[0]][shiftToEdit[1]].date = currentTempShift.date
         shifts[shiftToEdit[0]][shiftToEdit[1]].startingTime = currentTempShift.startingTime
         shifts[shiftToEdit[0]][shiftToEdit[1]].endingTime = currentTempShift.endingTime
         shifts[shiftToEdit[0]][shiftToEdit[1]].lunchTime = currentTempShift.lunchTime
         shifts[shiftToEdit[0]][shiftToEdit[1]].note = currentTempShift.note
         shifts[shiftToEdit[0]][shiftToEdit[1]].beginsNewPeriod = currentTempShift.newPeriod
+        
+        print(currentTempShift.note)
+        print(Time.dateToTimeString(date: currentTempShift.startingTime))
+        print(Time.dateToTimeString(date: currentTempShift.endingTime))
         
         for section in shifts {
             for shift in section {

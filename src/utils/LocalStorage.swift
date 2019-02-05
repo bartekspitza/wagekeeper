@@ -22,4 +22,25 @@ class LocalStorage {
         }
         return shiftsFromLocalStorage
     }
+    
+    static func insertExampleShift() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        
+        let shift = Shift(context: context)
+        shift.date = Date()
+        shift.endingTime = Time.createDefaultET()
+        shift.startingTime = Time.createDefaultST()
+        shift.lunchTime = "60"
+        shift.note = "Example (Delete this)"
+        shift.newMonth = Int16(0)
+        
+        shifts.append([ShiftModel.createFromCoreData(s: shift)])
+        
+        do {
+            try context.save()
+        } catch {
+            print(error)
+        }
+    }
 }

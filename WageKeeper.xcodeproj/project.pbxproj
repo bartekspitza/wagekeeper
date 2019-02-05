@@ -12,7 +12,6 @@
 		982F934B22087796005D9C99 /* LocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934A22087796005D9C99 /* LocalStorage.swift */; };
 		982F934E220884DA005D9C99 /* ShiftModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934D220884DA005D9C99 /* ShiftModel.swift */; };
 		982F93502208B103005D9C99 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934F2208B103005D9C99 /* UserSettings.swift */; };
-		982F93522208BBCC005D9C99 /* Salary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F93512208BBCC005D9C99 /* Salary.swift */; };
 		982F93542208C386005D9C99 /* StringFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F93532208C386005D9C99 /* StringFormatter.swift */; };
 		9830C1FD220793CB0023B582 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9830C1FB220793CB0023B582 /* LaunchScreen.storyboard */; };
 		9830C1FE220793CB0023B582 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9830C1FC220793CB0023B582 /* Main.storyboard */; };
@@ -45,7 +44,6 @@
 		982F934A22087796005D9C99 /* LocalStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorage.swift; sourceTree = "<group>"; };
 		982F934D220884DA005D9C99 /* ShiftModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftModel.swift; sourceTree = "<group>"; };
 		982F934F2208B103005D9C99 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
-		982F93512208BBCC005D9C99 /* Salary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Salary.swift; sourceTree = "<group>"; };
 		982F93532208C386005D9C99 /* StringFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringFormatter.swift; sourceTree = "<group>"; };
 		9830C1FB220793CB0023B582 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9830C1FC220793CB0023B582 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -100,8 +98,6 @@
 			children = (
 				9830C2002207A0EF0023B582 /* Period.swift */,
 				982F934D220884DA005D9C99 /* ShiftModel.swift */,
-				982F934F2208B103005D9C99 /* UserSettings.swift */,
-				982F93512208BBCC005D9C99 /* Salary.swift */,
 			);
 			path = entities;
 			sourceTree = "<group>";
@@ -109,6 +105,7 @@
 		9830C1FF220794CE0023B582 /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				982F934F2208B103005D9C99 /* UserSettings.swift */,
 				989392DB1FCEF322002475EA /* Extensions.swift */,
 				98E2EF991FB4D657006C3F96 /* CountingLabel.swift */,
 				9830C2022207A4020023B582 /* Stats.swift */,
@@ -300,7 +297,6 @@
 				98E284E31FC70CC1004FD2D2 /* TabBarController.swift in Sources */,
 				982F93542208C386005D9C99 /* StringFormatter.swift in Sources */,
 				989392DC1FCEF322002475EA /* Extensions.swift in Sources */,
-				982F93522208BBCC005D9C99 /* Salary.swift in Sources */,
 				982F93502208B103005D9C99 /* UserSettings.swift in Sources */,
 				98760E601FA6488A000E1A28 /* AddingTable.swift in Sources */,
 			);
