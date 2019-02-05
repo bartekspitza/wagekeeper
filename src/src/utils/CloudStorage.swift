@@ -44,6 +44,7 @@ class CloudStorage {
                 arr.append(s)
                 
             }
+            print("Fetched data from cloud")
             completionHandler(arr)
         })
     }
@@ -61,6 +62,7 @@ class CloudStorage {
             "note": shift.note,
             "beginsNewPeriod": shift.beginsNewPeriod
         ])
+        print("Added shift to cloud")
     }
     
     static func deleteShift(fromUser: String, shift: ShiftModel) {
@@ -68,6 +70,21 @@ class CloudStorage {
         let shiftsCollection = db.collection("users/" + fromUser + "/shifts/")
         
         shiftsCollection.document(shift.ID).delete()
+        print("Deleted shift from cloud")
+    }
+    
+    static func updateShift(from: ShiftModel, with: ShiftModel, user: String) {
+        let db = Firestore.firestore()
+        let shiftsCollection = db.collection("users/" + user + "/shifts/")
+        
+        shiftsCollection.document(from.ID).setData([
+            "date": with.date.description,
+            "startingtime": with.startingTime.description,
+            "endingtime": with.endingTime.description,
+            "break": with.lunchTime,
+            "note": with.note,
+            "beginsNewPeriod": with.beginsNewPeriod
+        ])
     }
     
 }
