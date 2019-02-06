@@ -36,7 +36,7 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 LocalStorage.organizedValues = Period.organizeShiftsIntoPeriods(ar: &LocalStorage.values)
                 shifts = Period.convertShiftsFromCoreDataToModels(arr: LocalStorage.organizedValues)
             } else {
-                CloudStorage.getAllShifts(fromUser: userId) { (s) in
+                CloudStorage.getAllShifts(fromUser: user.ID) { (s) in
                     var tmp = s
                     shifts = Period.organizeShiftsIntoPeriods(ar: &tmp)
                     self.myTableView.reloadData()
@@ -124,7 +124,7 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
             } else {
                 let shiftToDelete = shifts[indexPath.section][indexPath.row]
                 
-                CloudStorage.deleteShift(fromUser: userId, shift: shiftToDelete)
+                CloudStorage.deleteShift(fromUser: user.ID, shift: shiftToDelete)
             }
             
             

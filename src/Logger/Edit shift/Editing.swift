@@ -57,7 +57,7 @@ class Editing: UIViewController {
             )
             newShift.ID = shiftToUpdate.ID
 
-            CloudStorage.updateShift(from: shiftToUpdate, with: newShift, user: userId, completionHandler: {
+            CloudStorage.updateShift(from: shiftToUpdate, with: newShift, user: user.ID, completionHandler: {
                 shifts[shiftToEdit[0]][shiftToEdit[1]] = newShift
             })
         }

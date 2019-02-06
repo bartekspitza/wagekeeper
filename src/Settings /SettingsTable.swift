@@ -105,6 +105,9 @@ class SettingsTable: UITableViewController, UITextFieldDelegate, UIPickerViewDel
             wageRateField.becomeFirstResponder()
         } else if indexPath.row == 2 {
             currencyField.becomeFirstResponder()
+        } else if indexPath.row == 4 {
+            user = nil
+            performSegue(withIdentifier: "gotologin", sender: self)
         }
         
     }

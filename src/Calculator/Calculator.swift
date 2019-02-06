@@ -9,7 +9,9 @@ import UIKit
 import Foundation
 import FirebaseAuth
 
-var userId = "TJPdjzkhM5OXXrGIs7G7V6LeyWk2"
+var userId = "TJPdjzkhM5OXXrGIs7G7V6LeyWk2             "
+
+var user: User!
 
 class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -29,27 +31,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var period: Period!
     var pulldownMenuIsShowing = false
     var indexForChosenPeriod = [0,0]
-    
-    override func viewWillAppear(_ animated: Bool) {
         
-//        Auth.auth().createUser(withEmail: "test@test.com", password: "test123") { (authResult, error) in
-//            guard let user = authResult?.user else { return }
-//        }
-
-        // adds listener
-//        Auth.auth().addStateDidChangeListener { (auth, user) in
-//            if user != nil {
-//                userId = user!.uid;
-//            }
-//        }
-//
-//        // logs in
-//        Auth.auth().signIn(withEmail: "test@test.com", password: "test123") { (result, error) in
-//
-//        }
-        
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNewUser()
@@ -70,16 +52,18 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
             makePeriodsSeperatedByYear()
             makePeriod()
         } else {
-            CloudStorage.getAllShifts(fromUser: userId) { (s) in
+            CloudStorage.getAllShifts(fromUser: user.ID) { (s) in
                 var tmp = s
                 shifts = Period.organizeShiftsIntoPeriods(ar: &tmp)
                 
-                self.makePeriodsSeperatedByYear()
-                self.makePeriod()
-                self.fillLabelsWithStats()
-                self.startCountingLabels()
-                self.menuTable.reloadData()
-                self.statsTable.reloadData()
+                if shifts.count > 0 {
+                    self.makePeriodsSeperatedByYear()
+                    self.makePeriod()
+                    self.fillLabelsWithStats()
+                    self.startCountingLabels()
+                    self.menuTable.reloadData()
+                    self.statsTable.reloadData()
+                }
             }
         }
         shouldFetchAllData = false
