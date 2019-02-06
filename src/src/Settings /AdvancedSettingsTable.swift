@@ -265,13 +265,24 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == 4 {
             let versionText = UILabel()
-            versionText.text = appName + " " + appBuild
+            versionText.text = "Got any feedback or improvements you would like to see? Please consider sending us an email and make this app better!"
+            versionText.numberOfLines = 3
+            versionText.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30)
             versionText.textAlignment = .center
-            versionText.center = CGPoint(x: self.view.frame.width/2, y: 0)
+            versionText.center = CGPoint(x: self.view.frame.width/2, y: 10)
             versionText.textColor = .darkGray
             versionText.font = UIFont.systemFont(ofSize: 12)
 
             return versionText 
+        } else if section == 5 {
+            let versionText = UILabel()
+            versionText.text = ""
+            versionText.textAlignment = .center
+            versionText.center = CGPoint(x: self.view.frame.width/2, y: 0)
+            versionText.textColor = .darkGray
+            versionText.font = UIFont.systemFont(ofSize: 12)
+            
+            return versionText
         } else {
             return UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         }
