@@ -166,9 +166,9 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let shiftForRow = shifts[indexPath.section][indexPath.row]
         cell.noteLbl.text = shiftForRow.note
         cell.dateLbl.text = Time.dateToCellString(date: shiftForRow.date)
-        cell.accessoryLbl.text = shiftForRow.durationToString()
+        cell.accessoryLbl.text = shiftForRow.lunchTime + "m break"
         cell.timeLbl.text = Time.dateToTimeString(date: shiftForRow.startingTime) + " - " + Time.dateToTimeString(date: shiftForRow.endingTime)
-        cell.lunchLbl.text = shiftForRow.lunchTime + "m break"
+        cell.lunchLbl.text = shiftForRow.durationToString()
         
         cell.timeLbl.sizeToFit()
         cell.accessoryLbl.sizeToFit()

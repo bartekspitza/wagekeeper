@@ -35,8 +35,8 @@ class CloudStorage {
                     
                     let s = ShiftModel(
                         date: shiftDate,
-                        endingTime: shiftST,
-                        startingTime: shiftET,
+                        endingTime: shiftET,
+                        startingTime: shiftST,
                         lunchTime: shiftBreak,
                         note: shiftNote,
                         newPeriod: shiftIsNewPeriod

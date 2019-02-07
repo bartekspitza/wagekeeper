@@ -34,6 +34,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
     override func viewDidLoad() {
         super.viewDidLoad()
+        user = User(ID: userId)
         configureNewUser()
         makeDesign()
         makeMenuBtn()
