@@ -19,6 +19,7 @@
 
 # Known bugs
 * Fix so that adding new shifts doesnt require fetching all data from database 
+* Break time is not subtracted in calculations
 
 # Before launch
 * Make the improvements above

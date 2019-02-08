@@ -224,6 +224,7 @@ class ShiftModel {
         
         // Substracts lunchTime with the average money/minute rate
         if self.lunchTime != "" && shouldSubstractLunch {
+            
             lunchMinutes = Float(Int(self.lunchTime)!)
             salary -= (lunchMinutes * (salary/minutesWorked))
             moneyInOT -= (lunchMinutes * (salary/minutesWorked))
