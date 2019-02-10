@@ -35,8 +35,6 @@ class AddingTable: UITableViewController, UITextFieldDelegate {
     // DatePickers
     let datePicker = UIDatePicker()
     let timePicker = UIDatePicker()
-    let formatter = DateFormatter()
-    let calendar = Calendar.current
     
     @IBOutlet weak var newMonthCell: UITableViewCell!
     @IBOutlet weak var mySwitch: UISwitch!

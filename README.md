@@ -16,6 +16,7 @@
 * Add refresh on pull down in logger view
 * Add welcoming screen after a user creates an account. Inform that they now have a free account and their settings will be shared across devices, however, shifts will not.
 * Add note to shifts (text fields)
+* Check if new add shift view looks good on other devices
 
 # Known bugs
 * Fix so that adding new shifts doesnt require fetching all data from database 

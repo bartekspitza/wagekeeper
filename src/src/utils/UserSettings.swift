@@ -51,4 +51,36 @@ class UserSettings {
         UserDefaults().set("Example (Delete this)", forKey: "defaultNote")
         UserDefaults().set("0", forKey: "defaultLunch")
     }
+    
+    static func getDefaultShiftName() -> String {
+        var s = ""
+        if UserDefaults().string(forKey: "defaultNote") != nil {
+            s = UserDefaults().string(forKey: "defaultNote")!
+        }
+        return s
+    }
+    
+    static func getDefaultStartingTime() -> Date {
+        var s = Date()
+        if UserDefaults().value(forKey: "defaultST") != nil {
+            s = UserDefaults().value(forKey: "defaultST") as! Date
+        }
+        return s
+    }
+    
+    static func getDefaultEndingTime() -> Date {
+        var s = Date()
+        if UserDefaults().value(forKey: "defaultET") != nil {
+            s = UserDefaults().value(forKey: "defaultET") as! Date
+        }
+        return s
+    }
+    
+    static func getDefaultBreakTime() -> String {
+        var s = ""
+        if UserDefaults().value(forKey: "defaultLunch") != nil {
+            s = UserDefaults().string(forKey: "defaultLunch")!
+        }
+        return s
+    }
 }
