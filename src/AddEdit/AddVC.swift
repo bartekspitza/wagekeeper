@@ -40,10 +40,11 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
         super.viewDidLoad()
         self.navigationController?.navigationBar.tintColor = UIColor.white
         self.title = "Add shift"
+        createTitleField()
         configureTable()
         configureToolbar()
         configurePickers()
-        createTitleField()
+        
         createAddShiftButton()
     }
     
@@ -70,7 +71,7 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
     func createTitleField() {
         let height = UIApplication.shared.statusBarFrame.height +
             self.navigationController!.navigationBar.frame.height
-        titleField = UITextField(frame: CGRect(x: 0, y: height, width: self.view.frame.width, height: 50))
+        titleField = UITextField(frame: CGRect(x: 0, y: height, width: self.view.frame.width, height: 75))
         titleField.placeholder = "Shift title"
         titleField.textAlignment = .center
         titleField.text = UserSettings.getDefaultShiftName()
@@ -117,7 +118,7 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
             self.navigationController!.navigationBar.frame.height
         table.delegate = self
         table.dataSource = self
-        table.frame = CGRect(x: 0, y: height + 50, width: self.view.frame.width, height: 595)
+        table.frame = CGRect(x: 0, y: height + titleField.frame.height, width: self.view.frame.width, height: 595)
         table.tableFooterView = UIView()
         table.isScrollEnabled = false
     }
@@ -227,6 +228,8 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
             let cell = table.dequeueReusableCell(withIdentifier: "SwitchCell") as! SwitchCell
             periodSwitch = cell.cellSwitch
             periodSwitch.isOn = false
+            periodSwitch.tintColor = Colors.loggerSectionBG
+            periodSwitch.onTintColor = Colors.loggerSectionBG
             if !UserSettings.newPeriodsManually() {
                 cell.isHidden = true
             }
@@ -249,10 +252,12 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
         return 5
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 5 {
+        if indexPath.section == 3 {
             return 70
+        } else if indexPath.section == 4 {
+            return 40
         }
-        return 45
+        return 30
     }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section != 4 {

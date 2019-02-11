@@ -9,9 +9,6 @@
 import Foundation
 import UIKit
 
-
-
-
 extension UIView {
     func addTopBorderWithColor(color: UIColor, width: CGFloat) {
         let border = CALayer()

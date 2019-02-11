@@ -178,34 +178,41 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 54
     }
+    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+        return 31
+    }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let text = (Time.dateToString(date: shifts[section][shifts[section].count-1].date, withDayName: false) + " - " +  Time.dateToString(date: shifts[section][0].date, withDayName: false)).uppercased()
-        let headerView = UIView()
-        headerView.backgroundColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
-
-        let seperatorColor = myTableView.separatorColor
+        var startDate = Time.dateToString(date: shifts[section][shifts[section].count-1].date, withDayName: false)
+        startDate = String(startDate.prefix(startDate.count - 5))
+        var endDate = Time.dateToString(date: shifts[section][0].date, withDayName: false)
+        endDate = String(endDate.prefix(endDate.count - 5))
+        let text = startDate + " - " + endDate
         
+        let seperatorColor = myTableView.separatorColor
         let topSeperator = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 0.5))
         let bottomSeperator = UIView(frame: CGRect(x: 0, y: 40, width: self.view.frame.width, height: 0.5))
         topSeperator.backgroundColor = seperatorColor
         bottomSeperator.backgroundColor = seperatorColor
         
+        let headerView = UIView()
         
         let headerLabel = UILabel(frame: CGRect(x: 15, y: 15, width:
-            tableView.bounds.size.width, height: tableView.bounds.size.height))
-        headerLabel.font = UIFont.systemFont(ofSize: 11, weight: UIFont.Weight.medium)
-        headerLabel.textColor = UIColor(red: 0.265, green: 0.294, blue: 0.367, alpha: 1.0)
+            tableView.bounds.size.width, height: 30))
+        headerLabel.font = UIFont.systemFont(ofSize: 17, weight: .medium)
+        headerLabel.textColor = .white
         headerLabel.text = text
         headerLabel.sizeToFit()
         headerLabel.center.x = self.view.frame.width/2
         headerLabel.textAlignment = .center
+        headerLabel.backgroundColor = Colors.loggerSectionBG
         
         headerView.addSubview(topSeperator)
-        headerView.addSubview(bottomSeperator)
         headerView.addSubview(headerLabel)
-
-        return headerView
+        headerView.addSubview(bottomSeperator)
+        
+        
+        return headerLabel
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

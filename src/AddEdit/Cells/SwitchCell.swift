@@ -12,6 +12,7 @@ import UIKit
 class SwitchCell: UITableViewCell {
     
     
+    @IBOutlet weak var label: UILabel!
     @IBOutlet weak var cellSwitch: UISwitch!
     
     override func awakeFromNib() {
