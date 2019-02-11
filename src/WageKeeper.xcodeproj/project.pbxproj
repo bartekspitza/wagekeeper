@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		488118C6201405880C9FB4B6 /* Pods_WageKeeper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A2FEDCE8102FEBDF20CDA71 /* Pods_WageKeeper.framework */; };
+		980B984F2211837800414EB9 /* EditVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980B984E2211837800414EB9 /* EditVC.swift */; };
 		980D1DD01FA3A4770091E06D /* SettingsTableNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980D1DCF1FA3A4770091E06D /* SettingsTableNav.swift */; };
 		981E7FD42209FF0E006A492C /* CloudStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981E7FD32209FF0E006A492C /* CloudStorage.swift */; };
 		9820A5551FBCBF6B00EAEE6A /* MainNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9820A5541FBCBF6B00EAEE6A /* MainNav.swift */; };
@@ -26,17 +27,13 @@
 		984319182207923E00C9B6FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988FDEB91F9F7AFA0090DEF1 /* AppDelegate.swift */; };
 		9852F1071FA2309B00E7BDB5 /* MainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9852F1061FA2309B00E7BDB5 /* MainCell.swift */; };
 		9858E0EC220866D7007600C3 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9858E0EB220866D7007600C3 /* Version.swift */; };
-		985CAA381FA87C3F00AE6993 /* EditingTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985CAA371FA87C3F00AE6993 /* EditingTable.swift */; };
-		985CAA3A1FA8824C00AE6993 /* Editing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985CAA391FA8824C00AE6993 /* Editing.swift */; };
 		9862A5711FCC33AA0047671D /* AdvancedSettingsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9862A5701FCC33AA0047671D /* AdvancedSettingsTable.swift */; };
 		9864BB0C1FD4700E005DB5F2 /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9864BB0B1FD4700E005DB5F2 /* Calculator.swift */; };
-		98760E601FA6488A000E1A28 /* AddingTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98760E5F1FA6488A000E1A28 /* AddingTable.swift */; };
 		988FDEBC1F9F7AFA0090DEF1 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988FDEBB1F9F7AFA0090DEF1 /* Logger.swift */; };
 		988FDEC21F9F7AFA0090DEF1 /* adding_shifts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 988FDEC01F9F7AFA0090DEF1 /* adding_shifts.xcdatamodeld */; };
 		988FDEC41F9F7AFA0090DEF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 988FDEC31F9F7AFA0090DEF1 /* Assets.xcassets */; };
-		988FDED11F9F9B2D0090DEF1 /* Adding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988FDED01F9F9B2D0090DEF1 /* Adding.swift */; };
 		989392DC1FCEF322002475EA /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989392DB1FCEF322002475EA /* Extensions.swift */; };
-		98A54977220E03C000CBEE5D /* AddShiftVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A54976220E03C000CBEE5D /* AddShiftVC.swift */; };
+		98A54977220E03C000CBEE5D /* AddVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A54976220E03C000CBEE5D /* AddVC.swift */; };
 		98ACD1671FA381D800B78C7D /* SettingsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98ACD1661FA381D800B78C7D /* SettingsTable.swift */; };
 		98B3B8802209DA8C000D153B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 98B3B87F2209DA8C000D153B /* GoogleService-Info.plist */; };
 		98CA61941FB0A6D900463FF7 /* OvertimeRuleTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CA61931FB0A6D900463FF7 /* OvertimeRuleTable.swift */; };
@@ -53,6 +50,7 @@
 		12185FAAFF2FF701EBC5FDD9 /* Pods-WageKeeper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WageKeeper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WageKeeper/Pods-WageKeeper.debug.xcconfig"; sourceTree = "<group>"; };
 		6106A203491D43CA4ED87591 /* Pods-WageKeeper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WageKeeper.release.xcconfig"; path = "Pods/Target Support Files/Pods-WageKeeper/Pods-WageKeeper.release.xcconfig"; sourceTree = "<group>"; };
 		6A2FEDCE8102FEBDF20CDA71 /* Pods_WageKeeper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WageKeeper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		980B984E2211837800414EB9 /* EditVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVC.swift; sourceTree = "<group>"; };
 		980D1DCF1FA3A4770091E06D /* SettingsTableNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableNav.swift; sourceTree = "<group>"; };
 		981E7FD32209FF0E006A492C /* CloudStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorage.swift; sourceTree = "<group>"; };
 		9820A5541FBCBF6B00EAEE6A /* MainNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNav.swift; sourceTree = "<group>"; };
@@ -71,19 +69,15 @@
 		9843191422078EC000C9B6FF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9852F1061FA2309B00E7BDB5 /* MainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCell.swift; sourceTree = "<group>"; };
 		9858E0EB220866D7007600C3 /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
-		985CAA371FA87C3F00AE6993 /* EditingTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingTable.swift; sourceTree = "<group>"; };
-		985CAA391FA8824C00AE6993 /* Editing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Editing.swift; sourceTree = "<group>"; };
 		9862A5701FCC33AA0047671D /* AdvancedSettingsTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsTable.swift; sourceTree = "<group>"; };
 		9864BB0B1FD4700E005DB5F2 /* Calculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculator.swift; sourceTree = "<group>"; };
-		98760E5F1FA6488A000E1A28 /* AddingTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddingTable.swift; sourceTree = "<group>"; };
 		988FDEB61F9F7AFA0090DEF1 /* WageKeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WageKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		988FDEB91F9F7AFA0090DEF1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		988FDEBB1F9F7AFA0090DEF1 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		988FDEC11F9F7AFA0090DEF1 /* adding_shifts.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = adding_shifts.xcdatamodel; sourceTree = "<group>"; };
 		988FDEC31F9F7AFA0090DEF1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		988FDED01F9F9B2D0090DEF1 /* Adding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Adding.swift; sourceTree = "<group>"; };
 		989392DB1FCEF322002475EA /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		98A54976220E03C000CBEE5D /* AddShiftVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddShiftVC.swift; sourceTree = "<group>"; };
+		98A54976220E03C000CBEE5D /* AddVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddVC.swift; sourceTree = "<group>"; };
 		98ACD1661FA381D800B78C7D /* SettingsTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTable.swift; sourceTree = "<group>"; };
 		98B3B87F2209DA8C000D153B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		98CA61931FB0A6D900463FF7 /* OvertimeRuleTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OvertimeRuleTable.swift; sourceTree = "<group>"; };
@@ -131,7 +125,8 @@
 			isa = PBXGroup;
 			children = (
 				982548252210953C00BA182D /* Cells */,
-				98A54976220E03C000CBEE5D /* AddShiftVC.swift */,
+				98A54976220E03C000CBEE5D /* AddVC.swift */,
+				980B984E2211837800414EB9 /* EditVC.swift */,
 			);
 			path = AddEdit;
 			sourceTree = "<group>";
@@ -171,15 +166,6 @@
 				982F93532208C386005D9C99 /* StringFormatter.swift */,
 			);
 			path = utils;
-			sourceTree = "<group>";
-		};
-		98760E5E1FA647DE000E1A28 /* Add shift */ = {
-			isa = PBXGroup;
-			children = (
-				988FDED01F9F9B2D0090DEF1 /* Adding.swift */,
-				98760E5F1FA6488A000E1A28 /* AddingTable.swift */,
-			);
-			path = "Add shift";
 			sourceTree = "<group>";
 		};
 		988FDEAD1F9F7AFA0090DEF1 = {
@@ -239,12 +225,9 @@
 		98ACD18B1FA39EE100B78C7D /* Logger */ = {
 			isa = PBXGroup;
 			children = (
-				982548242210952700BA182D /* AddEdit */,
 				9852F1061FA2309B00E7BDB5 /* MainCell.swift */,
 				988FDEBB1F9F7AFA0090DEF1 /* Logger.swift */,
 				9820A5541FBCBF6B00EAEE6A /* MainNav.swift */,
-				98FC55E91FA6768500424AC0 /* Edit shift */,
-				98760E5E1FA647DE000E1A28 /* Add shift */,
 			);
 			path = Logger;
 			sourceTree = "<group>";
@@ -252,9 +235,10 @@
 		98D40CBE220B3548006E59E0 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				980600FF1FC5A7680067F0B4 /* Calculator */,
+				982548242210952700BA182D /* AddEdit */,
 				98D40CBF220B3594006E59E0 /* Auth */,
 				98ACD18A1FA39EC700B78C7D /* Settings  */,
-				980600FF1FC5A7680067F0B4 /* Calculator */,
 				98ACD18B1FA39EE100B78C7D /* Logger */,
 			);
 			name = Views;
@@ -268,15 +252,6 @@
 				98D40CC6220B45C8006E59E0 /* CreateAccountView.swift */,
 			);
 			path = Auth;
-			sourceTree = "<group>";
-		};
-		98FC55E91FA6768500424AC0 /* Edit shift */ = {
-			isa = PBXGroup;
-			children = (
-				985CAA391FA8824C00AE6993 /* Editing.swift */,
-				985CAA371FA87C3F00AE6993 /* EditingTable.swift */,
-			);
-			path = "Edit shift";
 			sourceTree = "<group>";
 		};
 		DDF3811D744F0B753A21B7F7 /* Frameworks */ = {
@@ -426,15 +401,14 @@
 			files = (
 				9852F1071FA2309B00E7BDB5 /* MainCell.swift in Sources */,
 				988FDEC21F9F7AFA0090DEF1 /* adding_shifts.xcdatamodeld in Sources */,
-				988FDED11F9F9B2D0090DEF1 /* Adding.swift in Sources */,
 				98D40CC3220B3C6A006E59E0 /* CloudAuth.swift in Sources */,
 				980D1DD01FA3A4770091E06D /* SettingsTableNav.swift in Sources */,
 				988FDEBC1F9F7AFA0090DEF1 /* Logger.swift in Sources */,
+				980B984F2211837800414EB9 /* EditVC.swift in Sources */,
 				9825482F2210ADF500BA182D /* FullTextFieldCell.swift in Sources */,
 				98FD4C5D1FC8390F002B91B1 /* LaunchCell.swift in Sources */,
 				9862A5711FCC33AA0047671D /* AdvancedSettingsTable.swift in Sources */,
 				98D40CC5220B410F006E59E0 /* User.swift in Sources */,
-				985CAA381FA87C3F00AE6993 /* EditingTable.swift in Sources */,
 				982548292210987600BA182D /* SwitchCell.swift in Sources */,
 				9830C2062207B3AD0023B582 /* Time.swift in Sources */,
 				9825482D2210AB0500BA182D /* NoteCell.swift in Sources */,
@@ -449,16 +423,14 @@
 				98E2EF9A1FB4D657006C3F96 /* CountingLabel.swift in Sources */,
 				9864BB0C1FD4700E005DB5F2 /* Calculator.swift in Sources */,
 				9830C2012207A0EF0023B582 /* Period.swift in Sources */,
-				98A54977220E03C000CBEE5D /* AddShiftVC.swift in Sources */,
+				98A54977220E03C000CBEE5D /* AddVC.swift in Sources */,
 				982F934E220884DA005D9C99 /* ShiftModel.swift in Sources */,
 				9820A5551FBCBF6B00EAEE6A /* MainNav.swift in Sources */,
-				985CAA3A1FA8824C00AE6993 /* Editing.swift in Sources */,
 				98D40CC7220B45C8006E59E0 /* CreateAccountView.swift in Sources */,
 				98E284E31FC70CC1004FD2D2 /* TabBarController.swift in Sources */,
 				982F93542208C386005D9C99 /* StringFormatter.swift in Sources */,
 				989392DC1FCEF322002475EA /* Extensions.swift in Sources */,
 				982F93502208B103005D9C99 /* UserSettings.swift in Sources */,
-				98760E601FA6488A000E1A28 /* AddingTable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

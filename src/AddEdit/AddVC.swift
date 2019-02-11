@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class AddShiftVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UITextFieldDelegate {
+class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UITextFieldDelegate {
     let TITLES = ["Date", "Duration", "Break (minutes)", "Note"]
     
     
@@ -34,6 +34,8 @@ class AddShiftVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
     let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
     let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: self, action: nil)
    
+    var currentField: Int!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.tintColor = UIColor.white
@@ -133,28 +135,40 @@ class AddShiftVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
         self.view.endEditing(true)
     }
     @objc func prevField(sender: UIBarButtonItem) {
-        
-    }
-    @objc func nextField(sender: UIBarButtonItem) {
-        
-    }
-    
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == UIColor.lightGray {
-            textView.text = ""
-            textView.textColor = UIColor.black
+        let fields = [dateField, startingTimeField, endingTimeField, breakField]
+        if currentField > 0 {
+            fields[currentField-1]?.becomeFirstResponder()
         }
     }
+    @objc func nextField(sender: UIBarButtonItem) {
+        let fields = [startingTimeField, endingTimeField, breakField, noteField]
+        if currentField < 4 {
+            fields[currentField]?.becomeFirstResponder()
+        }
+    }
+    
+    
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text == "" {
             textView.textColor = UIColor.lightGray
             textView.text = "Additional notes.."
         }
     }
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        currentField = 4
+        if textView.textColor == UIColor.lightGray {
+            textView.text = ""
+            textView.textColor = UIColor.black
+        }
+    }
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField.text == "" {
             textField.text = "0"
         }
+    }
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        currentField = textField.tag
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -167,6 +181,8 @@ class AddShiftVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
             dateField.inputView = datePicker
             dateField.tintColor = UIColor.clear
             dateField.text = Time.dateToString(date: Date(), withDayName: true)
+            dateField.delegate = self
+            dateField.tag = 0
             
         } else if indexPath.section == 1 {
             let cell = table.dequeueReusableCell(withIdentifier: "DurationCell") as! DurationCell
@@ -175,12 +191,16 @@ class AddShiftVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
             startingTimeField.tintColor = UIColor.clear
             startingTimeField.inputAccessoryView = toolbar
             startingTimeField.text = Time.dateToTimeString(date: UserSettings.getDefaultStartingTime())
+            startingTimeField.tag = 1
+            startingTimeField.delegate = self
             
             endingTimeField = cell.endingField
             endingTimeField.inputView = endingTimePicker
             endingTimeField.tintColor = UIColor.clear
             endingTimeField.inputAccessoryView = toolbar
             endingTimeField.text = Time.dateToTimeString(date: UserSettings.getDefaultEndingTime())
+            endingTimeField.tag = 2
+            endingTimeField.delegate = self
             
             cell.startingField.center = CGPoint(x: 10 + cell.startingField.frame.width/2, y: cell.startingField.center.y)
             cell.labelBetweenTimes.center = CGPoint(x: 10 + cell.startingField.frame.width + 3, y: cell.startingField.center.y)
@@ -192,6 +212,8 @@ class AddShiftVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
             breakField.placeholder = "How much break did you take?"
             breakField.delegate = self
             breakField.keyboardType = .numberPad
+            breakField.tag = 3
+            breakField.inputAccessoryView = toolbar
             
         } else if indexPath.section == 3 {
             let cell = table.dequeueReusableCell(withIdentifier: "NoteCell") as! NoteCell
@@ -201,11 +223,16 @@ class AddShiftVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
             noteField.text = "Additional notes.."
             noteField.textColor = .lightGray
             noteField.delegate = self
+            noteField.inputAccessoryView = toolbar
+            noteField.tag = 4
             return cell
         } else if indexPath.section == 4 {
             let cell = table.dequeueReusableCell(withIdentifier: "SwitchCell") as! SwitchCell
             periodSwitch = cell.cellSwitch
             periodSwitch.isOn = false
+            if !UserSettings.newPeriodsManually() {
+                cell.isHidden = true
+            }
             return cell
         }
 
@@ -216,17 +243,13 @@ class AddShiftVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
         if section == 5 {
             return 0
         }
-        return 21
+        return 13
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
     func numberOfSections(in tableView: UITableView) -> Int {
-        if UserDefaults().bool(forKey: "manuallyNewMonth") {
-            return 5
-        } else {
-            return 4
-        }
+        return 5
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 5 {
@@ -237,11 +260,10 @@ class AddShiftVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section != 4 {
             let headerView = UIView(frame: CGRect(x: 10, y: 0, width: 0, height: 0))
-            let lbl = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 20))
-            lbl.text = "  " + TITLES[section].uppercased()
-            lbl.font = UIFont.systemFont(ofSize: 11, weight: .thin)
+            let lbl = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 13))
+            lbl.text = "   " + TITLES[section]
+            lbl.font = UIFont.systemFont(ofSize: 11, weight: .semibold)
             lbl.textColor = UIColor.init(red: 50/255, green: 50/255, blue: 50/255, alpha: 1)
-            lbl.addBottomBorderWithColor(color: UIColor.init(red: 220/255, green: 220/255, blue: 220/255, alpha: 1), width: 1)
             
             headerView.addSubview(lbl)
             return headerView
@@ -252,9 +274,10 @@ class AddShiftVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
     }
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let view = UIView()
-        if section != 5 {
+        if section != 4 {
             view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30)
         }
+        
         return view
     }
 }

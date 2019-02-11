@@ -83,4 +83,11 @@ class UserSettings {
         }
         return s
     }
+    
+    static func newPeriodsManually() -> Bool {
+        if UserDefaults().bool(forKey: "manuallyNewMonth") != nil {
+            return UserDefaults().bool(forKey: "manuallyNewMonth")
+        }
+        return false
+    }
 }
