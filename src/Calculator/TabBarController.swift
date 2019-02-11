@@ -29,8 +29,8 @@ class TabBarController: UITabBarController {
         tabBarHeight = self.tabBar.frame.height
         
        
-        self.tabBar.tintColor = navColor
-        self.tabBar.unselectedItemTintColor = headerColor
+        self.tabBar.tintColor = .black
+        self.tabBar.unselectedItemTintColor = .lightGray
         // Do any additional setup after loading the view.
     }
 }

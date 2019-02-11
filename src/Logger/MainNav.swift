@@ -15,10 +15,7 @@ class MainNav: UINavigationController {
         self.setNeedsStatusBarAppearanceUpdate()
         // Do any additional setup after loading the view.
 
-        self.navigationBar.barTintColor = navColor
-    }
-
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        self.navigationBar.barTintColor = .white
+        
     }
 }

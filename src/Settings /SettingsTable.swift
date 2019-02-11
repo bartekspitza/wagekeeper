@@ -45,7 +45,7 @@ class SettingsTable: UITableViewController, UITextFieldDelegate, UIPickerViewDel
         myTableView.separatorStyle = .none
 
         
-        iconColor(color: navColor.withAlphaComponent(0.85))
+        iconColor(color: UIColor.black.withAlphaComponent(0.85))
         createCurrencyPicker()
         createTaxPicker()
         createWageField()
@@ -62,10 +62,15 @@ class SettingsTable: UITableViewController, UITextFieldDelegate, UIPickerViewDel
     }
     
     func designCellLabels() {
-        taxRateLbl.textColor = navColor
-        hourlyWageLbl.textColor = navColor
-        currencyLbl.textColor = navColor
-        advancedSettingsLbl.textColor = navColor
+        taxRateLbl.textColor = .black
+        hourlyWageLbl.textColor = .black
+        currencyLbl.textColor = .black
+        advancedSettingsLbl.textColor = .black
+        
+        taxRateLbl.font = UIFont.systemFont(ofSize: 15, weight: .light)
+        hourlyWageLbl.font = UIFont.systemFont(ofSize: 15, weight: .light)
+        currencyLbl.font = UIFont.systemFont(ofSize: 15, weight: .light)
+        advancedSettingsLbl.font = UIFont.systemFont(ofSize: 15, weight: .light)
     }
     
     func createTableBackground() {
@@ -277,7 +282,8 @@ class SettingsTable: UITableViewController, UITextFieldDelegate, UIPickerViewDel
         currencyField.tintColor = UIColor.clear
         currencyField.inputAccessoryView = toolbar
         currencyField.inputView = currencyPicker
-        currencyField.textColor = navColor
+        currencyField.textColor = .black
+        currencyField.font = UIFont.systemFont(ofSize: 14, weight: .light)
     }
     
     func createTaxPicker() {
@@ -287,14 +293,16 @@ class SettingsTable: UITableViewController, UITextFieldDelegate, UIPickerViewDel
         taxPicker.tag = 2
         taxrateField.inputView = taxPicker
         taxrateField.inputAccessoryView = toolbar
-        taxrateField.textColor = navColor
+        taxrateField.textColor = .black
+        taxrateField.font = UIFont.systemFont(ofSize: 14, weight: .light)
     }
     
     func createWageField() {
         wageRateField.clearsOnBeginEditing = true
         wageRateField.inputAccessoryView = toolbar
         wageRateField.keyboardType = .decimalPad
-        wageRateField.textColor = navColor
+        wageRateField.textColor = .black
+        wageRateField.font = UIFont.systemFont(ofSize: 14, weight: .light)
     }
 }
 

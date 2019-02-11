@@ -21,7 +21,7 @@ class LaunchCell: UITableViewCell {
         statsDesc.center = CGPoint(x: Int((width*0.05) + statsDesc.frame.width/2), y: Int(self.contentView.frame.height/2))
         statsDesc.textColor = UIColor.black.withAlphaComponent(0.9)
         statsDesc.text = text
-        statsDesc.font = UIFont.systemFont(ofSize: 13)
+        statsDesc.font = UIFont.systemFont(ofSize: 14, weight: .light)
         self.contentView.addSubview(statsDesc)
     }
     
@@ -31,24 +31,8 @@ class LaunchCell: UITableViewCell {
         statsInfo.textColor = UIColor.black.withAlphaComponent(0.9)
         statsInfo.textAlignment = .right
         statsInfo.text = text
-        statsInfo.font = UIFont.systemFont(ofSize: 13)
+        statsInfo.font = UIFont.systemFont(ofSize: 14, weight: .light)
         self.contentView.addSubview(statsInfo)
-    }
-    
-    func seperator(width: CGFloat, indexPath: IndexPath) {
-        if indexPath.row != 4 {
-            let seperator = UIView(frame: CGRect(x: 0, y: self.contentView.frame.height-1, width: width, height: 1))
-
-            let gradientLayer: CAGradientLayer = CAGradientLayer()
-            gradientLayer.frame = CGRect(x: 0, y: 0, width: width, height: 1)
-            gradientLayer.colors = [navColor.cgColor, headerColor.cgColor]
-            gradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
-            gradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
-            gradientLayer.locations = [0.0, 1.0]
-            
-            seperator.layer.addSublayer(gradientLayer)
-            self.contentView.addSubview(seperator)
-        }
     }
     
     required init?(coder aDecoder: NSCoder) {

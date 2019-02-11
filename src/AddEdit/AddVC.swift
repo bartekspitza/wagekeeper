@@ -38,13 +38,12 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.tintColor = UIColor.white
+        self.navigationController?.navigationBar.tintColor = UIColor.black
         self.title = "Add shift"
+        configureToolbar()
         createTitleField()
         configureTable()
-        configureToolbar()
         configurePickers()
-        
         createAddShiftButton()
     }
     
@@ -73,9 +72,12 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
             self.navigationController!.navigationBar.frame.height
         titleField = UITextField(frame: CGRect(x: 0, y: height, width: self.view.frame.width, height: 75))
         titleField.placeholder = "Shift title"
+        titleField.delegate = self
         titleField.textAlignment = .center
         titleField.text = UserSettings.getDefaultShiftName()
         titleField.font = UIFont.systemFont(ofSize: 25, weight: .light)
+        titleField.inputAccessoryView = toolbar
+        titleField.tag = 0
         self.view.addSubview(titleField)
     }
     func createAddShiftButton() {
@@ -107,9 +109,9 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
         let downBtn = UIBarButtonItem(image: imageDown?.imageResize(sizeChange: CGSize(width: size, height: size)), style: UIBarButtonItem.Style.done, target: self, action: #selector(nextField(sender:)))
         let upBtn = UIBarButtonItem(image: imageUp?.imageResize(sizeChange: CGSize(width: size, height: size)), style: UIBarButtonItem.Style.done, target: self, action: #selector(prevField(sender:)))
         
-        upBtn.tintColor = navColor
-        downBtn.tintColor = navColor
-        doneButton.tintColor = navColor
+        upBtn.tintColor = .black
+        downBtn.tintColor = .black
+        doneButton.tintColor = .black
         toolbar.setItems([upBtn, downBtn, flexSpace, doneButton], animated: false)
         toolbar.sizeToFit()
     }
@@ -133,14 +135,14 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
         self.view.endEditing(true)
     }
     @objc func prevField(sender: UIBarButtonItem) {
-        let fields = [dateField, startingTimeField, endingTimeField, breakField]
+        let fields = [titleField, dateField, startingTimeField, endingTimeField, breakField]
         if currentField > 0 {
             fields[currentField-1]?.becomeFirstResponder()
         }
     }
     @objc func nextField(sender: UIBarButtonItem) {
-        let fields = [startingTimeField, endingTimeField, breakField, noteField]
-        if currentField < 4 {
+        let fields = [dateField, startingTimeField, endingTimeField, breakField, noteField]
+        if currentField < 5 {
             fields[currentField]?.becomeFirstResponder()
         }
     }
@@ -153,7 +155,7 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
         }
     }
     func textViewDidBeginEditing(_ textView: UITextView) {
-        currentField = 4
+        currentField = textView.tag
         if textView.textColor == UIColor.lightGray {
             textView.text = ""
             textView.textColor = UIColor.black
@@ -180,7 +182,7 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
             dateField.tintColor = UIColor.clear
             dateField.text = Time.dateToString(date: Date(), withDayName: true)
             dateField.delegate = self
-            dateField.tag = 0
+            dateField.tag = 1
             
         } else if indexPath.section == 1 {
             let cell = table.dequeueReusableCell(withIdentifier: "DurationCell") as! DurationCell
@@ -189,7 +191,7 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
             startingTimeField.tintColor = UIColor.clear
             startingTimeField.inputAccessoryView = toolbar
             startingTimeField.text = Time.dateToTimeString(date: UserSettings.getDefaultStartingTime())
-            startingTimeField.tag = 1
+            startingTimeField.tag = 2
             startingTimeField.delegate = self
             
             endingTimeField = cell.endingField
@@ -197,7 +199,7 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
             endingTimeField.tintColor = UIColor.clear
             endingTimeField.inputAccessoryView = toolbar
             endingTimeField.text = Time.dateToTimeString(date: UserSettings.getDefaultEndingTime())
-            endingTimeField.tag = 2
+            endingTimeField.tag = 3
             endingTimeField.delegate = self
             
             cell.startingField.center = CGPoint(x: 10 + cell.startingField.frame.width/2, y: cell.startingField.center.y)
@@ -210,7 +212,7 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
             breakField.placeholder = "How much break did you take?"
             breakField.delegate = self
             breakField.keyboardType = .numberPad
-            breakField.tag = 3
+            breakField.tag = 4
             breakField.inputAccessoryView = toolbar
             
         } else if indexPath.section == 3 {
@@ -222,7 +224,7 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
             noteField.textColor = .lightGray
             noteField.delegate = self
             noteField.inputAccessoryView = toolbar
-            noteField.tag = 4
+            noteField.tag = 5
             return cell
         } else if indexPath.section == 4 {
             let cell = table.dequeueReusableCell(withIdentifier: "SwitchCell") as! SwitchCell
@@ -240,7 +242,7 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
         return cell
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 5 {
+        if section == 4 {
             return 0
         }
         return 13

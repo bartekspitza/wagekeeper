@@ -33,7 +33,7 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
         super.viewDidLoad()
         self.myTableView.delegate = self
         self.myTableView.dataSource = self
-        
+        self.navigationController?.navigationBar.tintColor = .black
         configureToolbar()
         if UserDefaults().value(forKey: day) != nil {
             let instanceEncoded: [NSData] = UserDefaults().object(forKey: day) as! [NSData]
@@ -87,7 +87,7 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
         if starts.isEmpty {
             isSectionComplete = [true, true]
             addRulePressed()
-            self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white.withAlphaComponent(0.3)
+            self.navigationItem.rightBarButtonItem?.tintColor = UIColor.black.withAlphaComponent(0.3)
         }
     }
     
@@ -130,7 +130,7 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
     }
     
     @objc func addRulePressed() {
-        self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white.withAlphaComponent(0.3)
+        self.navigationItem.rightBarButtonItem?.tintColor = UIColor.black.withAlphaComponent(0.3)
         
         if !isSectionComplete.contains(false) {
             isSectionComplete = [false, false]
@@ -253,7 +253,7 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
         }
         
         if !isSectionComplete.contains(false) {
-            self.navigationItem.rightBarButtonItem?.tintColor = .white
+            self.navigationItem.rightBarButtonItem?.tintColor = .black
         }
     }
     @objc func STPressed(_ sender: myTextField) {
@@ -280,7 +280,7 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
         }
         
         if !(isSectionComplete.contains(false)) {
-            self.navigationItem.rightBarButtonItem?.tintColor = .white
+            self.navigationItem.rightBarButtonItem?.tintColor = .black
         }
     }
     
@@ -380,7 +380,7 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
             
             if indexPath.section == self.starts.count-1 {
                 self.isSectionComplete = [true, true]
-                self.navigationItem.rightBarButtonItem?.tintColor = .white
+                self.navigationItem.rightBarButtonItem?.tintColor = .black
                 
             }
             

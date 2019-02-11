@@ -39,7 +39,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         makeDesign()
         makeMenuBtn()
         designLabels()
-        addUpperLineOfArrowButtonSection()
+        //addUpperLineOfArrowButtonSection()
         configureStatsTable()
         configureMenuTable()
         centerTotalTimeLabels()
@@ -159,10 +159,10 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
             if symbol == "kr" {
                 salaryLbl.text = "0kr"
-                grossLbl.text = "PRE-TAX: 0kr"
+                grossLbl.text = "Gross: 0kr"
             } else {
                 salaryLbl.text = symbol + "0"
-                grossLbl.text = "PRE-TAX: " + symbol + "0"
+                grossLbl.text = "Gross: " + symbol + "0"
             }
         periodLbl.text = ""
     }
@@ -184,7 +184,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         statsTable.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height*0.6)
         statsTable.center = CGPoint(x: self.view.frame.width/2, y: (self.view.frame.height*0.4) + statsTable.frame.height/2)
         statsTable.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 1))
-        statsTable.separatorColor = navColor.withAlphaComponent(0.25)
+        statsTable.separatorColor = UIColor.black.withAlphaComponent(0.2)
         statsTable.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         statsTable.register(LaunchCell.self, forCellReuseIdentifier: "cell")
         statsTable.isScrollEnabled = false
@@ -226,13 +226,13 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         salaryLbl.frame = CGRect(x: 0, y: 0, width: Int(self.view.frame.width/2), height: Int(gradientMaxY/3))
         salaryLbl.font = UIFont.systemFont(ofSize: 40)
-        salaryLbl.text = salaryLbl.text?.uppercased()
+        salaryLbl.text = salaryLbl.text
         salaryLbl.center = CGPoint(x: Int(self.view.frame.width/2), y: Int(self.view.frame.height*0.2 * 0.9))
         salaryLbl.textColor = .white
         salaryLbl.textAlignment = .center
         
         grossLbl.frame = CGRect(x: 0, y: 0, width: Int((self.view.frame.width/2) * 0.66), height: Int((gradientMaxY-horizontalY) * 0.66))
-        grossLbl.font = UIFont.systemFont(ofSize: 13)
+        grossLbl.font = UIFont.systemFont(ofSize: 13, weight: .light)
         grossLbl.center = CGPoint(x: Int(self.view.center.x), y: Int(salaryLbl.center.y + grossLbl.frame.height/2))
         grossLbl.textAlignment = .center
         grossLbl.textColor = .white
@@ -260,7 +260,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         
         periodLbl.textColor = .white
-        periodLbl.font = UIFont.systemFont(ofSize: 11)
+        periodLbl.font = UIFont.systemFont(ofSize: 13, weight: .light)
         
         periodLbl.text = ""
         periodLbl.textAlignment = .right
@@ -273,7 +273,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func startCountingLabels() {
         if shifts.count > 0 {
             if Int(period.grossSalary) > 0 {
-                grossLbl.count(fromValue: 0, to: Float(period.grossSalary), withDuration: 1.5, andAnimationtype: .EaseOut, andCounterType: .Int, currency: UserSettings.getCurrencySymbol(), preString: "PRE-TAX: ", afterString: "")
+                grossLbl.count(fromValue: 0, to: Float(period.grossSalary), withDuration: 1.5, andAnimationtype: .EaseOut, andCounterType: .Int, currency: UserSettings.getCurrencySymbol(), preString: "Gross: ", afterString: "")
                 salaryLbl.count(fromValue: 0, to: Float(period.salary), withDuration: TimeInterval(1.5 * (Float(period.salary)/Float(period.grossSalary))), andAnimationtype: .EaseOut, andCounterType: .Int, currency: UserSettings.getCurrencySymbol(), preString: "", afterString: "")
             }
         }
@@ -315,10 +315,9 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
             
             let headerLabel = UILabel(frame: CGRect(x: 15, y: 28, width:
                 tableView.bounds.size.width, height: tableView.bounds.size.height))
-            headerLabel.font = UIFont.boldSystemFont(ofSize: 10)
             headerLabel.textColor = .white
             headerLabel.text = startingString
-            headerLabel.font = UIFont.systemFont(ofSize: 12)
+            headerLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
             headerLabel.sizeToFit()
             headerLabel.textAlignment = .center
             headerView.addSubview(headerLabel)
@@ -364,9 +363,9 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if tableView.tag == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! LaunchCell
             
-            cell.insertStatsDesc(width: (self.view.frame.width), text: Period.statsDescriptions[indexPath.row].uppercased())
+            cell.insertStatsDesc(width: (self.view.frame.width), text: Period.statsDescriptions[indexPath.row])
             if period != nil {
-                cell.insertStatsInfo(width: self.view.frame.width, text: period.stats[indexPath.row].uppercased())
+                cell.insertStatsInfo(width: self.view.frame.width, text: period.stats[indexPath.row])
             } else {
                 cell.insertStatsInfo(width: self.view.frame.width, text: "0")
             }
@@ -381,7 +380,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
             let start = String(Array(Time.dateToString(date: section[section.count-1].date, withDayName: false))[0..<Time.dateToString(date: section[section.count-1].date, withDayName: false).count-4])
             cell.textLabel?.text = start + " - " + end
             cell.textLabel?.textColor = .white
-            cell.textLabel?.font = UIFont.systemFont(ofSize: 17)
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .light)
             cell.selectionStyle = .none
             cell.backgroundColor = headerColor
             if indexPath.section == indexForChosenPeriod[0] && indexPath.row == indexForChosenPeriod[1] {

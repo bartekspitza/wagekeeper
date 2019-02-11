@@ -25,9 +25,9 @@ class StringFormatter {
         let minutes = a[1]
         
         if minutes == 0 {
-            str = String(hours) + "H"
+            str = String(hours) + "h"
         } else {
-            str = "\(hours)H \(minutes)M"
+            str = "\(hours)h \(minutes)m"
         }
         return str
     }

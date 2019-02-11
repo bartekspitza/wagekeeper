@@ -13,11 +13,12 @@ class SettingsTableNav: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setNeedsStatusBarAppearanceUpdate()
-        self.navigationBar.barTintColor = navColor
+        self.navigationBar.barTintColor = .white
+        self.navigationBar.tintColor = .black
         // Do any additional setup after loading the view.
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
+//    override var preferredStatusBarStyle: UIStatusBarStyle {
+//        return .lightContent
+//    }
 }

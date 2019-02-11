@@ -40,8 +40,8 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
         super.viewDidLoad()
         tableView.tintColor = navColor
         tableView.tableFooterView = UIView()
-        self.navigationItem.title = "Advanced tools"
-        
+        self.title = "Advanced tools"
+        self.navigationController?.navigationBar.tintColor = .black
 
         configureToolbar()
         configurePicker()

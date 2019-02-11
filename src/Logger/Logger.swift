@@ -24,6 +24,7 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.automaticallyAdjustsScrollViewInsets = false
+        
         myTableView.delegate = self
         myTableView.dataSource = self
     }
@@ -56,6 +57,7 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
         myTableView.reloadData()
         myTableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: myTableView.frame.width, height: 1))
         myTableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        myTableView.separatorColor = UIColor.black.withAlphaComponent(0.2)
 
         if shifts.isEmpty {
             let view = UIView()
@@ -167,6 +169,17 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
         cell.timeLbl.text = Time.dateToTimeString(date: shiftForRow.startingTime) + " - " + Time.dateToTimeString(date: shiftForRow.endingTime)
         cell.lunchLbl.text = shiftForRow.durationToString()
         
+        cell.noteLbl.font = UIFont.systemFont(ofSize: 17, weight: .light)
+        cell.dateLbl.font = UIFont.systemFont(ofSize: 11, weight: .light)
+        cell.timeLbl.font = UIFont.systemFont(ofSize: 11, weight: .light)
+        cell.lunchLbl.font = UIFont.systemFont(ofSize: 11, weight: .light)
+        cell.accessoryLbl.font = UIFont.systemFont(ofSize: 11, weight: .light)
+        
+        cell.dateLbl.textColor = Colors.get(red: 40, green: 40, blue: 40, alpha: 1)
+        cell.timeLbl.textColor = Colors.get(red: 40, green: 40, blue: 40, alpha: 1)
+        cell.lunchLbl.textColor = Colors.get(red: 40, green: 40, blue: 40, alpha: 1)
+        cell.accessoryLbl.textColor = Colors.get(red: 40, green: 40, blue: 40, alpha: 1)
+        
         cell.timeLbl.sizeToFit()
         cell.accessoryLbl.sizeToFit()
         cell.noteLbl.center.x = cell.timeLbl.frame.width + cell.noteLbl.frame.width/2 + 15
@@ -189,29 +202,16 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
         endDate = String(endDate.prefix(endDate.count - 5))
         let text = startDate + " - " + endDate
         
-        let seperatorColor = myTableView.separatorColor
-        let topSeperator = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 0.5))
-        let bottomSeperator = UIView(frame: CGRect(x: 0, y: 40, width: self.view.frame.width, height: 0.5))
-        topSeperator.backgroundColor = seperatorColor
-        bottomSeperator.backgroundColor = seperatorColor
-        
-        let headerView = UIView()
-        
         let headerLabel = UILabel(frame: CGRect(x: 15, y: 15, width:
             tableView.bounds.size.width, height: 30))
-        headerLabel.font = UIFont.systemFont(ofSize: 17, weight: .medium)
+        headerLabel.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         headerLabel.textColor = .white
         headerLabel.text = text
         headerLabel.sizeToFit()
         headerLabel.center.x = self.view.frame.width/2
         headerLabel.textAlignment = .center
-        headerLabel.backgroundColor = Colors.loggerSectionBG
-        
-        headerView.addSubview(topSeperator)
-        headerView.addSubview(headerLabel)
-        headerView.addSubview(bottomSeperator)
-        
-        
+        headerLabel.backgroundColor = headerColor
+    
         return headerLabel
     }
     

@@ -9,7 +9,7 @@
 import Foundation
 
 class Period {
-    static var statsDescriptions = ["TOTAL WORK-TIME", "AVERAGE SHIFT LENGTH", "TOTAL SHIFTS", "TOTAL DAYS WORKED", "OVERTIME WORKED"]
+    static var statsDescriptions = ["Total work-time", "Average shift length", "Total shifts", "Total days worked", "Overtime worked"]
     
     var shifts = [ShiftModel]()
     var duration = ""
