@@ -45,9 +45,10 @@ class LocalStorage {
             date: Date(),
             startingTime: Time.createDefaultST(),
             endingTime: Time.createDefaultET(),
-            breakTime: "60",
+            breakTime: 60,
             note: "Any additional notes that you may have about a shift",
-            newPeriod: Int16(0)
+            newPeriod: false,
+            ID: ""
         )
         LocalStorage.insertShift(shift: shift)
     }

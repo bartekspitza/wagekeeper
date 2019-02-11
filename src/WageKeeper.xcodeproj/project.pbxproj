@@ -29,6 +29,7 @@
 		9858E0EC220866D7007600C3 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9858E0EB220866D7007600C3 /* Version.swift */; };
 		9862A5711FCC33AA0047671D /* AdvancedSettingsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9862A5701FCC33AA0047671D /* AdvancedSettingsTable.swift */; };
 		9864BB0C1FD4700E005DB5F2 /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9864BB0B1FD4700E005DB5F2 /* Calculator.swift */; };
+		9886E9BC2211C11D00A4207A /* Periods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9886E9BB2211C11D00A4207A /* Periods.swift */; };
 		988FDEBC1F9F7AFA0090DEF1 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988FDEBB1F9F7AFA0090DEF1 /* Logger.swift */; };
 		988FDEC21F9F7AFA0090DEF1 /* adding_shifts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 988FDEC01F9F7AFA0090DEF1 /* adding_shifts.xcdatamodeld */; };
 		988FDEC41F9F7AFA0090DEF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 988FDEC31F9F7AFA0090DEF1 /* Assets.xcassets */; };
@@ -71,6 +72,7 @@
 		9858E0EB220866D7007600C3 /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
 		9862A5701FCC33AA0047671D /* AdvancedSettingsTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsTable.swift; sourceTree = "<group>"; };
 		9864BB0B1FD4700E005DB5F2 /* Calculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculator.swift; sourceTree = "<group>"; };
+		9886E9BB2211C11D00A4207A /* Periods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Periods.swift; sourceTree = "<group>"; };
 		988FDEB61F9F7AFA0090DEF1 /* WageKeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WageKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		988FDEB91F9F7AFA0090DEF1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		988FDEBB1F9F7AFA0090DEF1 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				9830C2002207A0EF0023B582 /* Period.swift */,
 				98D40CC4220B410F006E59E0 /* User.swift */,
 				982F934D220884DA005D9C99 /* ShiftModel.swift */,
+				9886E9BB2211C11D00A4207A /* Periods.swift */,
 			);
 			path = entities;
 			sourceTree = "<group>";
@@ -430,6 +433,7 @@
 				98E284E31FC70CC1004FD2D2 /* TabBarController.swift in Sources */,
 				982F93542208C386005D9C99 /* StringFormatter.swift in Sources */,
 				989392DC1FCEF322002475EA /* Extensions.swift in Sources */,
+				9886E9BC2211C11D00A4207A /* Periods.swift in Sources */,
 				982F93502208B103005D9C99 /* UserSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

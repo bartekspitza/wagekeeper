@@ -26,22 +26,15 @@ class CloudStorage {
                     let shiftID = doc.documentID
                     let shiftData = doc.data()
                     
-                    let shiftTitle = shiftData["title"]! as! String
-                    let shiftDate = (shiftData["date"]! as! String).toDateTime()
-                    let shiftST = (shiftData["startingTime"]! as! String).toDateTime()
-                    let shiftET = (shiftData["endingTime"]! as! String).toDateTime()
-                    let shiftBreak = shiftData["break"]! as! String
-                    let shiftNote = shiftData["note"]! as! String
-                    let shiftIsNewPeriod = shiftData["beginsNewPeriod"]! as! Int16
-                    
                     let s = ShiftModel(
-                        title: shiftTitle,
-                        date: shiftDate,
-                        startingTime: shiftST,
-                        endingTime: shiftET,
-                        breakTime: shiftBreak,
-                        note: shiftNote,
-                        newPeriod: shiftIsNewPeriod
+                        title:          shiftData["title"]!             as! String,
+                        date:           (shiftData["date"]!             as! String).toDateTime(),
+                        startingTime:   (shiftData["startingTime"]!     as! String).toDateTime(),
+                        endingTime:     (shiftData["endingTime"]!       as! String).toDateTime(),
+                        breakTime:      shiftData["breakTime"]!         as! Int,
+                        note:           shiftData["note"]!              as! String,
+                        newPeriod:      shiftData["beginsNewPeriod"]!   as! Bool,
+                        ID:             ""
                     )
                     s.ID = shiftID
                     arr.append(s)
@@ -58,12 +51,12 @@ class CloudStorage {
         let db = Firestore.firestore()
         let shiftsCollection = db.collection("users/" + toUser + "/shifts/")
         
-        shiftsCollection.addDocument(data: [
+        let document = shiftsCollection.addDocument(data: [
             "title": shift.title,
             "date": shift.date.description,
             "startingTime": shift.startingTime.description,
             "endingTime": shift.endingTime.description,
-            "break": shift.breakTime,
+            "breakTime": shift.breakTime,
             "note": shift.note,
             "beginsNewPeriod": shift.beginsNewPeriod
         ]) { (er) in
@@ -74,6 +67,9 @@ class CloudStorage {
                 print("Couldn't add shift to the cloud\nError message: " + er!.localizedDescription)
             }
         }
+        shift.ID = document.documentID
+        
+        
     }
     
     static func deleteShift(fromUser: String, shift: ShiftModel) {

@@ -10,12 +10,15 @@ import UIKit
 import CoreData
 
 var shiftToEdit = [0,0]
+var shifts = [[ShiftModel]]()
 var shouldFetchAllData = false
 var usingLocalStorage = false
+var shiftsNeedsReOrganizing = false
 
 class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
     @IBOutlet weak var myTableView: UITableView!
-    var cells = [UITableViewCell]()
+    
     let instructionsLabel = UILabel()
     
     override func viewDidLoad() {
@@ -26,33 +29,27 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
-        if shouldFetchAllData {
-            shifts.removeAll()
-            
-            if usingLocalStorage {
-                print("Fetched data from local storage")
-                LocalStorage.values = LocalStorage.getAllShifts()
-                LocalStorage.organizedValues = Period.organizeShiftsIntoPeriods(ar: &LocalStorage.values)
-                shifts = Period.convertShiftsFromCoreDataToModels(arr: LocalStorage.organizedValues)
-            } else {
-                CloudStorage.getAllShifts(fromUser: user.ID) { (s) in
-                    var tmp = s
-                    shifts = Period.organizeShiftsIntoPeriods(ar: &tmp)
-                    self.myTableView.reloadData()
-                }
-            }
-            shouldFetchAllData = false
+        if shiftsNeedsReOrganizing {
+            Periods.reOrganize()
+            shiftsNeedsReOrganizing = false
+            print("reorganized shifts")
         }
         
-        if !(shifts.isEmpty) {
-            myTableView.backgroundView = UIView()
-        }
+        hideTableIfEmpty()
         myTableView.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         layoutView()
+    }
+    
+    
+    
+    
+    func hideTableIfEmpty() {
+        if !(shifts.isEmpty) {
+            myTableView.backgroundView = UIView()
+        }
     }
     
     func layoutView() {
@@ -166,7 +163,7 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let shiftForRow = shifts[indexPath.section][indexPath.row]
         cell.noteLbl.text = shiftForRow.title
         cell.dateLbl.text = Time.dateToCellString(date: shiftForRow.date)
-        cell.accessoryLbl.text = shiftForRow.breakTime + "m break"
+        cell.accessoryLbl.text = String(shiftForRow.breakTime) + "m break"
         cell.timeLbl.text = Time.dateToTimeString(date: shiftForRow.startingTime) + " - " + Time.dateToTimeString(date: shiftForRow.endingTime)
         cell.lunchLbl.text = shiftForRow.durationToString()
         

@@ -10,28 +10,49 @@ import Foundation
 import CoreData
 import UIKit
 
-class ShiftModel {
+class ShiftModel: CustomStringConvertible {
     var title: String
     var date: Date
     var endingTime: Date
     var startingTime: Date
-    var breakTime: String
+    var breakTime: Int
     var note: String
-    var beginsNewPeriod: Int16
+    var beginsNewPeriod: Bool
     var ID = ""
     
-    init(title: String, date: Date, startingTime: Date, endingTime: Date, breakTime: String, note: String, newPeriod: Int16) {
-        self.date = date
-        self.endingTime = endingTime
-        self.startingTime = startingTime
-        self.breakTime = breakTime
+    public var description: String {
+        return "ID: " + self.ID
+    }
+    
+    init(title: String, date: Date, startingTime: Date, endingTime: Date, breakTime: Int, note: String, newPeriod: Bool, ID: String) {
         self.title = title
-        self.beginsNewPeriod = newPeriod
+        self.date = date
+        self.startingTime = startingTime
+        self.endingTime = endingTime
+        self.breakTime = breakTime
         self.note = note
+        self.beginsNewPeriod = newPeriod
+        self.ID = ID
+    }
+    
+    func isEqual(to: ShiftModel) -> Bool{
+        
+        let isTitleSame = self.title == to.title
+        let isDateSame = self.date == to.date
+        let isSTSame = self.startingTime == to.startingTime
+        let isETSame = self.endingTime == to.endingTime
+        let isBreakSame = self.breakTime == to.breakTime
+        let isNoteSame = self.note == to.note
+        let isBeginsNewPeriodSame = self.beginsNewPeriod == to.beginsNewPeriod
+        
+        return isTitleSame && isDateSame && isSTSame && isETSame && isBreakSame && isNoteSame && isBeginsNewPeriodSame
     }
     
     static func createFromCoreData(s: Shift) -> ShiftModel {
-        return ShiftModel(title: s.note!, date: s.date!, startingTime: s.startingTime!, endingTime: s.endingTime!,  breakTime: s.lunchTime!, note: "", newPeriod: s.newMonth)
+        let breakTime = (s.lunchTime == "") ? 0 : Int(s.lunchTime!)!
+        let newMonth = s.newMonth == Int16(1)
+        
+        return ShiftModel(title: s.note!, date: s.date!, startingTime: s.startingTime!, endingTime: s.endingTime!,  breakTime: breakTime, note: "", newPeriod: newMonth, ID: "")
     }
     
     func salary() -> [Int] {
@@ -225,9 +246,9 @@ class ShiftModel {
         minutesInOT = minutesWorked - remainingMinutes
         
         // Substracts lunchTime with the average money/minute rate
-        if self.breakTime != "" && shouldSubstractLunch {
+        if shouldSubstractLunch {
             
-            lunchMinutes = Float(Int(self.breakTime)!)
+            lunchMinutes = Float(self.breakTime)
             salary -= (lunchMinutes * (salary/minutesWorked))
             moneyInOT -= (lunchMinutes * (salary/minutesWorked))
         }
@@ -243,9 +264,9 @@ class ShiftModel {
         shift.date = self.date
         shift.endingTime = self.endingTime
         shift.startingTime = self.startingTime
-        shift.lunchTime = self.breakTime
+        shift.lunchTime = String(self.breakTime)
         shift.note = self.title
-        shift.newMonth = self.beginsNewPeriod
+        shift.newMonth = (self.beginsNewPeriod) ? Int16(1) : Int16(0)
         
         return shift
     }

@@ -48,27 +48,23 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
     }
     
     @objc func onButtonPress() {
-        if breakField.text != "" {
-            let shift = ShiftModel(
-                title: titleField.text!,
-                date: datePicker.date,
-                startingTime: startingTimePicker.date,
-                endingTime: endingTimePicker.date,
-                breakTime: breakField.text!,
-                note: noteField.text!,
-                newPeriod: (periodSwitch.isOn) ? Int16(1) : Int16(0)
-            )
-            
-            if usingLocalStorage {
-                LocalStorage.insertShift(shift: shift)
-            } else {
-                CloudStorage.addShift(toUser: user.ID, shift: shift, completionHandler: {
-                    
-                })
-            }
-            shouldFetchAllData = true
-            self.navigationController?.popViewController(animated: true)
-        }
+       
+        let shift = ShiftModel(
+            title: (titleField.text! == "") ? "No title" : titleField.text!,
+            date: datePicker.date,
+            startingTime: startingTimePicker.date,
+            endingTime: endingTimePicker.date,
+            breakTime: (breakField.text! == "") ? 0 : Int(breakField.text!)!,
+            note: (noteField.text! == "Additional notes..") ? "" : noteField.text!,
+            newPeriod: periodSwitch.isOn,
+            ID: ""
+        )
+        
+        CloudStorage.addShift(toUser: user.ID, shift: shift, completionHandler: {})
+        
+        Periods.insert(shift: shift)
+        shiftsNeedsReOrganizing = true
+        self.navigationController?.popViewController(animated: true)
     }
     
     func createTitleField() {

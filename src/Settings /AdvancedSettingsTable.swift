@@ -165,6 +165,7 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
     }
     
     @IBAction func switchPressed(_ sender: UISwitch) {
+        shiftsNeedsReOrganizing = !shiftsNeedsReOrganizing
         let duration = 0.25
         if mySwitch.isOn {
             autoTextField.isEnabled = false

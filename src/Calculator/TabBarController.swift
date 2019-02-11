@@ -9,7 +9,6 @@
 import UIKit
 
 var tabBarHeight: CGFloat?
-var shifts = [[ShiftModel]]()
 let currencies = ["SEK": "kr",
                   "EUR": "€",
                   "GPD": "£",

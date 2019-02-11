@@ -61,8 +61,8 @@ func getShifts(fromCloud: Bool) {
     } else {
         print("Fetched data from local storage")
         LocalStorage.values = LocalStorage.getAllShifts()
-        LocalStorage.organizedValues = Period.organizeShiftsIntoPeriods(ar: &LocalStorage.values)
-        shifts = Period.convertShiftsFromCoreDataToModels(arr: LocalStorage.organizedValues)
+        LocalStorage.organizedValues = Periods.organizeShiftsIntoPeriods(ar: &LocalStorage.values)
+        shifts = Periods.convertShiftsFromCoreDataToModels(arr: LocalStorage.organizedValues)
     }
 }
 

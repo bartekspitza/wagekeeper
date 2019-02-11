@@ -29,17 +29,18 @@ class EditVC: AddVC {
             date: datePicker.date,
             startingTime: startingTimePicker.date,
             endingTime: endingTimePicker.date,
-            breakTime: breakField.text!,
+            breakTime: (breakField.text! == "") ? 0 : Int(breakField.text!)!,
             note: (noteField.text! == "Additional notes..") ? "" : noteField.text!,
-            newPeriod: periodSwitch.isOn ? Int16(1) : Int16(0)
+            newPeriod: periodSwitch.isOn,
+            ID: shift.ID
         )
-        newShift.ID = shift.ID
-        shifts[shiftToEdit[0]][shiftToEdit[1]] = newShift
         
-        CloudStorage.updateShift(from: shift, with: newShift, user: user.ID, completionHandler: {
-            
-            print("done with updating")
-        })
+        if shift.isEqual(to: newShift) {
+            // do nothing
+        } else {
+            shifts[shiftToEdit[0]][shiftToEdit[1]] = newShift
+            CloudStorage.updateShift(from: shift, with: newShift, user: user.ID, completionHandler: {})
+        }
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -58,16 +59,17 @@ class EditVC: AddVC {
     }
     
     func fillWithShiftInfo() {
+        // Fills all fields, pickers and the switch according to the information from the chosen shift
         titleField.text = shift.title
         dateField.text = Time.dateToString(date: shift.date, withDayName: true)
         startingTimeField.text = Time.dateToTimeString(date: shift.startingTime)
         endingTimeField.text = Time.dateToTimeString(date: shift.endingTime)
-        breakField.text = shift.breakTime
+        breakField.text = shift.breakTime.description
         noteField.text = shift.note
         
         datePicker.date = shift.date
         startingTimePicker.date = shift.startingTime
         endingTimePicker.date = shift.endingTime
-        periodSwitch.isOn = shift.beginsNewPeriod == Int16(1)
+        periodSwitch.isOn = shift.beginsNewPeriod
     }
 }
