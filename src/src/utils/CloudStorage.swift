@@ -26,18 +26,20 @@ class CloudStorage {
                     let shiftID = doc.documentID
                     let shiftData = doc.data()
                     
+                    let shiftTitle = shiftData["title"]! as! String
                     let shiftDate = (shiftData["date"]! as! String).toDateTime()
-                    let shiftST = (shiftData["startingtime"]! as! String).toDateTime()
-                    let shiftET = (shiftData["endingtime"]! as! String).toDateTime()
+                    let shiftST = (shiftData["startingTime"]! as! String).toDateTime()
+                    let shiftET = (shiftData["endingTime"]! as! String).toDateTime()
                     let shiftBreak = shiftData["break"]! as! String
                     let shiftNote = shiftData["note"]! as! String
                     let shiftIsNewPeriod = shiftData["beginsNewPeriod"]! as! Int16
                     
                     let s = ShiftModel(
+                        title: shiftTitle,
                         date: shiftDate,
-                        endingTime: shiftET,
                         startingTime: shiftST,
-                        lunchTime: shiftBreak,
+                        endingTime: shiftET,
+                        breakTime: shiftBreak,
                         note: shiftNote,
                         newPeriod: shiftIsNewPeriod
                     )
@@ -57,10 +59,11 @@ class CloudStorage {
         let shiftsCollection = db.collection("users/" + toUser + "/shifts/")
         
         shiftsCollection.addDocument(data: [
+            "title": shift.title,
             "date": shift.date.description,
-            "startingtime": shift.startingTime.description,
-            "endingtime": shift.endingTime.description,
-            "break": shift.lunchTime,
+            "startingTime": shift.startingTime.description,
+            "endingTime": shift.endingTime.description,
+            "break": shift.breakTime,
             "note": shift.note,
             "beginsNewPeriod": shift.beginsNewPeriod
         ]) { (er) in
@@ -91,10 +94,11 @@ class CloudStorage {
         let shiftsCollection = db.collection("users/" + user + "/shifts/")
         
         shiftsCollection.document(from.ID).setData([
+            "title": with.title,
             "date": with.date.description,
-            "startingtime": with.startingTime.description,
-            "endingtime": with.endingTime.description,
-            "break": with.lunchTime,
+            "startingTime": with.startingTime.description,
+            "endingTime": with.endingTime.description,
+            "breakTime": with.breakTime,
             "note": with.note,
             "beginsNewPeriod": with.beginsNewPeriod
         ]) { (er) in

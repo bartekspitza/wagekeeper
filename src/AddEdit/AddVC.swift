@@ -50,11 +50,12 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
     @objc func onButtonPress() {
         if breakField.text != "" {
             let shift = ShiftModel(
+                title: titleField.text!,
                 date: datePicker.date,
-                endingTime: endingTimePicker.date,
                 startingTime: startingTimePicker.date,
-                lunchTime: breakField.text!,
-                note: titleField.text!,
+                endingTime: endingTimePicker.date,
+                breakTime: breakField.text!,
+                note: noteField.text!,
                 newPeriod: (periodSwitch.isOn) ? Int16(1) : Int16(0)
             )
             

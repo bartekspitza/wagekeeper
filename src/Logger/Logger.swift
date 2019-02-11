@@ -164,9 +164,9 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MainCell") as! MainCell
         let shiftForRow = shifts[indexPath.section][indexPath.row]
-        cell.noteLbl.text = shiftForRow.note
+        cell.noteLbl.text = shiftForRow.title
         cell.dateLbl.text = Time.dateToCellString(date: shiftForRow.date)
-        cell.accessoryLbl.text = shiftForRow.lunchTime + "m break"
+        cell.accessoryLbl.text = shiftForRow.breakTime + "m break"
         cell.timeLbl.text = Time.dateToTimeString(date: shiftForRow.startingTime) + " - " + Time.dateToTimeString(date: shiftForRow.endingTime)
         cell.lunchLbl.text = shiftForRow.durationToString()
         

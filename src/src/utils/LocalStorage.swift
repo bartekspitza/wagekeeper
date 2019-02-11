@@ -41,11 +41,12 @@ class LocalStorage {
     
     static func insertExampleShift() {
         let shift = ShiftModel(
+            title: "Example (Delete this)",
             date: Date(),
-            endingTime: Time.createDefaultET(),
             startingTime: Time.createDefaultST(),
-            lunchTime: "60",
-            note: "Example (Delete this)",
+            endingTime: Time.createDefaultET(),
+            breakTime: "60",
+            note: "Any additional notes that you may have about a shift",
             newPeriod: Int16(0)
         )
         LocalStorage.insertShift(shift: shift)

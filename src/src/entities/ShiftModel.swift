@@ -11,25 +11,27 @@ import CoreData
 import UIKit
 
 class ShiftModel {
-    var ID = ""
+    var title: String
     var date: Date
     var endingTime: Date
     var startingTime: Date
-    var lunchTime: String
+    var breakTime: String
     var note: String
     var beginsNewPeriod: Int16
+    var ID = ""
     
-    init(date: Date, endingTime: Date, startingTime: Date, lunchTime: String, note: String, newPeriod: Int16) {
+    init(title: String, date: Date, startingTime: Date, endingTime: Date, breakTime: String, note: String, newPeriod: Int16) {
         self.date = date
         self.endingTime = endingTime
         self.startingTime = startingTime
-        self.lunchTime = lunchTime
-        self.note = note
+        self.breakTime = breakTime
+        self.title = title
         self.beginsNewPeriod = newPeriod
+        self.note = note
     }
     
     static func createFromCoreData(s: Shift) -> ShiftModel {
-        return ShiftModel(date: s.date!, endingTime: s.endingTime!, startingTime: s.startingTime!, lunchTime: s.lunchTime!, note: s.note!, newPeriod: s.newMonth)
+        return ShiftModel(title: s.note!, date: s.date!, startingTime: s.startingTime!, endingTime: s.endingTime!,  breakTime: s.lunchTime!, note: "", newPeriod: s.newMonth)
     }
     
     func salary() -> [Int] {
@@ -223,9 +225,9 @@ class ShiftModel {
         minutesInOT = minutesWorked - remainingMinutes
         
         // Substracts lunchTime with the average money/minute rate
-        if self.lunchTime != "" && shouldSubstractLunch {
+        if self.breakTime != "" && shouldSubstractLunch {
             
-            lunchMinutes = Float(Int(self.lunchTime)!)
+            lunchMinutes = Float(Int(self.breakTime)!)
             salary -= (lunchMinutes * (salary/minutesWorked))
             moneyInOT -= (lunchMinutes * (salary/minutesWorked))
         }
@@ -241,8 +243,8 @@ class ShiftModel {
         shift.date = self.date
         shift.endingTime = self.endingTime
         shift.startingTime = self.startingTime
-        shift.lunchTime = self.lunchTime
-        shift.note = self.note
+        shift.lunchTime = self.breakTime
+        shift.note = self.title
         shift.newMonth = self.beginsNewPeriod
         
         return shift
