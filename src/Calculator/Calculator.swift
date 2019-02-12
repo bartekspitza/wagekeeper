@@ -9,8 +9,7 @@ import UIKit
 import Foundation
 import FirebaseAuth
 
-var userId = "TJPdjzkhM5OXXrGIs7G7V6LeyWk2             "
-
+var userId = "TJPdjzkhM5OXXrGIs7G7V6LeyWk2"
 var user: User!
 
 class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -34,12 +33,11 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        user = User(ID: userId)
+        //user = User(ID: userId, email: "some@email.com")
         configureNewUser()
         makeDesign()
         makeMenuBtn()
         designLabels()
-        //addUpperLineOfArrowButtonSection()
         configureStatsTable()
         configureMenuTable()
         centerTotalTimeLabels()

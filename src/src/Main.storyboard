@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="aNm-Sk-yzI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="xdt-m2-hS6">
     <device id="retina6_1" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -163,28 +163,6 @@
                                             <segue destination="G5g-Zr-OgS" kind="show" id="pTb-uF-1xz"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="gaN-ec-VBu">
-                                        <rect key="frame" x="0.0" y="231.5" width="414" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gaN-ec-VBu" id="4k9-hr-JNI">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Log out" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k0p-6D-OG2">
-                                                    <rect key="frame" x="48" y="12" width="58" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="toolicon" translatesAutoresizingMaskIntoConstraints="NO" id="QCh-Nt-RLV">
-                                                    <rect key="frame" x="16" y="13" width="20" height="20"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                </imageView>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -193,7 +171,15 @@
                             <outlet property="delegate" destination="vb7-7f-zqg" id="drR-5R-J05"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Settings" id="FHr-KK-atQ"/>
+                    <navigationItem key="navigationItem" title="Settings" id="FHr-KK-atQ">
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="account" id="vfH-4p-Ypg">
+                            <inset key="imageInsets" minX="0.0" minY="-2" maxX="0.0" maxY="-4"/>
+                            <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <connections>
+                                <segue destination="4yZ-U3-BQx" kind="show" id="6sU-Hy-0S2"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="advancedSettingsLbl" destination="QQO-3V-wfN" id="v8E-Ch-ktC"/>
                         <outlet property="currencyField" destination="3SA-gk-q7R" id="tfj-pX-rue"/>
@@ -211,7 +197,25 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="28x-nm-0dn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="581" y="1624"/>
+            <point key="canvasLocation" x="-229" y="1651"/>
+        </scene>
+        <!--AccountVC-->
+        <scene sceneID="vhf-cT-UI3">
+            <objects>
+                <viewController hidesBottomBarWhenPushed="YES" id="4yZ-U3-BQx" customClass="AccountVC" customModule="WageKeeper" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jt2-5F-JcT">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="tqH-Ef-PM5"/>
+                    </view>
+                    <connections>
+                        <segue destination="xdt-m2-hS6" kind="show" identifier="backtologin" id="Wkm-7u-Ke1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3s1-3F-CRg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-229" y="1013"/>
         </scene>
         <!--Advanced Settings Table-->
         <scene sceneID="0n4-Yt-Gop">
@@ -634,7 +638,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z01-FS-zWR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1262" y="1628"/>
+            <point key="canvasLocation" x="452" y="1655"/>
         </scene>
         <!--Overtime Rule Table-->
         <scene sceneID="N22-nA-e4x">
@@ -656,7 +660,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nU6-MV-Ylj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1948" y="1625"/>
+            <point key="canvasLocation" x="1139" y="1651"/>
         </scene>
         <!--Calculator-->
         <scene sceneID="Qcu-RA-9Ck">
@@ -978,12 +982,11 @@
                     <nil name="viewControllers"/>
                     <connections>
                         <segue destination="vb7-7f-zqg" kind="relationship" relationship="rootViewController" id="CrA-oS-Yq0"/>
-                        <segue destination="gWC-Ba-KiM" kind="show" identifier="gotologin" id="2ZB-aG-Bi2"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lcb-Go-oSH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-117" y="1625"/>
+            <point key="canvasLocation" x="-926" y="1651"/>
         </scene>
         <!--Logger-->
         <scene sceneID="dgg-Jq-wcp">
@@ -1008,23 +1011,13 @@
             </objects>
             <point key="canvasLocation" x="-116" y="224"/>
         </scene>
-        <!--Login View-->
+        <!--AuthVC-->
         <scene sceneID="4iX-hT-dSN">
             <objects>
-                <viewController id="xdt-m2-hS6" customClass="LoginView" customModule="WageKeeper" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="xdt-m2-hS6" customClass="AuthVC" customModule="WageKeeper" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="2h6-6N-ZC9">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W3w-Xe-NQa">
-                                <rect key="frame" x="142" y="400" width="105" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Create account"/>
-                                <connections>
-                                    <segue destination="gWC-Ba-KiM" kind="show" id="tqa-Ws-EM7"/>
-                                </connections>
-                            </button>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="fUg-7O-jV5"/>
                     </view>
@@ -1034,25 +1027,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SLg-r6-h3F" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1833" y="-168"/>
-        </scene>
-        <!--Create Account View-->
-        <scene sceneID="C7j-07-cfP">
-            <objects>
-                <viewController id="gWC-Ba-KiM" customClass="CreateAccountView" customModule="WageKeeper" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="yOu-P6-cQy">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="Aa4-EJ-EkH"/>
-                    </view>
-                    <connections>
-                        <segue destination="aNm-Sk-yzI" kind="show" identifier="gotoTabbar" id="x1u-2Q-VXS"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="OuI-lE-WEy" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1833" y="569"/>
+            <point key="canvasLocation" x="-1836" y="224"/>
         </scene>
         <!--AddVC-->
         <scene sceneID="XN2-Be-ged">
@@ -1220,14 +1195,11 @@
     <resources>
         <image name="Calc" width="7.0866141319274902" height="7.0866141319274902"/>
         <image name="Settings" width="7.0866141319274902" height="7.0866141319274902"/>
+        <image name="account" width="48" height="48"/>
         <image name="currencyicon" width="200" height="200"/>
         <image name="taxIcon" width="200" height="200"/>
         <image name="test" width="7.0866141319274902" height="7.0866141319274902"/>
         <image name="toolicon" width="200" height="200"/>
         <image name="wageIcon2" width="200" height="200"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="2ZB-aG-Bi2"/>
-        <segue reference="x1u-2Q-VXS"/>
-    </inferredMetricsTieBreakers>
 </document>

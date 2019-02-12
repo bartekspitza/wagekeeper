@@ -20,6 +20,9 @@
 		982F934E220884DA005D9C99 /* ShiftModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934D220884DA005D9C99 /* ShiftModel.swift */; };
 		982F93502208B103005D9C99 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934F2208B103005D9C99 /* UserSettings.swift */; };
 		982F93542208C386005D9C99 /* StringFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F93532208C386005D9C99 /* StringFormatter.swift */; };
+		982FFE8E22130F9F007400C6 /* AccountVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982FFE8D22130F9F007400C6 /* AccountVC.swift */; };
+		982FFE9222134B27007400C6 /* LoginForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982FFE9122134B27007400C6 /* LoginForm.swift */; };
+		982FFE9422134F59007400C6 /* CreateAccountForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982FFE9322134F59007400C6 /* CreateAccountForm.swift */; };
 		9830C1FD220793CB0023B582 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9830C1FB220793CB0023B582 /* LaunchScreen.storyboard */; };
 		9830C1FE220793CB0023B582 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9830C1FC220793CB0023B582 /* Main.storyboard */; };
 		9830C2012207A0EF0023B582 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9830C2002207A0EF0023B582 /* Period.swift */; };
@@ -39,10 +42,9 @@
 		98ACD1671FA381D800B78C7D /* SettingsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98ACD1661FA381D800B78C7D /* SettingsTable.swift */; };
 		98B3B8802209DA8C000D153B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 98B3B87F2209DA8C000D153B /* GoogleService-Info.plist */; };
 		98CA61941FB0A6D900463FF7 /* OvertimeRuleTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CA61931FB0A6D900463FF7 /* OvertimeRuleTable.swift */; };
-		98D40CC1220B35A9006E59E0 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D40CC0220B35A9006E59E0 /* LoginView.swift */; };
+		98D40CC1220B35A9006E59E0 /* AuthVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D40CC0220B35A9006E59E0 /* AuthVC.swift */; };
 		98D40CC3220B3C6A006E59E0 /* CloudAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D40CC2220B3C6A006E59E0 /* CloudAuth.swift */; };
 		98D40CC5220B410F006E59E0 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D40CC4220B410F006E59E0 /* User.swift */; };
-		98D40CC7220B45C8006E59E0 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D40CC6220B45C8006E59E0 /* CreateAccountView.swift */; };
 		98E284E31FC70CC1004FD2D2 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E284E21FC70CC1004FD2D2 /* TabBarController.swift */; };
 		98E2EF9A1FB4D657006C3F96 /* CountingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E2EF991FB4D657006C3F96 /* CountingLabel.swift */; };
 		98FD4C5D1FC8390F002B91B1 /* LaunchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98FD4C5C1FC8390F002B91B1 /* LaunchCell.swift */; };
@@ -64,6 +66,9 @@
 		982F934D220884DA005D9C99 /* ShiftModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftModel.swift; sourceTree = "<group>"; };
 		982F934F2208B103005D9C99 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		982F93532208C386005D9C99 /* StringFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringFormatter.swift; sourceTree = "<group>"; };
+		982FFE8D22130F9F007400C6 /* AccountVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountVC.swift; sourceTree = "<group>"; };
+		982FFE9122134B27007400C6 /* LoginForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginForm.swift; sourceTree = "<group>"; };
+		982FFE9322134F59007400C6 /* CreateAccountForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountForm.swift; sourceTree = "<group>"; };
 		9830C1FB220793CB0023B582 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9830C1FC220793CB0023B582 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		9830C2002207A0EF0023B582 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
@@ -85,10 +90,9 @@
 		98ACD1661FA381D800B78C7D /* SettingsTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTable.swift; sourceTree = "<group>"; };
 		98B3B87F2209DA8C000D153B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		98CA61931FB0A6D900463FF7 /* OvertimeRuleTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OvertimeRuleTable.swift; sourceTree = "<group>"; };
-		98D40CC0220B35A9006E59E0 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		98D40CC0220B35A9006E59E0 /* AuthVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthVC.swift; sourceTree = "<group>"; };
 		98D40CC2220B3C6A006E59E0 /* CloudAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudAuth.swift; sourceTree = "<group>"; };
 		98D40CC4220B410F006E59E0 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		98D40CC6220B45C8006E59E0 /* CreateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountView.swift; sourceTree = "<group>"; };
 		98E284E21FC70CC1004FD2D2 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		98E2EF991FB4D657006C3F96 /* CountingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountingLabel.swift; sourceTree = "<group>"; };
 		98FD4C5C1FC8390F002B91B1 /* LaunchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchCell.swift; sourceTree = "<group>"; };
@@ -246,6 +250,7 @@
 				98D40CBF220B3594006E59E0 /* Auth */,
 				98ACD18A1FA39EC700B78C7D /* Settings  */,
 				98ACD18B1FA39EE100B78C7D /* Logger */,
+				982FFE8D22130F9F007400C6 /* AccountVC.swift */,
 			);
 			name = Views;
 			path = ..;
@@ -254,8 +259,9 @@
 		98D40CBF220B3594006E59E0 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
-				98D40CC0220B35A9006E59E0 /* LoginView.swift */,
-				98D40CC6220B45C8006E59E0 /* CreateAccountView.swift */,
+				98D40CC0220B35A9006E59E0 /* AuthVC.swift */,
+				982FFE9122134B27007400C6 /* LoginForm.swift */,
+				982FFE9322134F59007400C6 /* CreateAccountForm.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -412,6 +418,7 @@
 				980D1DD01FA3A4770091E06D /* SettingsTableNav.swift in Sources */,
 				988FDEBC1F9F7AFA0090DEF1 /* Logger.swift in Sources */,
 				980B984F2211837800414EB9 /* EditVC.swift in Sources */,
+				982FFE9222134B27007400C6 /* LoginForm.swift in Sources */,
 				9825482F2210ADF500BA182D /* FullTextFieldCell.swift in Sources */,
 				98FD4C5D1FC8390F002B91B1 /* LaunchCell.swift in Sources */,
 				9862A5711FCC33AA0047671D /* AdvancedSettingsTable.swift in Sources */,
@@ -424,18 +431,19 @@
 				981E7FD42209FF0E006A492C /* CloudStorage.swift in Sources */,
 				984319182207923E00C9B6FF /* AppDelegate.swift in Sources */,
 				98CA61941FB0A6D900463FF7 /* OvertimeRuleTable.swift in Sources */,
-				98D40CC1220B35A9006E59E0 /* LoginView.swift in Sources */,
+				98D40CC1220B35A9006E59E0 /* AuthVC.swift in Sources */,
 				98ACD1671FA381D800B78C7D /* SettingsTable.swift in Sources */,
 				982548312210D70D00BA182D /* DurationCell.swift in Sources */,
+				982FFE9422134F59007400C6 /* CreateAccountForm.swift in Sources */,
 				98E2EF9A1FB4D657006C3F96 /* CountingLabel.swift in Sources */,
 				9864BB0C1FD4700E005DB5F2 /* Calculator.swift in Sources */,
 				9830C2012207A0EF0023B582 /* Period.swift in Sources */,
 				98A54977220E03C000CBEE5D /* AddVC.swift in Sources */,
 				982F934E220884DA005D9C99 /* ShiftModel.swift in Sources */,
 				9820A5551FBCBF6B00EAEE6A /* MainNav.swift in Sources */,
-				98D40CC7220B45C8006E59E0 /* CreateAccountView.swift in Sources */,
 				98E284E31FC70CC1004FD2D2 /* TabBarController.swift in Sources */,
 				982F93542208C386005D9C99 /* StringFormatter.swift in Sources */,
+				982FFE8E22130F9F007400C6 /* AccountVC.swift in Sources */,
 				989392DC1FCEF322002475EA /* Extensions.swift in Sources */,
 				9886E9BC2211C11D00A4207A /* Periods.swift in Sources */,
 				982F93502208B103005D9C99 /* UserSettings.swift in Sources */,

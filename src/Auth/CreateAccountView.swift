@@ -12,7 +12,7 @@ import FirebaseAuth
 
 class CreateAccountView: LoginView{
     
-    var btn: UIButton!
+    var createBtn: UIButton!
     
     override func viewDidLoad() {
         self.addEmailFieldToView()
@@ -20,15 +20,7 @@ class CreateAccountView: LoginView{
         self.addCreateAccountButton()
     }
     
-    func addCreateAccountButton() {
-        btn = UIButton(frame: CGRect(x: 50, y: 50, width: 50, height: 50))
-        btn.setTitle("Log in", for: .normal)
-        btn.backgroundColor = UIColor.blue
-        btn.tintColor = .white
-        btn.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
-        
-        self.view.addSubview(btn)
-    }
+    
     
     @objc override func buttonAction() {
         let email = emailField.text
@@ -42,7 +34,7 @@ class CreateAccountView: LoginView{
     }
     
     func onCreateAccountSucess(result: AuthDataResult) {
-        user = User(ID: result.user.uid)
+        user = User(ID: result.user.uid, email: result.user.email!)
         performSegue(withIdentifier: "gotoTabbar", sender: self)
 
     }
