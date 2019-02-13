@@ -44,6 +44,8 @@ class LoginForm: UIView {
         emailField.borderStyle = .roundedRect
         emailField.autocapitalizationType = .none
         emailField.center = CGPoint(x: self.center.x, y: emailField.frame.height/2)
+        emailField.keyboardType = .emailAddress
+        emailField.autocorrectionType = .no
         
         self.addSubview(emailField)
     }
@@ -57,7 +59,7 @@ class LoginForm: UIView {
         passwordField.borderStyle = .roundedRect
         passwordField.autocapitalizationType = .none
         passwordField.isSecureTextEntry = true
-        
+        passwordField.autocorrectionType = .no
         passwordField.center = self.center
         passwordField.center.y = y
         

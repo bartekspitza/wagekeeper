@@ -11,8 +11,6 @@ import FirebaseAuth
 
 class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var totalHoursLbl = CountingLabel()
-    var totalMinutesLbl = CountingLabel()
     var periodLbl = UILabel()
     var btn: UIButton!
     @IBOutlet weak var grossLbl: CountingLabel!
@@ -30,31 +28,20 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        configureNewUser()
-        makeDesign()
+        makeGradient()
         makeMenuBtn()
         designLabels()
         configureStatsTable()
         configureMenuTable()
-        centerTotalTimeLabels()
         
         // Called when user logs in
         Auth.auth().addStateDidChangeListener { (auth, currentUser) in
             if currentUser != nil {
                 user = User(ID: currentUser!.uid, email: currentUser!.email!)
-                CloudStorage.getAllShifts(fromUser: user.ID) { (s) in
-                    var tmp = s
+                CloudStorage.getAllShifts(fromUser: user.ID) { (data) in
+                    var tmp = data
                     shifts = Periods.organizeShiftsIntoPeriods(ar: &tmp)
-
-                    if shifts.count > 0 {
-                        self.makePeriodsSeperatedByYear()
-                        self.makePeriod()
-                        self.fillLabelsWithStats()
-                        self.startCountingLabels()
-                        self.menuTable.reloadData()
-                        self.statsTable.reloadData()
-                    }
+                    self.refreshDataAndAnimations()
                 }
             }
         }
@@ -63,30 +50,18 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
             LocalStorage.values = LocalStorage.getAllShifts()
             LocalStorage.organizedValues = Periods.organizeShiftsIntoPeriods(ar: &LocalStorage.values)
             shifts = Periods.convertShiftsFromCoreDataToModels(arr: LocalStorage.organizedValues)
-            makePeriodsSeperatedByYear()
-            makePeriod()
-        } else {
-
+        
         }
         shouldFetchAllData = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        resetLabels()
-        makePeriodsSeperatedByYear()
-        makePeriod()
-        if period != nil {
-            fillLabelsWithStats()
-            startCountingLabels()
-        }
-        menuTable.reloadData()
-        statsTable.reloadData()
-        centerTotalTimeLabels()
+        refreshDataAndAnimations()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        salaryLbl.text = "0"
-        btn.transform = .identity
+        resetLabels()
+        btn.transform = .identity // resets button to its original position
         if pulldownMenuIsShowing {
             menuTable.frame = CGRect(x: 0, y: (btn.center.y + btn.frame.height/2), width: self.view.frame.width, height: 0)
             pulldownMenuIsShowing = false
@@ -95,26 +70,13 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         indexForChosenPeriod = [0, 0]
     }
     
-    func configureNewUser() {
-        if !periodsSeperatedByYear.isEmpty && UserDefaults().value(forKey: "FirstTime") == nil {
-            UserDefaults().set("Visited", forKey: "FirstTime")
-        }
-        
-        if UserDefaults().value(forKey: "FirstTime") == nil {
-            LocalStorage.insertExampleShift()
-            UserSettings.initiateUserDefaults()
-            UserDefaults().set("Visited", forKey: "FirstTime")
-        }
-    }
-    
-    func centerTotalTimeLabels() {
-        let centerPoint = self.view.frame.width * 0.75
-        
-        let totalHoursLblPoint = ((centerPoint - 4) - totalHoursLbl.frame.width/2) - 5
-        let totalMinutesLblPoint = ((centerPoint + 4) + totalMinutesLbl.frame.width/2) - 5
-        
-        totalHoursLbl.center.x = totalHoursLblPoint
-        totalMinutesLbl.center.x = totalMinutesLblPoint
+    func refreshDataAndAnimations() {
+        makePeriodsSeperatedByYear()
+        makePeriod()
+        fillLabelsWithStats()
+        startCountingLabels()
+        menuTable.reloadData()
+        statsTable.reloadData()
     }
     
     func makeMenuBtn() {
@@ -192,7 +154,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.view.addSubview(statsTable)
     }
     
-    func makeDesign() {
+    func makeGradient() {
         let gradientLayer: CAGradientLayer = CAGradientLayer()
         gradientLayer.colors = [navColor.cgColor, headerColor.cgColor]
         gradientLayer.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height*0.4)
@@ -222,9 +184,6 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let gradientMaxY = (self.view.frame.height*0.4)
         let horizontalY = gradientMaxY * 0.60
         
-        totalHoursLbl.clipsToBounds = true
-        totalMinutesLbl.clipsToBounds = true
-        
         salaryLbl.frame = CGRect(x: 0, y: 0, width: Int(self.view.frame.width/2), height: Int(gradientMaxY/3))
         salaryLbl.font = UIFont.systemFont(ofSize: 40)
         salaryLbl.text = salaryLbl.text
@@ -238,28 +197,6 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         grossLbl.textAlignment = .center
         grossLbl.textColor = .white
         
-        totalHoursLbl.frame = CGRect(x: 0, y: 0, width: Int((self.view.frame.width/2) * 0.66), height: Int((gradientMaxY-horizontalY) * 0.66))
-        totalHoursLbl.textColor = .white
-        totalHoursLbl.text = "0 HOURS"
-        totalHoursLbl.textAlignment = .right
-        var x = Int(self.view.frame.width/2)
-        x -= Int(totalHoursLbl.frame.width/2) + 82
-        
-        let y = Int(seperatorLineHorizontal.center.y)
-        totalHoursLbl.center = CGPoint(x: x, y: y)
-        totalHoursLbl.font = UIFont.systemFont(ofSize: 13)
-        
-        totalMinutesLbl.frame = CGRect(x: 0, y: 0, width: Int((self.view.frame.width/2) * 0.66), height: Int((gradientMaxY-horizontalY) * 0.66))
-        totalMinutesLbl.text = "0 MINUTES"
-        totalMinutesLbl.textColor = .white
-        var xx = Int(self.view.frame.width/2)
-        
-        xx += Int(totalMinutesLbl.frame.width/2) + 3 + 85
-        
-        totalMinutesLbl.center = CGPoint(x: xx, y: y)
-        totalMinutesLbl.font = UIFont.systemFont(ofSize: 13)
-        
-        
         periodLbl.textColor = .white
         periodLbl.font = UIFont.systemFont(ofSize: 13, weight: .light)
         
@@ -268,11 +205,12 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         periodLbl.frame = CGRect(x: 0, y: 0, width: Int(self.view.frame.width/3), height: Int(30))
         periodLbl.center = CGPoint(x: Int(self.view.frame.width*0.95 - periodLbl.frame.width/2), y: Int(btn.center.y))
         
+        resetLabels()
         self.view.addSubview(periodLbl)
     }
     
     func startCountingLabels() {
-        if shifts.count > 0 {
+        if period != nil {
             if Int(period.grossSalary) > 0 {
                 grossLbl.count(fromValue: 0, to: Float(period.grossSalary), withDuration: 1.5, andAnimationtype: .EaseOut, andCounterType: .Int, currency: UserSettings.getCurrencySymbol(), preString: "Gross: ", afterString: "")
                 salaryLbl.count(fromValue: 0, to: Float(period.salary), withDuration: TimeInterval(1.5 * (Float(period.salary)/Float(period.grossSalary))), andAnimationtype: .EaseOut, andCounterType: .Int, currency: UserSettings.getCurrencySymbol(), preString: "", afterString: "")
@@ -281,10 +219,10 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func fillLabelsWithStats() {
-        totalHoursLbl.text = "HOURS: 0"
-        totalMinutesLbl.text = "MINUTES: 0"
-        salaryLbl.text = StringFormatter.addCurrencyToNumber(amount: period.salary)
-        periodLbl.text = period.duration
+        if period != nil {
+            salaryLbl.text = StringFormatter.addCurrencyToNumber(amount: period.salary)
+            periodLbl.text = period.duration
+        }
     }
     
     func makePeriodsSeperatedByYear() {

@@ -10,6 +10,14 @@ import Foundation
 
 class UserSettings {
     
+    static func setupNewUser() {
+        if UserDefaults().value(forKey: "FirstTime") == nil {
+            LocalStorage.insertExampleShift()
+            UserSettings.initiateUserDefaults()
+            UserDefaults().set("Visited", forKey: "FirstTime")
+        }
+    }
+    
     static func forgetLoginInfo() {
         UserDefaults().set(nil, forKey: "email")
         UserDefaults().set(nil, forKey: "password")

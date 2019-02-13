@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseConfiguration.shared.setLoggerLevel(.min)
         FirebaseApp.configure()
         
-        
+        UserSettings.setupNewUser()
         
         
         if UserDefaults().string(forKey: "email") == nil {
