@@ -9,6 +9,14 @@
 import Foundation
 import UIKit
 
+extension UIImageView {
+    func setImageColor(color: UIColor) {
+        let templateImage = self.image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        self.image = templateImage
+        self.tintColor = color
+    }
+}
+
 extension UIView {
     func addTopBorderWithColor(color: UIColor, width: CGFloat) {
         let border = CALayer()

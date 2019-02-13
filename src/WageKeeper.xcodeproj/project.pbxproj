@@ -41,6 +41,7 @@
 		98A54977220E03C000CBEE5D /* AddVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A54976220E03C000CBEE5D /* AddVC.swift */; };
 		98ACD1671FA381D800B78C7D /* SettingsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98ACD1661FA381D800B78C7D /* SettingsTable.swift */; };
 		98B3B8802209DA8C000D153B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 98B3B87F2209DA8C000D153B /* GoogleService-Info.plist */; };
+		98BD37F12214AF9E0047F10E /* globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BD37F02214AF9E0047F10E /* globals.swift */; };
 		98CA61941FB0A6D900463FF7 /* OvertimeRuleTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CA61931FB0A6D900463FF7 /* OvertimeRuleTable.swift */; };
 		98D40CC1220B35A9006E59E0 /* AuthVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D40CC0220B35A9006E59E0 /* AuthVC.swift */; };
 		98D40CC3220B3C6A006E59E0 /* CloudAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D40CC2220B3C6A006E59E0 /* CloudAuth.swift */; };
@@ -89,6 +90,7 @@
 		98A54976220E03C000CBEE5D /* AddVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddVC.swift; sourceTree = "<group>"; };
 		98ACD1661FA381D800B78C7D /* SettingsTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTable.swift; sourceTree = "<group>"; };
 		98B3B87F2209DA8C000D153B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		98BD37F02214AF9E0047F10E /* globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = globals.swift; sourceTree = "<group>"; };
 		98CA61931FB0A6D900463FF7 /* OvertimeRuleTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OvertimeRuleTable.swift; sourceTree = "<group>"; };
 		98D40CC0220B35A9006E59E0 /* AuthVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthVC.swift; sourceTree = "<group>"; };
 		98D40CC2220B3C6A006E59E0 /* CloudAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudAuth.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				98D40CC2220B3C6A006E59E0 /* CloudAuth.swift */,
 				982F93532208C386005D9C99 /* StringFormatter.swift */,
 				9886E9BD2211DEA000A4207A /* Colors.swift */,
+				98BD37F02214AF9E0047F10E /* globals.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -442,6 +445,7 @@
 				982F934E220884DA005D9C99 /* ShiftModel.swift in Sources */,
 				9820A5551FBCBF6B00EAEE6A /* MainNav.swift in Sources */,
 				98E284E31FC70CC1004FD2D2 /* TabBarController.swift in Sources */,
+				98BD37F12214AF9E0047F10E /* globals.swift in Sources */,
 				982F93542208C386005D9C99 /* StringFormatter.swift in Sources */,
 				982FFE8E22130F9F007400C6 /* AccountVC.swift in Sources */,
 				989392DC1FCEF322002475EA /* Extensions.swift in Sources */,

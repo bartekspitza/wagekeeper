@@ -20,6 +20,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         FirebaseConfiguration.shared.setLoggerLevel(.min)
         FirebaseApp.configure()
+        
+        
+        
+        
+        if UserDefaults().string(forKey: "email") == nil {
+            self.window = UIWindow(frame: UIScreen.main.bounds)
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            
+            let initialViewController = storyboard.instantiateViewController(withIdentifier: "AuthVC")
+            
+            self.window?.rootViewController = initialViewController
+            self.window?.makeKeyAndVisible()
+        } else {
+            let email = UserDefaults().string(forKey: "email")
+            let password = UserDefaults().string(forKey: "password")
+            
+            CloudAuth.login(email: email!, password: password!, successHandler: { (result) in
+                user = User(ID: result.user.uid, email: email!)
+            }) {
+                
+            }
+        }
+        
+        
         return true
     }
 

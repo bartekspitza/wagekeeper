@@ -9,9 +9,6 @@ import UIKit
 import Foundation
 import FirebaseAuth
 
-var userId = "TJPdjzkhM5OXXrGIs7G7V6LeyWk2"
-var user: User!
-
 class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var totalHoursLbl = CountingLabel()
@@ -33,7 +30,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        //user = User(ID: userId, email: "some@email.com")
+        
         configureNewUser()
         makeDesign()
         makeMenuBtn()
@@ -42,7 +39,25 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         configureMenuTable()
         centerTotalTimeLabels()
         
-        shifts.removeAll()
+        // Called when user logs in
+        Auth.auth().addStateDidChangeListener { (auth, currentUser) in
+            if currentUser != nil {
+                user = User(ID: currentUser!.uid, email: currentUser!.email!)
+                CloudStorage.getAllShifts(fromUser: user.ID) { (s) in
+                    var tmp = s
+                    shifts = Periods.organizeShiftsIntoPeriods(ar: &tmp)
+
+                    if shifts.count > 0 {
+                        self.makePeriodsSeperatedByYear()
+                        self.makePeriod()
+                        self.fillLabelsWithStats()
+                        self.startCountingLabels()
+                        self.menuTable.reloadData()
+                        self.statsTable.reloadData()
+                    }
+                }
+            }
+        }
         if usingLocalStorage {
             print("Fetched data from local storage")
             LocalStorage.values = LocalStorage.getAllShifts()
@@ -51,19 +66,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
             makePeriodsSeperatedByYear()
             makePeriod()
         } else {
-            CloudStorage.getAllShifts(fromUser: user.ID) { (s) in
-                var tmp = s
-                shifts = Periods.organizeShiftsIntoPeriods(ar: &tmp)
-                
-                if shifts.count > 0 {
-                    self.makePeriodsSeperatedByYear()
-                    self.makePeriod()
-                    self.fillLabelsWithStats()
-                    self.startCountingLabels()
-                    self.menuTable.reloadData()
-                    self.statsTable.reloadData()
-                }
-            }
+
         }
         shouldFetchAllData = false
     }

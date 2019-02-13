@@ -14,13 +14,12 @@ class EditVC: AddVC {
     let shift = shifts[shiftToEdit[0]][shiftToEdit[1]]
     
     override func viewDidLoad() {
-        self.navigationController?.navigationBar.tintColor = UIColor.white
+        self.navigationController?.navigationBar.tintColor = UIColor.black
         self.title = "Edit shift"
+        createTitleField()
         configureTable()
         configureToolbar()
         configurePickers()
-        createTitleField()
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {

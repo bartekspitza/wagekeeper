@@ -18,6 +18,9 @@ class AuthVC: UIViewController, UITextFieldDelegate {
     let loadingIndicator = UIActivityIndicatorView()
     
     let toolbar = UIToolbar()
+    
+    var email = ""
+    var password = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,12 +31,24 @@ class AuthVC: UIViewController, UITextFieldDelegate {
         addLoginForm()
         addCreateAccountForm()
         addLoadingIndicator()
+        addLogoImage()
+    }
+    
+    func addLogoImage() {
+        let image = UIImage(named: "testimage.png")
+        
+        let imageView = UIImageView(image: image)
+        imageView.setImageColor(color: navColor)
+        imageView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width/2, height: self.view.frame.width/2)
+        imageView.center = CGPoint(x: self.view.center.x + 10, y: self.view.frame.height*0.25)
+        
+        
+        self.view.addSubview(imageView)
     }
     
     @objc func keyboardWillShow(notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardRectangle = keyboardFrame.cgRectValue
-            let keyboardHeight = keyboardRectangle.height
             
             if self.view.frame.origin.y == 0 {
                 UIView.animate(withDuration: 0.1, animations: { () -> Void in
@@ -46,7 +61,6 @@ class AuthVC: UIViewController, UITextFieldDelegate {
     @objc func keyboardWillHide(notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardRectangle = keyboardFrame.cgRectValue
-            let keyboardHeight = keyboardRectangle.height
             
             
             UIView.animate(withDuration: 0.1, animations: { () -> Void in
@@ -57,30 +71,31 @@ class AuthVC: UIViewController, UITextFieldDelegate {
     }
     
     @objc func createAccountPressed() {
-        let email = createAccountForm.emailField.text
+        email = createAccountForm.emailField.text!
+        password = createAccountForm.passwordField.text!
         let email2 = createAccountForm.emailField2.text
-        let password = createAccountForm.passwordField.text
         
         if password != "" && email != "" && (email == email2) {
             loadingIndicator.startAnimating()
-            CloudAuth.createUserAccount(email: email!, password: password!, completionHandler: self.onLoginSucess, failureHandler: loadingIndicator.stopAnimating)
+            CloudAuth.createUserAccount(email: email, password: password, completionHandler: self.onLoginSucess, failureHandler: loadingIndicator.stopAnimating)
         }
     }
     
     @objc func loginPressed() {
-        let email = loginForm.emailField.text
-        let password = loginForm.passwordField.text
+        email = loginForm.emailField.text!
+        password = loginForm.passwordField.text!
         
         if email == "" || password == "" {
             print("both fields must be entered")
         } else {
             loadingIndicator.startAnimating()
-            CloudAuth.login(email: email!, password: password!, successHandler: self.onLoginSucess, failureHandler: loadingIndicator.stopAnimating)
+            CloudAuth.login(email: email, password: password, successHandler: self.onLoginSucess, failureHandler: loadingIndicator.stopAnimating)
         }
     }
     func onLoginSucess(result: AuthDataResult) {
         loadingIndicator.stopAnimating()
         user = User(ID: result.user.uid, email: result.user.email!)
+        UserSettings.saveLoginInfo(email: email, password: password)
         performSegue(withIdentifier: "tabbar", sender: self)
     }
     

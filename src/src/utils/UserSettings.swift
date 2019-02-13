@@ -10,6 +10,16 @@ import Foundation
 
 class UserSettings {
     
+    static func forgetLoginInfo() {
+        UserDefaults().set(nil, forKey: "email")
+        UserDefaults().set(nil, forKey: "password")
+    }
+    
+    static func saveLoginInfo(email: String, password: String) {
+        UserDefaults().set(email, forKey: "email")
+        UserDefaults().set(password, forKey: "password")
+    }
+    
     static func OTRulesForDay(day: String) -> [Any] {
         if UserDefaults().value(forKey: day) != nil {
             let instanceEncoded: [NSData] = UserDefaults().object(forKey: day) as! [NSData]
@@ -85,9 +95,6 @@ class UserSettings {
     }
     
     static func newPeriodsManually() -> Bool {
-        if UserDefaults().bool(forKey: "manuallyNewMonth") != nil {
-            return UserDefaults().bool(forKey: "manuallyNewMonth")
-        }
-        return false
+        return UserDefaults().bool(forKey: "manuallyNewMonth")
     }
 }
