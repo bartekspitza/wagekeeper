@@ -46,6 +46,7 @@
 		98D40CC1220B35A9006E59E0 /* AuthVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D40CC0220B35A9006E59E0 /* AuthVC.swift */; };
 		98D40CC3220B3C6A006E59E0 /* CloudAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D40CC2220B3C6A006E59E0 /* CloudAuth.swift */; };
 		98D40CC5220B410F006E59E0 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D40CC4220B410F006E59E0 /* User.swift */; };
+		98D6628F2216003F001B2422 /* UpdateForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D6628E2216003F001B2422 /* UpdateForm.swift */; };
 		98E284E31FC70CC1004FD2D2 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E284E21FC70CC1004FD2D2 /* TabBarController.swift */; };
 		98E2EF9A1FB4D657006C3F96 /* CountingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E2EF991FB4D657006C3F96 /* CountingLabel.swift */; };
 		98FD4C5D1FC8390F002B91B1 /* LaunchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98FD4C5C1FC8390F002B91B1 /* LaunchCell.swift */; };
@@ -95,6 +96,7 @@
 		98D40CC0220B35A9006E59E0 /* AuthVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthVC.swift; sourceTree = "<group>"; };
 		98D40CC2220B3C6A006E59E0 /* CloudAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudAuth.swift; sourceTree = "<group>"; };
 		98D40CC4220B410F006E59E0 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		98D6628E2216003F001B2422 /* UpdateForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateForm.swift; sourceTree = "<group>"; };
 		98E284E21FC70CC1004FD2D2 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		98E2EF991FB4D657006C3F96 /* CountingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountingLabel.swift; sourceTree = "<group>"; };
 		98FD4C5C1FC8390F002B91B1 /* LaunchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchCell.swift; sourceTree = "<group>"; };
@@ -253,7 +255,7 @@
 				98D40CBF220B3594006E59E0 /* Auth */,
 				98ACD18A1FA39EC700B78C7D /* Settings  */,
 				98ACD18B1FA39EE100B78C7D /* Logger */,
-				982FFE8D22130F9F007400C6 /* AccountVC.swift */,
+				98D6628D22160027001B2422 /* Account */,
 			);
 			name = Views;
 			path = ..;
@@ -267,6 +269,15 @@
 				982FFE9322134F59007400C6 /* CreateAccountForm.swift */,
 			);
 			path = Auth;
+			sourceTree = "<group>";
+		};
+		98D6628D22160027001B2422 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				982FFE8D22130F9F007400C6 /* AccountVC.swift */,
+				98D6628E2216003F001B2422 /* UpdateForm.swift */,
+			);
+			path = Account;
 			sourceTree = "<group>";
 		};
 		DDF3811D744F0B753A21B7F7 /* Frameworks */ = {
@@ -434,6 +445,7 @@
 				981E7FD42209FF0E006A492C /* CloudStorage.swift in Sources */,
 				984319182207923E00C9B6FF /* AppDelegate.swift in Sources */,
 				98CA61941FB0A6D900463FF7 /* OvertimeRuleTable.swift in Sources */,
+				98D6628F2216003F001B2422 /* UpdateForm.swift in Sources */,
 				98D40CC1220B35A9006E59E0 /* AuthVC.swift in Sources */,
 				98ACD1671FA381D800B78C7D /* SettingsTable.swift in Sources */,
 				982548312210D70D00BA182D /* DurationCell.swift in Sources */,
