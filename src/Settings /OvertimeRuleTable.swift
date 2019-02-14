@@ -33,6 +33,9 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
         super.viewDidLoad()
         self.myTableView.delegate = self
         self.myTableView.dataSource = self
+        self.myTableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        self.myTableView.separatorColor = UIColor.black.withAlphaComponent(0.11)
+        self.myTableView.backgroundColor = .white
         self.navigationController?.navigationBar.tintColor = .black
         configureToolbar()
         if UserDefaults().value(forKey: day) != nil {
@@ -46,8 +49,8 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
             rateFields = rateFieldsUnpacked as! [myTextField]
             
             for section in starts {
-                (section[0] as! myTextField).font = UIFont.systemFont(ofSize: 15)
-                (section[0] as! myTextField).attributedPlaceholder = NSAttributedString(string:"Start", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
+                (section[0] as! myTextField).font = UIFont.systemFont(ofSize: 15, weight: .light)
+                (section[0] as! myTextField).attributedPlaceholder = NSAttributedString(string:"Start", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13, weight: .light)])
                 (section[0] as! myTextField).borderStyle = .none
                 (section[0] as! myTextField).textAlignment = .center
                 (section[0] as! myTextField).inputAccessoryView = toolbar
@@ -57,8 +60,8 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
                 startHasNotRecievedST.append(false)
             }
             for section in ends {
-                (section[0] as! myTextField).font = UIFont.systemFont(ofSize: 15)
-                (section[0] as! myTextField).attributedPlaceholder = NSAttributedString(string:"End", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
+                (section[0] as! myTextField).font = UIFont.systemFont(ofSize: 15, weight: .light)
+                (section[0] as! myTextField).attributedPlaceholder = NSAttributedString(string:"End", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13, weight: .light)])
                 (section[0] as! myTextField).borderStyle = .none
                 (section[0] as! myTextField).textAlignment = .center
                 (section[0] as! myTextField).inputAccessoryView = toolbar
@@ -72,8 +75,8 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
                 field.clearsOnBeginEditing = true
                 field.textAlignment = .right
                 field.borderStyle = .none
-                field.font = UIFont.systemFont(ofSize: 15)
-                field.attributedPlaceholder = NSAttributedString(string:"for this interval", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
+                field.font = UIFont.systemFont(ofSize: 15, weight: .light)
+                field.attributedPlaceholder = NSAttributedString(string:"for this interval", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13, weight: .light)])
             }
             isSectionComplete = [true, true]
         }
@@ -137,8 +140,8 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
             startHasNotRecievedST.append(true)
             
             let endField = myTextField(frame: CGRect(x: 0, y: 0, width: self.view.frame.width/7, height: 20))
-            endField.font = UIFont.systemFont(ofSize: 15)
-            endField.attributedPlaceholder = NSAttributedString(string:"End", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
+            endField.font = UIFont.systemFont(ofSize: 15, weight: .light)
+            endField.attributedPlaceholder = NSAttributedString(string:"End", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13, weight: .light)])
             endField.borderStyle = .none
             endField.textAlignment = .center
             endField.inputAccessoryView = toolbar
@@ -150,8 +153,8 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
             
             
             let startField = myTextField(frame: CGRect(x: 0, y: 0, width: (self.view.frame.width/7), height: 20))
-            startField.font = UIFont.systemFont(ofSize: 15)
-            startField.attributedPlaceholder = NSAttributedString(string:"Start", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
+            startField.font = UIFont.systemFont(ofSize: 15, weight: .light)
+            startField.attributedPlaceholder = NSAttributedString(string:"Start", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13, weight: .light)])
             startField.borderStyle = .none
             startField.textAlignment = .center
             startField.inputAccessoryView = toolbar
@@ -171,8 +174,8 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
             rateField.clearsOnBeginEditing = true
             rateField.textAlignment = .right
             rateField.borderStyle = .none
-            rateField.font = UIFont.systemFont(ofSize: 15)
-            rateField.attributedPlaceholder = NSAttributedString(string:"for this interval", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)])
+            rateField.font = UIFont.systemFont(ofSize: 15, weight: .light)
+            rateField.attributedPlaceholder = NSAttributedString(string:"for this interval", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13, weight: .light)])
             rateFields.append(rateField)
             
             let indexSet = NSMutableIndexSet()
@@ -225,17 +228,21 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == starts.count-1{
-            let versionText = UILabel()
-            versionText.text = "  For accurate salary calculations, make sure intervals are not overlapping each other."
-            versionText.numberOfLines = 3
-            versionText.textColor = UIColor.black.withAlphaComponent(0.25)
-            versionText.font = UIFont.systemFont(ofSize: 13)
-            versionText.textAlignment = .center
             
-            return versionText
-        } else {
-            return UIView()
+            let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50))
+            let label = UILabel(frame: CGRect(x: 16, y: 10, width: self.view.frame.width-32, height: 40))
+            
+            label.text = "For accurate salary calculations, make sure intervals are not overlapping each other."
+            label.font = UIFont.systemFont(ofSize: 12, weight: .light)
+            label.numberOfLines = 3
+            label.sizeToFit()
+            label.textColor = .gray
+            
+            view.addSubview(label)
+            return view
+    
         }
+        return UIView()
     }
     
 
@@ -296,6 +303,7 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
             
             let label = UILabel()
             label.text = "-"
+            label.font = UIFont.systemFont(ofSize: 13, weight: .light)
             label.sizeToFit()
             label.center.y = cell.frame.height/2
             label.center.x = (self.view.frame.width*0.98) - (ends[indexPath.section][0] as! myTextField).frame.width - label.frame.width/2
@@ -317,6 +325,7 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
             cell.addSubview(rateFields[indexPath.section])
             cell.textLabel?.text = "Hourly wage"
         }
+        cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .light)
         return cell
     }
     
@@ -336,8 +345,18 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
         return 40
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "RULE " + (section + 1).description
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30))
+        let label = UILabel(frame: CGRect(x: 16, y: 20, width: self.view.frame.width-32, height: 40))
+        label.text = "Rule " + (section + 1).description
+        label.font = UIFont.systemFont(ofSize: 12, weight: .light)
+        label.numberOfLines = 3
+        label.sizeToFit()
+        label.textColor = .gray
+        
+        view.addSubview(label)
+        
+        return view
     }
     
     func createTime(Date: Date) -> String {

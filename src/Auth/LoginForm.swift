@@ -108,7 +108,7 @@ class LoginForm: UIView {
     }
     func addForgotPasswordButton() {
         forgotPassBtn = UIButton()
-        forgotPassBtn.setTitle("Forgot password", for: .normal)
+        forgotPassBtn.setTitle("Forgot password?", for: .normal)
         forgotPassBtn.setTitleColor(.black, for: .normal)
         forgotPassBtn.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .light)
         forgotPassBtn.sizeToFit()

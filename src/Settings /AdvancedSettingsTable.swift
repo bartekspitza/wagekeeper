@@ -24,6 +24,7 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
     
     // Other
     let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    let sectionTitles = ["Overtime rules", "Default shift information", "When does a new period begin?"]
     let timePicker = UIDatePicker()
     var startFieldIsFocused = false
     var STDate = Date()
@@ -40,9 +41,9 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
         super.viewDidLoad()
         tableView.tintColor = navColor
         tableView.tableFooterView = UIView()
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         self.title = "Advanced tools"
         self.navigationController?.navigationBar.tintColor = .black
-
         configureToolbar()
         configurePicker()
         createTimePicker()
@@ -240,6 +241,7 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
             }
             picker.selectRow(Int(UserDefaults().string(forKey: "newMonth")!)!-1, inComponent: 0, animated: true)
         }
+        autoTextField.text! += " day of month"
     }
     
     
@@ -255,43 +257,72 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
         self.view.endEditing(true)
     }
     
-    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if section == 4 {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return 50
+        } else if section == 1 || section == 2 {
             return 30
+        }
+        return 0
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == 4 || section == 5{
+            return 50
         } else {
             return 0
         }
     }
     
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == 0 || section == 1 || section == 2{
+            let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30))
+            let label = UILabel(frame: CGRect(x: 16, y: 10 + ((section == 0) ? 20 : 0), width: self.view.frame.width-32, height: 40))
+            label.text = sectionTitles[section]
+            label.font = UIFont.systemFont(ofSize: 12, weight: .light)
+            label.numberOfLines = 3
+            label.sizeToFit()
+            label.textColor = .gray
+            
+            view.addSubview(label)
+            
+            return view
+        }
+        return UIView()
+    }
+
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == 4 {
-            let versionText = UILabel()
-            versionText.text = "Got any feedback or improvements you would like to see? Please consider sending us an email and make this app better!"
-            versionText.numberOfLines = 3
-            versionText.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30)
-            versionText.textAlignment = .center
-            versionText.center = CGPoint(x: self.view.frame.width/2, y: 10)
-            versionText.textColor = .darkGray
-            versionText.font = UIFont.systemFont(ofSize: 12)
-
-            return versionText 
-        } else if section == 5 {
-            let versionText = UILabel()
-            versionText.text = ""
-            versionText.textAlignment = .center
-            versionText.center = CGPoint(x: self.view.frame.width/2, y: 0)
-            versionText.textColor = .darkGray
-            versionText.font = UIFont.systemFont(ofSize: 12)
+            let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50))
+            let label = UILabel(frame: CGRect(x: 16, y: 10, width: self.view.frame.width-32, height: 40))
             
-            return versionText
-        } else {
-            return UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+            label.text = "Experienced something weird? Got any feedback or suggestions for improvements? Please consider sending us an email so that we can make this app better!"
+            label.font = UIFont.systemFont(ofSize: 12, weight: .light)
+            label.numberOfLines = 3
+            label.sizeToFit()
+            label.textColor = .gray
+            
+            view.addSubview(label)
+            return view
+        } else if section == 5 {
+            let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50))
+            let label = UILabel(frame: CGRect(x: 16, y: 10, width: self.view.frame.width-32, height: 40))
+
+            label.text = "If you like our app, leaving a review in the App Store will be very, very appreciated."
+            label.font = UIFont.systemFont(ofSize: 12, weight: .light)
+            label.numberOfLines = 3
+            label.sizeToFit()
+            label.textColor = .gray
+            
+            view.addSubview(label)
+            return view
         }
+        return UIView()
     }
     
     override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
         if indexPath.section == 3 {
-            let message = "Only change this setting if you sometimes work less hours than you actually get paid for. For example, changing this to 4 will cause any shifts shorter than 4 hours to be considered as 4 hours in length in calculations."
+            let message = "Only change this setting if you sometimes work less hours than you actually get paid for. For example, changing this to 4 causes any shifts shorter than 4 hours to still be considered as 4 hours in length in calculations."
             let alert = UIAlertController(title: "Warning!", message: message, preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.cancel, handler: { (action) in
                 alert.dismiss(animated: true, completion: nil)
@@ -365,6 +396,7 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
         } else {
             autoTextField.text = String(row + 1) + "th"
         }
+        autoTextField.text! += " day of month"
     }
     
     @IBAction func minHoursSet(_ sender: UITextField) {
