@@ -11,7 +11,7 @@ import UIKit
 
 class CreateAccountForm: LoginForm {
     
-    var emailField2: UITextField!
+    var password2Field: UITextField!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -19,32 +19,46 @@ class CreateAccountForm: LoginForm {
     
     override func clear() {
         emailField.text = ""
-        emailField2.text = ""
+        password2Field.text = ""
         passwordField.text = ""
     }
     
     override func create() {
         addEmailFieldToView()
-        addEmailField2ToView()
-        addPasswordFieldToView(y: emailField2.center.y + 50)
-        addMainButton(title: "Create account", y: passwordField.center.y + 70)
+        addPasswordFieldToView(y: emailField.center.y + 50)
+        addPassword2FieldToView()
+        
+        addMainButton(title: "Create account", y: password2Field.center.y + 70)
         addAccessoryButton(title: "Log in")
+    }
+    
+    override func configureErrorLabel() {
+        errorLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 20))
+        errorLabel.text = "Wrong password"
+        errorLabel.textColor = .red
+        errorLabel.textAlignment = .center
+        errorLabel.font = UIFont.systemFont(ofSize: 12, weight: .light)
+        errorLabel.center = CGPoint(x: self.center.x, y: password2Field.center.y + password2Field.frame.height/2 + 15)
+        errorLabel.layer.opacity = 0
+        
+        self.addSubview(errorLabel)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func addEmailField2ToView() {
-        emailField2 = UITextField()
-        emailField2.frame = CGRect(x: 0, y: 0, width: self.frame.width * 0.75, height: 40)
-        emailField2.placeholder = "Confirm email"
-        emailField2.font = UIFont.systemFont(ofSize: 14, weight: .light)
-        emailField2.borderStyle = .roundedRect
-        emailField2.autocapitalizationType = .none
-        emailField2.center = CGPoint(x: self.center.x, y: emailField.frame.height*1.5 + 10)
+    func addPassword2FieldToView() {
+        password2Field = UITextField()
+        password2Field.frame = CGRect(x: 0, y: 0, width: self.frame.width * 0.75, height: 40)
+        password2Field.placeholder = "Confirm password"
+        password2Field.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        password2Field.borderStyle = .roundedRect
+        password2Field.autocapitalizationType = .none
+        password2Field.isSecureTextEntry = true
+        password2Field.center = CGPoint(x: self.center.x, y: passwordField.center.y + 50)
         
-        self.addSubview(emailField2)
+        self.addSubview(password2Field)
     }
     
 }

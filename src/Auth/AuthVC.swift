@@ -47,56 +47,68 @@ class AuthVC: UIViewController, UITextFieldDelegate {
     }
     
     @objc func keyboardWillShow(notification: Notification) {
-        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            let keyboardRectangle = keyboardFrame.cgRectValue
-            
-            if self.view.frame.origin.y == 0 {
-                UIView.animate(withDuration: 0.1, animations: { () -> Void in
-                    self.view.frame.origin.y -= 150
-                })
-            }
+        if self.view.frame.origin.y == 0 {
+            UIView.animate(withDuration: 0.1, animations: { () -> Void in
+                self.view.frame.origin.y -= 150
+            })
         }
     }
     
     @objc func keyboardWillHide(notification: Notification) {
-        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            let keyboardRectangle = keyboardFrame.cgRectValue
-            
-            
-            UIView.animate(withDuration: 0.1, animations: { () -> Void in
-                self.view.frame.origin.y = 0
-            })
-            
-        }
+        UIView.animate(withDuration: 0.1, animations: { () -> Void in
+            self.view.frame.origin.y = 0
+        })
+    }
+    
+   
+    
+    
+    func onCreateAccountFailure(message: String) {
+        loadingIndicator.stopAnimating()
+        createAccountForm.showErrorMessage(message: message)
+    }
+    
+    func onLoginFailure(message: String) {
+        loadingIndicator.stopAnimating()
+        loginForm.showErrorMessage(message: message)
+    }
+    
+    func onLoginSucess(result: AuthDataResult) {
+        loadingIndicator.stopAnimating()
+        user = User(ID: result.user.uid, email: result.user.email!)
+        UserSettings.saveLoginInfo(email: email, password: password)
+        performSegue(withIdentifier: "tabbar", sender: self)
     }
     
     @objc func createAccountPressed() {
         email = createAccountForm.emailField.text!
         password = createAccountForm.passwordField.text!
-        let email2 = createAccountForm.emailField2.text
         
-        if password != "" && email != "" && (email == email2) {
+        createAccountForm.hideErrorMessage()
+        
+        let pass2 = createAccountForm.password2Field.text
+        
+        if password == "" || email == "" || pass2 == "" {
+            createAccountForm.showErrorMessage(message: "All fields must be entered")
+        } else if password != pass2 {
+            createAccountForm.showErrorMessage(message: "Passwords must match")
+        } else {
             loadingIndicator.startAnimating()
-            CloudAuth.createUserAccount(email: email, password: password, completionHandler: self.onLoginSucess, failureHandler: loadingIndicator.stopAnimating)
+            CloudAuth.createUserAccount(email: email, password: password, completionHandler: self.onLoginSucess, failureHandler: self.onCreateAccountFailure)
         }
     }
     
     @objc func loginPressed() {
         email = loginForm.emailField.text!
         password = loginForm.passwordField.text!
+        loginForm.hideErrorMessage()
         
         if email == "" || password == "" {
-            print("both fields must be entered")
+            loginForm.showErrorMessage(message: "Both fields must be entered")
         } else {
             loadingIndicator.startAnimating()
-            CloudAuth.login(email: email, password: password, successHandler: self.onLoginSucess, failureHandler: loadingIndicator.stopAnimating)
+            CloudAuth.login(email: email, password: password, successHandler: self.onLoginSucess, failureHandler: self.onLoginFailure)
         }
-    }
-    func onLoginSucess(result: AuthDataResult) {
-        loadingIndicator.stopAnimating()
-        user = User(ID: result.user.uid, email: result.user.email!)
-        UserSettings.saveLoginInfo(email: email, password: password)
-        performSegue(withIdentifier: "tabbar", sender: self)
     }
     
     func configureToolbar() {
@@ -122,9 +134,10 @@ class AuthVC: UIViewController, UITextFieldDelegate {
         createAccountForm.emailField.inputAccessoryView = toolbar
         createAccountForm.passwordField.delegate = self
         createAccountForm.passwordField.inputAccessoryView = toolbar
-        createAccountForm.emailField2.delegate = self
-        createAccountForm.emailField2.inputAccessoryView = toolbar
+        createAccountForm.password2Field.delegate = self
+        createAccountForm.password2Field.inputAccessoryView = toolbar
         createAccountForm.mainBtn.addTarget(self, action: #selector(createAccountPressed), for: .touchUpInside)
+        createAccountForm.configureErrorLabel()
         
         self.view.addSubview(createAccountForm)
     }
@@ -139,11 +152,12 @@ class AuthVC: UIViewController, UITextFieldDelegate {
         loginForm.emailField.inputAccessoryView = toolbar
         loginForm.passwordField.delegate = self
         loginForm.passwordField.inputAccessoryView = toolbar
+        loginForm.configureErrorLabel()
     }
 
     @objc func presentLoginForm() {
         loadingIndicator.center.y = self.view.frame.height/2 + loginForm.mainBtn.center.y
-        
+        createAccountForm.hideErrorMessage()
         UIView.animate(withDuration: 0.6, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.8, options: [], animations: {
             self.loginForm.center.x += self.loginForm.frame.width
             self.createAccountForm.center.x += self.createAccountForm.frame.width
@@ -153,7 +167,7 @@ class AuthVC: UIViewController, UITextFieldDelegate {
     }
     @objc func presentCreateForm() {
         loadingIndicator.center.y = self.view.frame.height/2 + createAccountForm.mainBtn.center.y
-        
+        loginForm.hideErrorMessage()
         UIView.animate(withDuration: 0.6, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.8, options: [], animations: {
             self.loginForm.center.x -= self.loginForm.frame.width
             self.createAccountForm.center.x -= self.createAccountForm.frame.width

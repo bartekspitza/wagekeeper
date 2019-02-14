@@ -10,7 +10,33 @@ import Foundation
 import FirebaseAuth
 
 class CloudAuth {
-    static func login(email: String, password: String, successHandler: @escaping (AuthDataResult) -> (), failureHandler: @escaping () -> ()) {
+    static private func loginErrorCodeToString(code: Int) -> String {
+        var msg = "Something went wrong. We're sorry."
+
+        if code == 17011 {
+            msg = "No account found with that email adress"
+        } else if code == 17009 {
+            msg = "Wrong password"
+        } else if code == 17008 {
+            msg = "Email is badly formatted"
+        }
+        
+        return msg
+    }
+    
+    static private func createAccountErrorCodeToString(code: Int) -> String {
+        var msg = "Something went wrong. We're sorry."
+        
+        if code == 17026 {
+            msg = "Password must be atleast 6 characters long"
+        } else if code == 17008 {
+            msg = "Email is badly formatted"
+        }
+        
+        return msg
+    }
+    
+    static func login(email: String, password: String, successHandler: @escaping (AuthDataResult) -> (), failureHandler: @escaping (_ message: String) -> ()) {
         print("Attempting to log in")
         
         Auth.auth().signIn(withEmail: email, password: password) { (result, er) in
@@ -19,15 +45,14 @@ class CloudAuth {
                 successHandler(result!)
                 
             } else {
-                print("Couldn't log in user")
-                print(er!.localizedDescription)
-                failureHandler()
+                let e = er! as NSError
+                failureHandler(loginErrorCodeToString(code: e.code))
             }
             
         }
     }
     
-    static func createUserAccount(email: String, password: String, completionHandler: @escaping (AuthDataResult) -> (), failureHandler: @escaping () -> ()) {
+    static func createUserAccount(email: String, password: String, completionHandler: @escaping (AuthDataResult) -> (), failureHandler: @escaping (_ message: String) -> ()) {
         print("Attempting to create user")
         Auth.auth().createUser(withEmail: email, password: password) { (result, er) in
             if er == nil {
@@ -35,9 +60,9 @@ class CloudAuth {
                 completionHandler(result!)
                 
             } else {
-                print("Couldn't create account.")
-                print(er!.localizedDescription)
-                failureHandler()
+                let e = er! as NSError
+                print(e.code)
+                failureHandler(createAccountErrorCodeToString(code: e.code))
             }
         }
     }

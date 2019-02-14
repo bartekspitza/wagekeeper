@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             CloudAuth.login(email: email!, password: password!, successHandler: { (result) in
                 user = User(ID: result.user.uid, email: email!)
-            }) {
+            }) {(message: String) in
                 
             }
         }
