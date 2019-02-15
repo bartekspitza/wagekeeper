@@ -11,6 +11,17 @@ import UIKit
 
 class Periods {
     
+    static func totalShifts() -> Int{
+        var total = 0
+        
+        for period in shifts {
+            for _ in period {
+                total += 1
+            }
+        }
+        return total
+    }
+    
     static func insert(shift: ShiftModel) {
         if shifts.isEmpty {
             shifts.append([shift])

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class AccountVC: UIViewController {
+class AccountVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var accountInfoView: UIView!
     var userEmailLabel: UILabel!
@@ -22,20 +22,38 @@ class AccountVC: UIViewController {
     var isUpdatingPassword = true
     var loadingIndicator: UIActivityIndicatorView!
     var updateMessageLbl: UILabel!
+    var table: UITableView!
     
     override func viewDidLoad() {
         self.title = "Account"
         self.navigationController?.navigationBar.tintColor = .black
         
-        addAccountInfo()
-        addLogoutBtn()
-        addChangeEmailBtn()
-        addChangePasswordBtn()
+        addAmountOfShiftsElement()
         addUpdatingForm()
         createLoadingIndicator()
         createUpdateMessageLabel()
+        createTable()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        if updateForm.center.x == self.view.center.x {
+            accountInfoView.layer.opacity = 0
+            table.layer.opacity = 0
+        }
     }
     
+    func createTable() {
+        table = UITableView(frame: CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: 200))
+        table.delegate = self
+        table.dataSource = self
+        table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        table.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        table.separatorColor = UIColor.black.withAlphaComponent(0.11)
+        table.tableFooterView = UIView()
+        table.tableHeaderView = UIView()
+        table.isScrollEnabled = false
+        self.view.addSubview(table)
+    }
     @objc func updatePressed() {
         if updateForm.field1.text == "" || updateForm.field2.text == "" {
             updateForm.showErrorMessage(message: "Both fields must be entered")
@@ -62,29 +80,18 @@ class AccountVC: UIViewController {
             UserDefaults().set(updateForm.field2.text, forKey: "password")
             showSuccessMessage(msg: "Updated password!")
         } else {
-            userEmailLabel.text = updateForm.field1.text
-            UserDefaults().set(userEmailLabel.text, forKey: "email")
+            UserDefaults().set(updateForm.field1.text, forKey: "email")
+            user.email = updateForm.field1.text
             showSuccessMessage(msg: "Updated email!")
         }
         
+        table.reloadData()
         loadingIndicator.stopAnimating()
         updateForm.formButton.setTitle("Update", for: .normal)
         hideForm()
     }
     
-    @objc func onChangePasswordPress() {
-        isUpdatingPassword = true
-        updateForm.field1.placeholder = "New password"
-        updateForm.field2.placeholder = "Confirm password"
-        showUpdateForm()
-    }
-    @objc func onChangeEmailPress() {
-        isUpdatingPassword = false
-        updateForm.field1.placeholder = "New email"
-        updateForm.field2.placeholder = "Confirm email"
-        showUpdateForm()
-    }
-    @objc func onLogout() {
+    func logout() {
         user = nil
         UserSettings.forgetLoginInfo()
         performSegue(withIdentifier: "backtologin", sender: self)
@@ -93,10 +100,7 @@ class AccountVC: UIViewController {
         UIView.animate(withDuration: 0.6, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.8, options: [], animations: {
             self.updateForm.center.x -= self.view.frame.width
             
-            self.changePasswordBtn.center.x -= self.view.frame.width
-            self.changeEmailBtn.center.x -= self.view.frame.width
-            self.logoutButton.center.x -= self.view.frame.width
-            self.accountInfoView.center.x -= self.view.frame.width
+            self.table.center.x -= self.view.frame.width
         })
     }
     @objc func hideForm() {
@@ -105,12 +109,10 @@ class AccountVC: UIViewController {
         UIView.animate(withDuration: 0.6, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.8, options: [], animations: {
             self.updateForm.center.x += self.view.frame.width
             
-            self.changePasswordBtn.center.x += self.view.frame.width
-            self.changeEmailBtn.center.x += self.view.frame.width
-            self.logoutButton.center.x += self.view.frame.width
-            self.accountInfoView.center.x += self.view.frame.width
+            self.table.center.x += self.view.frame.width
         })
     }
+    
     // Shows message when operation from form is successful
     func showSuccessMessage(msg: String) {
         updateMessageLbl.text = msg
@@ -151,61 +153,96 @@ class AccountVC: UIViewController {
         updateForm.formButton.addTarget(self, action: #selector(updatePressed), for: .touchUpInside)
         view.addSubview(updateForm)
     }
-    func addChangeEmailBtn() {
-        changeEmailBtn = UIButton()
-        changeEmailBtn.setTitle("Change email", for: .normal)
-        changeEmailBtn.setTitleColor(.black, for: .normal)
-        changeEmailBtn.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .light)
-        changeEmailBtn.sizeToFit()
-        changeEmailBtn.center = CGPoint(x: self.view.center.x, y: self.view.frame.height * 0.6)
-        changeEmailBtn.setTitleColor(UIColor.black.withAlphaComponent(0.7), for: .highlighted)
-        changeEmailBtn.addTarget(self, action: #selector(onChangeEmailPress), for: .touchUpInside)
-        self.view.addSubview(changeEmailBtn)
-    }
-    func addChangePasswordBtn() {
-        changePasswordBtn = UIButton()
-        changePasswordBtn.setTitle("Change password", for: .normal)
-        changePasswordBtn.setTitleColor(.black, for: .normal)
-        changePasswordBtn.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .light)
-        changePasswordBtn.sizeToFit()
-        changePasswordBtn.center = CGPoint(x: self.view.center.x, y: self.view.frame.height * 0.6 + 20)
-        changePasswordBtn.setTitleColor(UIColor.black.withAlphaComponent(0.7), for: .highlighted)
-        changePasswordBtn.addTarget(self, action: #selector(onChangePasswordPress), for: .touchUpInside)
+
+    func addAmountOfShiftsElement() {
+        let navigationBarHeight: CGFloat = self.navigationController!.navigationBar.frame.height
+        accountInfoView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height/2))
         
-        self.view.addSubview(changePasswordBtn)
-    }
-    func addLogoutBtn() {
-        logoutButton = UIButton(frame: CGRect(x: 50, y: 50, width: 100, height: 40))
-        logoutButton.setTitle("Log out", for: .normal)
-        logoutButton.backgroundColor = navColor
-        logoutButton.tintColor = .white
-        logoutButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
-        logoutButton.addTarget(self, action: #selector(onLogout), for: .touchUpInside)
-        logoutButton.layer.cornerRadius = 20
-        logoutButton.center = CGPoint(x: self.view.center.x, y: self.view.frame.height * 0.75)
         
-        self.view.addSubview(logoutButton)
-    }
-    func addAccountInfo() {
-        accountInfoView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50))
+        let shiftsAmountLbl = UILabel(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        shiftsAmountLbl.font = UIFont.systemFont(ofSize: 60, weight: .light)
+        shiftsAmountLbl.text = 734.description
+        shiftsAmountLbl.textAlignment = .center
+        shiftsAmountLbl.sizeToFit()
+        shiftsAmountLbl.center = CGPoint(x: self.view.center.x, y: self.view.frame.height/4)
         
-        let lbl = UILabel()
-        lbl.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 20)
-        lbl.font = UIFont.systemFont(ofSize: 14, weight: .light)
-        lbl.text = "Logged in with"
-        lbl.textAlignment = .center
-        lbl.center = self.view.center
-        
-        userEmailLabel = UILabel()
-        userEmailLabel.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 20)
-        userEmailLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        userEmailLabel.text = user.email
-        userEmailLabel.textAlignment = .center
-        userEmailLabel.center = self.view.center
-        userEmailLabel.center.y += 20
-        
-        accountInfoView.addSubview(lbl)
-        accountInfoView.addSubview(userEmailLabel)
+        let shiftsLbl = UILabel(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        shiftsLbl.font = UIFont.systemFont(ofSize: 15, weight: .light)
+        shiftsLbl.text = "logged shifts"
+        shiftsLbl.sizeToFit()
+        shiftsLbl.center.y = shiftsAmountLbl.frame.origin.y + shiftsAmountLbl.font.ascender - shiftsLbl.frame.height/2 + 5
+        shiftsLbl.frame.origin.x = shiftsAmountLbl.frame.origin.x + shiftsAmountLbl.frame.width + 5
+
+        accountInfoView.center.y = self.view.frame.height/4 + navigationBarHeight
+        accountInfoView.addSubview(shiftsLbl)
+        accountInfoView.addSubview(shiftsAmountLbl)
         self.view.addSubview(accountInfoView)
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 0 {
+            isUpdatingPassword = false
+            updateForm.field1.placeholder = "New email"
+            updateForm.field2.placeholder = "Confirm email"
+            showUpdateForm()
+        } else if indexPath.row == 1 {
+            isUpdatingPassword = true
+            updateForm.field1.placeholder = "New password"
+            updateForm.field2.placeholder = "Confirm password"
+            showUpdateForm()
+        } else {
+            logout()
+        }
+        
+    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
+        
+        cell?.textLabel?.text = ["Change email", "Change password", "Log out"][indexPath.row]
+        
+        let image = UIImage(named: ["email_icon", "key_icon", "account"][indexPath.row])
+        let imageView = UIImageView(image: image)
+        imageView.setImageColor(color: .black)
+        imageView.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
+        imageView.center = CGPoint(x: 25, y: (cell?.frame.height)!/2)
+        cell?.contentView.addSubview(imageView)
+        cell?.indentationLevel = 5
+        cell?.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
+        cell?.selectionStyle = .none
+        return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50))
+        
+        
+        let descriptionLabel = UILabel(frame: CGRect(x: 16, y: 0, width: self.view.frame.width-32, height: 40))
+        descriptionLabel.text = "logged in with"
+        descriptionLabel.font = UIFont.systemFont(ofSize: 12, weight: .light)
+        descriptionLabel.textAlignment = .center
+        descriptionLabel.textColor = .gray
+        
+        let email = UILabel(frame: CGRect(x: 16, y: 15, width: self.view.frame.width-32, height: 40))
+        email.text = user.email
+        email.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        email.textAlignment = .center
+        email.textColor = .black
+        
+        let separator = UIView(frame: CGRect(x: 0, y: 49, width: self.view.frame.width, height: 0.5))
+        separator.backgroundColor = UIColor.black.withAlphaComponent(0.11)
+        
+        view.addSubview(descriptionLabel)
+        view.addSubview(separator)
+        view.addSubview(email)
+        
+        return view
     }
 }

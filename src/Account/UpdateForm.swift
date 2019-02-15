@@ -25,16 +25,6 @@ class UpdateForm: UIView {
         
     }
     
-    func showSuccessMessage(message: String) {
-        if !errorLabelIsConfigured {
-            self.configureErrorLabel()
-            errorLabelIsConfigured = true
-        }
-        self.errorLabel.textColor = .black
-        self.errorLabel.layer.opacity = 1
-        self.errorLabel.text = message
-    }
-    
     func showErrorMessage(message: String) {
         if !errorLabelIsConfigured {
             self.configureErrorLabel()
@@ -47,7 +37,9 @@ class UpdateForm: UIView {
     }
     
     func hideErrorMessage() {
-        self.errorLabel.layer.opacity = 0
+        if errorLabelIsConfigured {
+            self.errorLabel.layer.opacity = 0
+        }
     }
     
     func configureErrorLabel() {
@@ -107,12 +99,12 @@ class UpdateForm: UIView {
         self.addSubview(field2)
     }
     func addFormButton(title: String) {
-        formButton = UIButton(frame: CGRect(x: 50, y: 50, width: 100, height: 40))
+        formButton = UIButton(frame: CGRect(x: 50, y: 50, width: self.frame.width*0.75, height: 40))
         formButton.setTitle(title, for: .normal)
         formButton.backgroundColor = navColor
         formButton.tintColor = .white
         formButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
-        formButton.layer.cornerRadius = 20
+        formButton.layer.cornerRadius = 10
         formButton.setTitleColor(.lightGray, for: .highlighted)
         formButton.center = CGPoint(x: self.center.x, y: field2.center.y + 100)
         formButton.layer.zPosition = 1
