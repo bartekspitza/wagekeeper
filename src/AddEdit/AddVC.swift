@@ -125,6 +125,8 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
         table.frame = CGRect(x: 0, y: height + titleField.frame.height, width: self.view.frame.width, height: 595)
         table.tableFooterView = UIView()
         table.isScrollEnabled = false
+        table.separatorColor = UIColor.black.withAlphaComponent(0.11)
+        table.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
     @objc func startingTimePickerChanged() {

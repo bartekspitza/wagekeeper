@@ -175,10 +175,10 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
         cell.lunchLbl.font = UIFont.systemFont(ofSize: 11, weight: .light)
         cell.accessoryLbl.font = UIFont.systemFont(ofSize: 11, weight: .light)
         
-        cell.dateLbl.textColor = Colors.get(red: 40, green: 40, blue: 40, alpha: 1)
-        cell.timeLbl.textColor = Colors.get(red: 40, green: 40, blue: 40, alpha: 1)
-        cell.lunchLbl.textColor = Colors.get(red: 40, green: 40, blue: 40, alpha: 1)
-        cell.accessoryLbl.textColor = Colors.get(red: 40, green: 40, blue: 40, alpha: 1)
+        cell.dateLbl.textColor = Colors.get(red: 60, green: 60, blue: 60, alpha: 1)
+        cell.timeLbl.textColor = Colors.get(red: 60, green: 60, blue: 60, alpha: 1)
+        cell.lunchLbl.textColor = Colors.get(red: 60, green: 60, blue: 60, alpha: 1)
+        cell.accessoryLbl.textColor = Colors.get(red: 60, green: 60, blue: 60, alpha: 1)
         
         cell.timeLbl.sizeToFit()
         cell.accessoryLbl.sizeToFit()
@@ -201,18 +201,34 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
         var endDate = Time.dateToString(date: shifts[section][0].date, withDayName: false)
         endDate = String(endDate.prefix(endDate.count - 5))
         let text = startDate + " - " + endDate
+        var year = Time.dateToString(date: shifts[section][shifts[section].count-1].date, withDayName: false)
+        year = String(year.suffix(4))
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 40))
+        view.backgroundColor = .gray
         
-        let headerLabel = UILabel(frame: CGRect(x: 15, y: 15, width:
+        let periodLabel = UILabel(frame: CGRect(x: 15, y: 10, width:
             tableView.bounds.size.width, height: 30))
-        headerLabel.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        headerLabel.textColor = .white
-        headerLabel.text = text
-        headerLabel.sizeToFit()
-        headerLabel.center.x = self.view.frame.width/2
-        headerLabel.textAlignment = .center
-        headerLabel.backgroundColor = headerColor
+        periodLabel.font = UIFont.systemFont(ofSize: 17, weight: .light)
+        periodLabel.textColor = .white
+        periodLabel.text = text
+        periodLabel.sizeToFit()
+        periodLabel.center.x = self.view.frame.width/2
+        periodLabel.center.y = 20
+        periodLabel.textAlignment = .center
+        
+        let yearLabel = UILabel(frame: CGRect(x: 15, y: 16, width:
+            tableView.bounds.size.width, height: 30))
+        yearLabel.font = UIFont.systemFont(ofSize: 11, weight: .semibold)
+        yearLabel.textColor = .white
+        yearLabel.text = year
+        yearLabel.sizeToFit()
+        yearLabel.frame.origin.x = periodLabel.frame.origin.x - yearLabel.frame.width - 5
+        yearLabel.textAlignment = .center
+        yearLabel.center.y = 21
     
-        return headerLabel
+        view.addSubview(periodLabel)
+        view.addSubview(yearLabel)
+        return view
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

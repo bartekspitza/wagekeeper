@@ -12,11 +12,6 @@ import UIKit
 class AccountVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var accountInfoView: UIView!
-    var userEmailLabel: UILabel!
-    var changePasswordBtn: UIButton!
-    var changeEmailBtn: UIButton!
-    var logoutButton: UIButton!
-    
     var updateForm: UpdateForm!
     
     var isUpdatingPassword = true
@@ -161,7 +156,7 @@ class AccountVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         let shiftsAmountLbl = UILabel(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         shiftsAmountLbl.font = UIFont.systemFont(ofSize: 60, weight: .light)
-        shiftsAmountLbl.text = 734.description
+        shiftsAmountLbl.text = Periods.totalShifts().description
         shiftsAmountLbl.textAlignment = .center
         shiftsAmountLbl.sizeToFit()
         shiftsAmountLbl.center = CGPoint(x: self.view.center.x, y: self.view.frame.height/4)
