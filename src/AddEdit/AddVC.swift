@@ -28,11 +28,7 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
     let endingTimePicker = UIDatePicker()
     
     var btn: UIButton!
-    
-    // Toolbar
-    let toolbar = UIToolbar()
-    let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
-    let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: self, action: nil)
+    var toolbar: UIToolbar!
    
     var currentField: Int!
     
@@ -103,18 +99,11 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
         endingTimePicker.date = UserSettings.getDefaultEndingTime()
     }
     func configureToolbar() {
-        let imageDown = UIImage(named: "downBtn")
-        let imageUp = UIImage(named: "upBtn")
-        let size = 45
-        
-        let downBtn = UIBarButtonItem(image: imageDown?.imageResize(sizeChange: CGSize(width: size, height: size)), style: UIBarButtonItem.Style.done, target: self, action: #selector(nextField(sender:)))
-        let upBtn = UIBarButtonItem(image: imageUp?.imageResize(sizeChange: CGSize(width: size, height: size)), style: UIBarButtonItem.Style.done, target: self, action: #selector(prevField(sender:)))
-        
-        upBtn.tintColor = .black
-        downBtn.tintColor = .black
-        doneButton.tintColor = .black
-        toolbar.setItems([upBtn, downBtn, flexSpace, doneButton], animated: false)
-        toolbar.sizeToFit()
+        toolbar = UIToolbar()
+        let buttons = addButtons(bar: toolbar, withUpDownButtons: true, color: .black)
+        buttons[0].action = #selector(donePressed)
+        buttons[1].action = #selector(prevField(sender:))
+        buttons[2].action = #selector(nextField(sender:))
     }
     func configureTable() {
         let height = UIApplication.shared.statusBarFrame.height +

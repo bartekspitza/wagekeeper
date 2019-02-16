@@ -11,6 +11,17 @@ import UIKit
 
 
 
+extension UITextField {
+    
+    func addBottomBorder(color: UIColor, width: CGFloat) {
+        let bottomLine = CALayer()
+        bottomLine.frame = CGRect(x: 0, y: self.frame.height - 1, width: self.frame.width, height: width)
+        bottomLine.backgroundColor = color.cgColor
+        self.borderStyle = .none
+        self.layer.addSublayer(bottomLine)
+    }
+}
+
 extension UIImageView {
     func setImageColor(color: UIColor) {
         let templateImage = self.image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
@@ -18,6 +29,17 @@ extension UIImageView {
         self.tintColor = color
     }
 }
+
+extension UITableView {
+    func deselectAllRows() {
+        if let index = self.indexPathsForSelectedRows {
+            for i in index {
+                self.deselectRow(at: i, animated: true)
+            }
+        }
+    }
+}
+
 
 extension UIView {
     func addTopBorderWithColor(color: UIColor, width: CGFloat) {

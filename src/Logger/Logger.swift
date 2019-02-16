@@ -182,8 +182,7 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         cell.timeLbl.sizeToFit()
         cell.accessoryLbl.sizeToFit()
-        cell.noteLbl.center.x = cell.timeLbl.frame.width + cell.noteLbl.frame.width/2 + 15
-        
+        cell.noteLbl.center.x = self.view.center.x
     
         return cell
     }
@@ -218,11 +217,12 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         let yearLabel = UILabel(frame: CGRect(x: 15, y: 16, width:
             tableView.bounds.size.width, height: 30))
-        yearLabel.font = UIFont.systemFont(ofSize: 11, weight: .semibold)
+        yearLabel.font = UIFont.systemFont(ofSize: 10, weight: .semibold)
         yearLabel.textColor = .white
         yearLabel.text = year
         yearLabel.sizeToFit()
         yearLabel.frame.origin.x = periodLabel.frame.origin.x - yearLabel.frame.width - 5
+        yearLabel.frame.origin.x = 5
         yearLabel.textAlignment = .center
         yearLabel.center.y = 21
     

@@ -63,10 +63,11 @@ class UpdateForm: UIView {
         field1 = UITextField()
         field1.frame = CGRect(x: 0, y: 0, width: self.frame.width * 0.75, height: 40)
         field1.font = UIFont.systemFont(ofSize: 14, weight: .light)
-        field1.borderStyle = .roundedRect
         field1.autocapitalizationType = .none
         field1.center = CGPoint(x: self.center.x, y: field1.frame.height/2)
         field1.autocorrectionType = .no
+        field1.addBottomBorderWithColor(color: .lightGray, width: 0.5)
+        
         
         if isEmailField {
             field1.placeholder = "New email"
@@ -83,11 +84,11 @@ class UpdateForm: UIView {
         field2 = UITextField()
         field2.frame = CGRect(x: 0, y: 0, width: self.frame.width * 0.75, height: 40)
         field2.font = UIFont.systemFont(ofSize: 14, weight: .light)
-        field2.borderStyle = .roundedRect
         field2.autocapitalizationType = .none
         field2.autocorrectionType = .no
         field2.center = self.center
         field2.center.y = field1.center.y + field1.frame.height/2 + 30
+        field2.addBottomBorderWithColor(color: .lightGray, width: 0.5)
         
         if isEmailField {
             field2.placeholder = "Confirm email"

@@ -92,11 +92,19 @@ class AccountVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         performSegue(withIdentifier: "backtologin", sender: self)
     }
     @objc func showUpdateForm() {
+        
+        
         UIView.animate(withDuration: 0.6, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.8, options: [], animations: {
             self.updateForm.center.x -= self.view.frame.width
             
             self.table.center.x -= self.view.frame.width
-        })
+        }) { (true) in
+            self.table.deselectAllRows()
+        }
+    }
+    
+    @objc func donePressed() {
+        self.view.endEditing(true)
     }
     @objc func hideForm() {
         updateForm.clear()
@@ -146,6 +154,11 @@ class AccountVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         updateForm.center.x += self.view.frame.width
         updateForm.backButton.addTarget(self, action: #selector(hideForm), for: .touchUpInside)
         updateForm.formButton.addTarget(self, action: #selector(updatePressed), for: .touchUpInside)
+        let toolbar = UIToolbar()
+        let buttons = addButtons(bar: toolbar, withUpDownButtons: false, color: .black)
+        updateForm.field1.inputAccessoryView = toolbar
+        updateForm.field2.inputAccessoryView = toolbar
+        buttons[0].action = #selector(donePressed)
         view.addSubview(updateForm)
     }
 
@@ -158,12 +171,14 @@ class AccountVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         shiftsAmountLbl.font = UIFont.systemFont(ofSize: 60, weight: .light)
         shiftsAmountLbl.text = Periods.totalShifts().description
         shiftsAmountLbl.textAlignment = .center
+        shiftsAmountLbl.textColor = .black
         shiftsAmountLbl.sizeToFit()
         shiftsAmountLbl.center = CGPoint(x: self.view.center.x, y: self.view.frame.height/4)
         
         let shiftsLbl = UILabel(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-        shiftsLbl.font = UIFont.systemFont(ofSize: 15, weight: .light)
-        shiftsLbl.text = "logged shifts"
+        shiftsLbl.font = UIFont.systemFont(ofSize: 12, weight: .light)
+        shiftsLbl.text = "completed shifts"
+        shiftsLbl.textColor = .gray
         shiftsLbl.sizeToFit()
         shiftsLbl.center.y = shiftsAmountLbl.frame.origin.y + shiftsAmountLbl.font.ascender - shiftsLbl.frame.height/2 + 5
         shiftsLbl.frame.origin.x = shiftsAmountLbl.frame.origin.x + shiftsAmountLbl.frame.width + 5
@@ -173,6 +188,7 @@ class AccountVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         accountInfoView.addSubview(shiftsAmountLbl)
         self.view.addSubview(accountInfoView)
     }
+    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
@@ -207,7 +223,6 @@ class AccountVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         cell?.contentView.addSubview(imageView)
         cell?.indentationLevel = 5
         cell?.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
-        cell?.selectionStyle = .none
         return cell!
     }
     
