@@ -56,7 +56,7 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
             ID: ""
         )
         
-        CloudStorage.addShift(toUser: user.ID, shift: shift, completionHandler: {})
+        CloudStorage.addShift(toUser: user.uid, shift: shift, completionHandler: {})
         
         Periods.insert(shift: shift)
         shiftsNeedsReOrganizing = true
@@ -64,7 +64,6 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
     }
     
     func createTitleField() {
-        print(1)
         let height = UIApplication.shared.statusBarFrame.height +
             self.navigationController!.navigationBar.frame.height
         titleField = UITextField(frame: CGRect(x: 0, y: height, width: self.view.frame.width, height: 75))
@@ -110,7 +109,6 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
             self.navigationController!.navigationBar.frame.height
         table.delegate = self
         table.dataSource = self
-        print(titleField)
         table.frame = CGRect(x: 0, y: height + titleField.frame.height, width: self.view.frame.width, height: 595)
         table.tableFooterView = UIView()
         table.isScrollEnabled = false

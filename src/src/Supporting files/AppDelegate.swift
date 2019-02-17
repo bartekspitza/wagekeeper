@@ -9,34 +9,36 @@
 import UIKit
 import CoreData
 import Firebase
+import FirebaseAuth
+import FBSDKCoreKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        return FBSDKApplicationDelegate.sharedInstance().application(app, open: url, options: options)
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        
         FirebaseConfiguration.shared.setLoggerLevel(.min)
         FirebaseApp.configure()
-        
         UserSettings.setupNewUser()
         
-        
-        if UserDefaults().string(forKey: "email") == nil {
-            presentAuthVC()
-        } else {
-            let email = UserDefaults().string(forKey: "email")
-            let password = UserDefaults().string(forKey: "password")
+        if let currentUser = Auth.auth().currentUser {
+            user = currentUser
             
-            CloudAuth.login(email: email!, password: password!, successHandler: { (result) in
-                user = User(ID: result.user.uid, email: email!)
-            }) {(message: String) in
-                self.presentAuthVC()
+            if user.providerData.count > 0 {
+                loggedInWithFacebook = (user.providerData[0]).providerID == "facebook.com"
             }
+        } else {
+            presentAuthVC()
         }
-        
         
         return true
     }

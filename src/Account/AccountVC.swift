@@ -23,6 +23,8 @@ class AccountVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.title = "Account"
         self.navigationController?.navigationBar.tintColor = .black
         
+        print("User logged in with facebook: ")
+        print(loggedInWithFacebook)
         addAmountOfShiftsElement()
         addUpdatingForm()
         createLoadingIndicator()
@@ -72,11 +74,9 @@ class AccountVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     func onFormOperationSuccess() {
         if isUpdatingPassword {
-            UserDefaults().set(updateForm.field2.text, forKey: "password")
             showSuccessMessage(msg: "Updated password!")
         } else {
-            UserDefaults().set(updateForm.field1.text, forKey: "email")
-            user.email = updateForm.field1.text
+            updateForm.field1.text = user.email
             showSuccessMessage(msg: "Updated email!")
         }
         
@@ -88,8 +88,9 @@ class AccountVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func logout() {
         user = nil
-        UserSettings.forgetLoginInfo()
         performSegue(withIdentifier: "backtologin", sender: self)
+        CloudAuth.signOut()
+        UserSettings.setEmail(email: nil)
     }
     @objc func showUpdateForm() {
         
@@ -191,31 +192,48 @@ class AccountVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 0 {
-            isUpdatingPassword = false
-            updateForm.field1.placeholder = "New email"
-            updateForm.field2.placeholder = "Confirm email"
-            showUpdateForm()
-        } else if indexPath.row == 1 {
-            isUpdatingPassword = true
-            updateForm.field1.placeholder = "New password"
-            updateForm.field2.placeholder = "Confirm password"
-            showUpdateForm()
-        } else {
+        if loggedInWithFacebook {
             logout()
+        } else {
+            if indexPath.row == 0 {
+                isUpdatingPassword = false
+                updateForm.field1.placeholder = "New email"
+                updateForm.field2.placeholder = "Confirm email"
+                showUpdateForm()
+            } else if indexPath.row == 1 {
+                isUpdatingPassword = true
+                updateForm.field1.placeholder = "New password"
+                updateForm.field2.placeholder = "Confirm password"
+                showUpdateForm()
+            } else {
+                logout()
+            }
         }
-        
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if loggedInWithFacebook {
+            return 1
+        }
         return 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
         
-        cell?.textLabel?.text = ["Change email", "Change password", "Log out"][indexPath.row]
+        var titles = [String]()
+        var imageNames = [String]()
         
-        let image = UIImage(named: ["email_icon", "key_icon", "account"][indexPath.row])
+        if loggedInWithFacebook {
+            titles = ["Log out"]
+            imageNames = ["account"]
+        } else {
+            titles = ["Change email", "Change password", "Log out"]
+            imageNames = ["email_icon", "key_icon", "account"]
+        }
+        
+        cell?.textLabel?.text = titles[indexPath.row]
+        
+        let image = UIImage(named: imageNames[indexPath.row])
         let imageView = UIImageView(image: image)
         imageView.setImageColor(color: .black)
         imageView.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
@@ -241,10 +259,15 @@ class AccountVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         descriptionLabel.textColor = .gray
         
         let email = UILabel(frame: CGRect(x: 16, y: 15, width: self.view.frame.width-32, height: 40))
-        email.text = user.email
         email.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
         email.textAlignment = .center
         email.textColor = .black
+        
+        if loggedInWithFacebook {
+            email.text = UserDefaults().string(forKey: "email")
+        } else {
+            email.text = user.email!
+        }
         
         let separator = UIView(frame: CGRect(x: 0, y: 49, width: self.view.frame.width, height: 0.5))
         separator.backgroundColor = UIColor.black.withAlphaComponent(0.11)

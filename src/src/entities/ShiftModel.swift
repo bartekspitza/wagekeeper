@@ -251,8 +251,7 @@ class ShiftModel: CustomStringConvertible {
             salary -= (lunchMinutes * (salary/minutesWorked))
             moneyInOT -= (lunchMinutes * (salary/minutesWorked))
         }
-        print("asdfasdfsadf")
-        print(minutesInOT)
+        
         return [Int(roundf(salary)), Int(minutesInOT), Int(moneyInOT) ]
     }
     

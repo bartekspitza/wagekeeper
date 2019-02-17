@@ -18,15 +18,23 @@ class UserSettings {
         }
     }
     
-    static func forgetLoginInfo() {
-        UserDefaults().set(nil, forKey: "email")
-        UserDefaults().set(nil, forKey: "password")
+    static func setEmail(email: String?) {
+        UserDefaults().set(email, forKey: "email")
     }
     
-    static func saveLoginInfo(email: String, password: String) {
-        UserDefaults().set(email, forKey: "email")
-        UserDefaults().set(password, forKey: "password")
+    static func getEmail() -> String? {
+        return UserDefaults().string(forKey: "email")
     }
+    
+//    static func forgetLoginInfo() {
+//        UserDefaults().set(nil, forKey: "email")
+//        UserDefaults().set(nil, forKey: "password")
+//    }
+//    
+//    static func saveLoginInfo(email: String, password: String) {
+//        UserDefaults().set(email, forKey: "email")
+//        UserDefaults().set(password, forKey: "password")
+//    }
     
     static func OTRulesForDay(day: String) -> [Any] {
         if UserDefaults().value(forKey: day) != nil {

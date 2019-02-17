@@ -21,12 +21,15 @@ class LoginForm: UIView {
     
     var errorLabelIsConfigured = false
     var mainBtnTitle: String!
+    var FBButton: UIButton!
     
     init(frame: CGRect, mainBtnTitle: String) {
         super.init(frame: frame)
         self.mainBtnTitle = mainBtnTitle
 
     }
+    
+    
     
     func showSuccessMessage(msg: String) {
         errorLabel.textColor = Colors.get(red: 0, green: 153, blue: 94, alpha: 1)
@@ -41,29 +44,30 @@ class LoginForm: UIView {
         })
     }
     
-    func stopAnimating() {
+   
+    func stopAnimating(button: UIButton, title: String) {
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.8, options: [], animations: {
-            self.mainBtn.frame = CGRect(x: 0, y: self.mainBtn.frame.origin.y, width: self.frame.width*0.75, height: 40)
-            self.mainBtn.layer.cornerRadius = 10
-            self.mainBtn.center.x = self.center.x
+            button.frame = CGRect(x: 0, y: button.frame.origin.y, width: self.frame.width*0.75, height: 40)
+            button.layer.cornerRadius = 10
+            button.center.x = self.center.x
         }) { (true) in
             
         }
-        UIView.transition(with: self.mainBtn, duration: 0.2, options: [.transitionCrossDissolve], animations: {
-            self.mainBtn.setTitle(self.mainBtnTitle, for: .normal)
+        UIView.transition(with: button, duration: 0.2, options: [.transitionCrossDissolve], animations: {
+            button.setTitle(title, for: .normal)
         }, completion: nil)
     }
     
-    func startAnimating() {
+    func startAnimating(button: UIButton) {
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.8, options: [], animations: {
-            self.mainBtn.frame = CGRect(x: 0, y: self.mainBtn.frame.origin.y, width: 40, height: 40)
-            self.mainBtn.layer.cornerRadius = 20
-            self.mainBtn.center.x = self.center.x
+            button.frame = CGRect(x: 0, y: button.frame.origin.y, width: 40, height: 40)
+            button.layer.cornerRadius = 20
+            button.center.x = self.center.x
         }) { (true) in
             
         }
-        UIView.transition(with: self.mainBtn, duration: 0.2, options: [.transitionCrossDissolve], animations: {
-            self.mainBtn.setTitle("", for: .normal)
+        UIView.transition(with: button, duration: 0.2, options: [.transitionCrossDissolve], animations: {
+            button.setTitle("", for: .normal)
         }, completion: nil)
     }
     
@@ -104,8 +108,20 @@ class LoginForm: UIView {
         addMainButton(title: "Log in", y: emailField.center.y + 120)
         addForgotPasswordButton()
         addAccessoryButton(title: "Create account")
+        addFBButton()
     }
-
+    func addFBButton() {
+        FBButton = UIButton(type: .custom)
+        FBButton.backgroundColor = Colors.get(red: 60, green: 84, blue: 155, alpha: 1)
+        FBButton.frame = CGRect(x: 0, y: 0, width: self.frame.width*0.75, height: 40)
+        FBButton.center = CGPoint(x: self.center.x, y: self.frame.height/2)
+        FBButton.setTitle("Sign in with Facebook", for: .normal)
+        FBButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
+        FBButton.layer.cornerRadius = 10
+        FBButton.setTitleColor(.lightGray, for: .highlighted)
+        self.addSubview(FBButton)
+    }
+    
     func addEmailFieldToView() {
         emailField = UITextField()
         emailField.frame = CGRect(x: 0, y: 0, width: self.frame.width * 0.75, height: 40)
@@ -150,7 +166,7 @@ class LoginForm: UIView {
     }
     func addForgotPasswordButton() {
         forgotPassBtn = UIButton()
-        forgotPassBtn.setTitle("Forgot password?", for: .normal)
+        forgotPassBtn.setTitle("Forgot your password?", for: .normal)
         forgotPassBtn.setTitleColor(.black, for: .normal)
         forgotPassBtn.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .light)
         forgotPassBtn.sizeToFit()

@@ -11,7 +11,7 @@ import Foundation
 class User {
     var ID: String!
     var email: String!
-    
+    var provider
     init(ID: String, email: String) {
         self.ID = ID
         self.email = email

@@ -34,11 +34,14 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         configureStatsTable()
         configureMenuTable()
         
+        
+        
         // Called when user logs in
         Auth.auth().addStateDidChangeListener { (auth, currentUser) in
             if currentUser != nil {
-                user = User(ID: currentUser!.uid, email: currentUser!.email!)
-                CloudStorage.getAllShifts(fromUser: user.ID) { (data) in
+                user = currentUser!
+                
+                CloudStorage.getAllShifts(fromUser: user.uid) { (data) in
                     var tmp = data
                     shifts = Periods.organizeShiftsIntoPeriods(ar: &tmp)
                     self.refreshDataAndAnimations()
@@ -73,6 +76,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func refreshDataAndAnimations() {
         makePeriodsSeperatedByYear()
         makePeriod()
+        periodLbl.text = (period == nil) ? "" : period.duration
         startCountingLabels()
         menuTable.reloadData()
         statsTable.reloadData()
@@ -94,22 +98,24 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @objc func btnPressed(sender: UIButton) {
         if shifts.count > 0 {
-            pulldownMenuIsShowing = !pulldownMenuIsShowing
+            
             if pulldownMenuIsShowing {
-                UIView.animate(withDuration: 0.4, animations: {
-                    self.menuTable.frame = CGRect(x: 0, y: (sender.center.y + sender.frame.height/2), width: self.view.frame.width, height: self.view.frame.height*0.4)
-                })
-                UIView.animate(withDuration: 0.4, animations: {
-                    sender.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
-                })
-            } else {
                 UIView.animate(withDuration: 0.3, animations: {
                     self.menuTable.frame = CGRect(x: 0, y: (sender.center.y + sender.frame.height/2), width: self.view.frame.width, height: 0)
                 })
                 UIView.animate(withDuration: 0.3, animations: {
                     sender.transform = .identity
                 })
+            } else {
+                UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.8, options: [], animations: {
+                    self.menuTable.frame = CGRect(x: 0, y: (sender.center.y + sender.frame.height/2), width: self.view.frame.width, height: self.view.frame.height*0.4)
+                }, completion: nil)
+                
+                UIView.animate(withDuration: 0.3, animations: {
+                    sender.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+                })
             }
+            pulldownMenuIsShowing = !pulldownMenuIsShowing
         } else {
             sender.shake(direction: "vertical", swings: 1)
         }

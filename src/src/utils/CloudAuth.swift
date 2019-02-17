@@ -8,8 +8,24 @@
 
 import Foundation
 import FirebaseAuth
+import FacebookLogin
 
 class CloudAuth {
+    
+    static func signOut() {
+        
+        do {
+            try Auth.auth().signOut()
+        } catch {
+            
+        }
+        
+        if loggedInWithFacebook {
+            let loginManager = LoginManager()
+            loginManager.logOut()
+        }
+        loggedInWithFacebook = false
+    }
     
     static func sendResetEmail(to: String, successHandler: @escaping () -> (), failureHandler: @escaping (String) -> ()) {
         Auth.auth().sendPasswordReset(withEmail: to) { (er) in
