@@ -11,6 +11,17 @@ import FirebaseAuth
 
 class CloudAuth {
     
+    static func sendResetEmail(to: String, successHandler: @escaping () -> (), failureHandler: @escaping (String) -> ()) {
+        Auth.auth().sendPasswordReset(withEmail: to) { (er) in
+            if er == nil {
+                successHandler()
+            } else {
+                let code = (er! as NSError).code
+                failureHandler(errorCodeToString(code: code))
+            }
+        }
+    }
+    
     static func updatePassword(password: String, successHandler: @escaping () -> (), failureHandler: @escaping (String) -> ()) {
         let user = Auth.auth().currentUser
         

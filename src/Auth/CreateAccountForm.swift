@@ -13,8 +13,8 @@ class CreateAccountForm: LoginForm {
     
     var password2Field: UITextField!
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(frame: CGRect, mainBtnTitle: String) {
+        super.init(frame: frame, mainBtnTitle: mainBtnTitle)
     }
     
     override func clear() {
@@ -53,10 +53,10 @@ class CreateAccountForm: LoginForm {
         password2Field.frame = CGRect(x: 0, y: 0, width: self.frame.width * 0.75, height: 40)
         password2Field.placeholder = "Confirm password"
         password2Field.font = UIFont.systemFont(ofSize: 14, weight: .light)
-        password2Field.borderStyle = .roundedRect
         password2Field.autocapitalizationType = .none
         password2Field.isSecureTextEntry = true
         password2Field.center = CGPoint(x: self.center.x, y: passwordField.center.y + 50)
+        password2Field.addBottomBorder(color: .lightGray, width: 0.5)
         
         self.addSubview(password2Field)
     }

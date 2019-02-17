@@ -25,13 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         if UserDefaults().string(forKey: "email") == nil {
-            self.window = UIWindow(frame: UIScreen.main.bounds)
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            
-            let initialViewController = storyboard.instantiateViewController(withIdentifier: "AuthVC")
-            
-            self.window?.rootViewController = initialViewController
-            self.window?.makeKeyAndVisible()
+            presentAuthVC()
         } else {
             let email = UserDefaults().string(forKey: "email")
             let password = UserDefaults().string(forKey: "password")
@@ -39,12 +33,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             CloudAuth.login(email: email!, password: password!, successHandler: { (result) in
                 user = User(ID: result.user.uid, email: email!)
             }) {(message: String) in
-                
+                self.presentAuthVC()
             }
         }
         
         
         return true
+    }
+    
+    func presentAuthVC() {
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        let initialViewController = storyboard.instantiateViewController(withIdentifier: "AuthVC")
+        
+        self.window?.rootViewController = initialViewController
+        self.window?.makeKeyAndVisible()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

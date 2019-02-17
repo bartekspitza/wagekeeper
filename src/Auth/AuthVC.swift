@@ -34,53 +34,24 @@ class AuthVC: UIViewController, UITextFieldDelegate {
         addLogoImage()
     }
     
-    func addLogoImage() {
-        let image = UIImage(named: "testimage.png")
-        
-        let imageView = UIImageView(image: image)
-        imageView.setImageColor(color: navColor)
-        imageView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width/2, height: self.view.frame.width/2)
-        imageView.center = CGPoint(x: self.view.center.x + 10, y: self.view.frame.height*0.25)
-        
-        
-        self.view.addSubview(imageView)
-    }
-    
-    @objc func keyboardWillShow(notification: Notification) {
-        if self.view.frame.origin.y == 0 {
-            UIView.animate(withDuration: 0.1, animations: { () -> Void in
-                self.view.frame.origin.y -= 150
-            })
-        }
-    }
-    
-    @objc func keyboardWillHide(notification: Notification) {
-        UIView.animate(withDuration: 0.1, animations: { () -> Void in
-            self.view.frame.origin.y = 0
-        })
-    }
-    
-   
-    
-    
-    func onCreateAccountFailure(message: String) {
-        loadingIndicator.stopAnimating()
-        createAccountForm.showErrorMessage(message: message)
-    }
-    
-    func onLoginFailure(message: String) {
-        loadingIndicator.stopAnimating()
-        loginForm.showErrorMessage(message: message)
-    }
-    
-    func onLoginSucess(result: AuthDataResult) {
+    // Authentication
+    func performLogin(result: AuthDataResult) {
         loadingIndicator.stopAnimating()
         user = User(ID: result.user.uid, email: result.user.email!)
         UserSettings.saveLoginInfo(email: email, password: password)
         performSegue(withIdentifier: "tabbar", sender: self)
     }
-    
-    @objc func createAccountPressed() {
+    func onLoginFailure(message: String) {
+        loadingIndicator.stopAnimating()
+        loginForm.stopAnimating()
+        loginForm.showErrorMessage(message: message)
+    }
+    func onCreateAccountFailure(message: String) {
+        loadingIndicator.stopAnimating()
+        loginForm.stopAnimating()
+        createAccountForm.showErrorMessage(message: message)
+    }
+    @objc func createAccount() {
         email = createAccountForm.emailField.text!
         password = createAccountForm.passwordField.text!
         
@@ -94,11 +65,11 @@ class AuthVC: UIViewController, UITextFieldDelegate {
             createAccountForm.showErrorMessage(message: "Passwords must match")
         } else {
             loadingIndicator.startAnimating()
-            CloudAuth.createUserAccount(email: email, password: password, completionHandler: self.onLoginSucess, failureHandler: self.onCreateAccountFailure)
+            createAccountForm.startAnimating()
+            CloudAuth.createUserAccount(email: email, password: password, completionHandler: self.performLogin, failureHandler: self.onCreateAccountFailure)
         }
     }
-    
-    @objc func loginPressed() {
+    @objc func login() {
         email = loginForm.emailField.text!
         password = loginForm.passwordField.text!
         loginForm.hideErrorMessage()
@@ -107,10 +78,31 @@ class AuthVC: UIViewController, UITextFieldDelegate {
             loginForm.showErrorMessage(message: "Both fields must be entered")
         } else {
             loadingIndicator.startAnimating()
-            CloudAuth.login(email: email, password: password, successHandler: self.onLoginSucess, failureHandler: self.onLoginFailure)
+            loginForm.startAnimating()
+            CloudAuth.login(email: email, password: password, successHandler: self.performLogin, failureHandler: self.onLoginFailure)
+        }
+    }
+    @objc func resetPassword() {
+        if loginForm.emailField.text == "" {
+            loginForm.showErrorMessage(message: "Field must be entered")
+        } else {
+            loginForm.hideErrorMessage()
+            loginForm.startAnimating()
+            loadingIndicator.startAnimating()
+            CloudAuth.sendResetEmail(to: loginForm.emailField.text!, successHandler: {
+                self.loginForm.stopAnimating()
+                self.loadingIndicator.stopAnimating()
+                self.loginForm.showSuccessMessage(msg: "Reset email sent")
+                self.hideForgotPasswordView()
+            }) { (msg) in
+                self.loginForm.showErrorMessage(message: msg)
+                self.loginForm.stopAnimating()
+                self.loadingIndicator.stopAnimating()
+            }
         }
     }
     
+    // Layout methods
     func configureToolbar() {
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
         let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: self, action: nil)
@@ -122,11 +114,12 @@ class AuthVC: UIViewController, UITextFieldDelegate {
     func addLoadingIndicator() {
         loadingIndicator.hidesWhenStopped = true
         loadingIndicator.color = .white
-        loadingIndicator.center = CGPoint(x: loginForm.mainBtn.center.x + loginForm.mainBtn.frame.width/2 - loadingIndicator.frame.width - 20, y: self.view.frame.height/2 + loginForm.mainBtn.center.y)
+        loadingIndicator.center = CGPoint(x: self.view.center.x, y: self.view.frame.height/2 + loginForm.mainBtn.center.y)
         self.view.addSubview(loadingIndicator)
     }
     func addCreateAccountForm() {
-        createAccountForm = CreateAccountForm(frame: CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: self.view.frame.height/2))
+        let frame = CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: self.view.frame.height/2)
+        createAccountForm = CreateAccountForm(frame: frame, mainBtnTitle: "Create account")
         createAccountForm.create()
         createAccountForm.center.x += createAccountForm.frame.width
         createAccountForm.accessoryBtn.addTarget(self, action: #selector(presentLoginForm), for: .touchUpInside)
@@ -136,25 +129,73 @@ class AuthVC: UIViewController, UITextFieldDelegate {
         createAccountForm.passwordField.inputAccessoryView = toolbar
         createAccountForm.password2Field.delegate = self
         createAccountForm.password2Field.inputAccessoryView = toolbar
-        createAccountForm.mainBtn.addTarget(self, action: #selector(createAccountPressed), for: .touchUpInside)
+        createAccountForm.mainBtn.addTarget(self, action: #selector(createAccount), for: .touchUpInside)
         createAccountForm.configureErrorLabel()
         
         self.view.addSubview(createAccountForm)
     }
     func addLoginForm() {
-        loginForm = LoginForm(frame: CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: self.view.frame.height/2))
+        loginForm = LoginForm(frame: CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: self.view.frame.height/2), mainBtnTitle: "Log in")
         self.view.addSubview(loginForm)
         
         loginForm.create()
         loginForm.accessoryBtn.addTarget(self, action: #selector(presentCreateForm), for: .touchUpInside)
-        loginForm.mainBtn.addTarget(self, action: #selector(loginPressed), for: .touchUpInside)
+        loginForm.mainBtn.addTarget(self, action: #selector(login), for: .touchUpInside)
         loginForm.emailField.delegate = self
         loginForm.emailField.inputAccessoryView = toolbar
         loginForm.passwordField.delegate = self
         loginForm.passwordField.inputAccessoryView = toolbar
+        loginForm.forgotPassBtn.addTarget(self, action: #selector(presentForgotPasswordView), for: .touchUpInside)
         loginForm.configureErrorLabel()
     }
+    func addLogoImage() {
+        let image = UIImage(named: "icon.png")
+        
+        let imageView = UIImageView(image: image)
+        imageView.setImageColor(color: navColor)
+        imageView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width/2, height: self.view.frame.width/2)
+        imageView.center = CGPoint(x: self.view.center.x + 10, y: self.view.frame.height*0.25)
+        
+        self.view.addSubview(imageView)
+    }
+    
+    // Methods for switching views between logging, creating and forgetting password
+    @objc func presentForgotPasswordView() {
+        loginForm.hideErrorMessage()
+        UIView.animate(withDuration: 0.3) {
+            self.loginForm.passwordField.layer.opacity = 0
+            self.loginForm.forgotPassBtn.layer.opacity = 0
+        }
+        
+        UIView.transition(with: self.loginForm.mainBtn, duration: 0.3, options: [.transitionCrossDissolve], animations: {
+            self.loginForm.mainBtn.setTitle("Send reset email", for: .normal)
+            self.loginForm.accessoryBtn.setTitle("Cancel", for: .normal)
+        }) { (true) in
+            self.loginForm.accessoryBtn.removeTarget(nil, action: nil, for: .allEvents)
+            self.loginForm.accessoryBtn.addTarget(self, action: #selector(self.hideForgotPasswordView), for: .touchUpInside)
+            self.loginForm.mainBtn.removeTarget(nil, action: nil, for: .allEvents)
+            self.loginForm.mainBtn.addTarget(self, action: #selector(self.resetPassword), for: .touchUpInside)
+        }
 
+    }
+    @objc func hideForgotPasswordView() {
+        loginForm.hideErrorMessage()
+        UIView.animate(withDuration: 0.3) {
+            self.loginForm.passwordField.layer.opacity = 1
+            self.loginForm.forgotPassBtn.layer.opacity = 1
+        }
+        
+        UIView.transition(with: self.loginForm.mainBtn, duration: 0.3, options: [.transitionCrossDissolve], animations: {
+            self.loginForm.mainBtn.setTitle("Log in", for: .normal)
+            self.loginForm.accessoryBtn.setTitle("Create account", for: .normal)
+        }) { (true) in
+            self.loginForm.accessoryBtn.removeTarget(nil, action: nil, for: .allEvents)
+            self.loginForm.accessoryBtn.addTarget(self, action: #selector(self.presentCreateForm), for: .touchUpInside)
+            self.loginForm.mainBtn.removeTarget(nil, action: nil, for: .allEvents)
+            self.loginForm.mainBtn.addTarget(self, action: #selector(self.login), for: .touchUpInside)
+        }
+        
+    }
     @objc func presentLoginForm() {
         loadingIndicator.center.y = self.view.frame.height/2 + loginForm.mainBtn.center.y
         createAccountForm.hideErrorMessage()
@@ -181,5 +222,17 @@ class AuthVC: UIViewController, UITextFieldDelegate {
     }
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+    @objc func keyboardWillShow(notification: Notification) {
+        if self.view.frame.origin.y == 0 {
+            UIView.animate(withDuration: 0.1, animations: { () -> Void in
+                self.view.frame.origin.y -= 150
+            })
+        }
+    }
+    @objc func keyboardWillHide(notification: Notification) {
+        UIView.animate(withDuration: 0.1, animations: { () -> Void in
+            self.view.frame.origin.y = 0
+        })
     }
 }

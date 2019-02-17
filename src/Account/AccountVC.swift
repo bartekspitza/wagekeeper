@@ -155,7 +155,7 @@ class AccountVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         updateForm.backButton.addTarget(self, action: #selector(hideForm), for: .touchUpInside)
         updateForm.formButton.addTarget(self, action: #selector(updatePressed), for: .touchUpInside)
         let toolbar = UIToolbar()
-        let buttons = addButtons(bar: toolbar, withUpDownButtons: false, color: .black)
+        let buttons = addButtons(bar: toolbar, withUpAndDown: true, color: .black)
         updateForm.field1.inputAccessoryView = toolbar
         updateForm.field2.inputAccessoryView = toolbar
         buttons[0].action = #selector(donePressed)

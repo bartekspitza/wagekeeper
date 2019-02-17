@@ -27,7 +27,7 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
     var isSectionComplete = [false, false]
     var startHasNotRecievedST = [Bool]()
     
-    let toolbar = UIToolbar()
+    var toolbar: UIToolbar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -124,12 +124,9 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
     }
     
     func configureToolbar() {
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: self, action: nil)
-        
-        toolbar.sizeToFit()
-        toolbar.setItems([flexSpace, doneButton], animated: false)
-        doneButton.tintColor = navColor
+        toolbar = UIToolbar()
+        let buttons = toolbar.addButtons(withUpAndDown: false, color: .black)
+        buttons[0].action = #selector(donePressed)
     }
     
     @objc func addRulePressed() {

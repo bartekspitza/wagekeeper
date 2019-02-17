@@ -81,8 +81,7 @@ class ShiftModel: CustomStringConvertible {
         fakeStartingTime = calendar.date(byAdding: fakeStartingTimeComponents, to: fakeStartingTime)!
         
         // Computes total minutes in shift
-        let timeWorked = self.calcHours()
-        remainingMinutes = (Float(timeWorked[1])) + (Float(timeWorked[0]) * 60)
+        remainingMinutes = Time.calculateMinutes(from: self.startingTime, to: self.endingTime) //(Float(timeWorked[1])) + (Float(timeWorked[0]) * 60)
         minutesWorked = Time.calculateMinutes(from: self.startingTime, to: self.endingTime)
         
         // Computes day of the week
@@ -252,7 +251,8 @@ class ShiftModel: CustomStringConvertible {
             salary -= (lunchMinutes * (salary/minutesWorked))
             moneyInOT -= (lunchMinutes * (salary/minutesWorked))
         }
-        
+        print("asdfasdfsadf")
+        print(minutesInOT)
         return [Int(roundf(salary)), Int(minutesInOT), Int(moneyInOT) ]
     }
     
@@ -293,7 +293,7 @@ class ShiftModel: CustomStringConvertible {
             minutesWorked = endingMin! - startingMin!
         }
         
-        minutesWorked += (hoursWorked * 60)
+        minutesWorked += (hoursWorked * 60) - self.breakTime
         if UserDefaults().string(forKey: "minHours") != nil {
             let minimum = Float(UserDefaults().string(forKey: "minHours")!)! * 60
             if Int(minimum) > minutesWorked {

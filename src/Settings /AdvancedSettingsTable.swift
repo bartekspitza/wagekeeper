@@ -33,9 +33,7 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
     let range = Array(1..<28)
     
     // Toolbar
-    let toolbar = UIToolbar()
-    let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
-    let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: self, action: nil)
+    var toolbar: UIToolbar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,9 +97,9 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
     }
     
     func configureToolbar() {
-        toolbar.sizeToFit()
-        toolbar.setItems([flexSpace, doneButton], animated: false)
-        doneButton.tintColor = navColor
+        toolbar = UIToolbar()
+        let buttons = toolbar.addButtons(withUpAndDown: false, color: .black)
+        buttons[0].action = #selector(donePressed)
     }
     
     func configurePicker() {

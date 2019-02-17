@@ -39,6 +39,7 @@ class EditVC: AddVC {
         } else {
             shifts[shiftToEdit[0]][shiftToEdit[1]] = newShift
             CloudStorage.updateShift(from: shift, with: newShift, user: user.ID, completionHandler: {})
+            shiftsNeedsReOrganizing = true
         }
     }
     

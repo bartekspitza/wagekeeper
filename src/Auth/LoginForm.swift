@@ -20,10 +20,51 @@ class LoginForm: UIView {
     var errorLabel: UILabel!
     
     var errorLabelIsConfigured = false
+    var mainBtnTitle: String!
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, mainBtnTitle: String) {
         super.init(frame: frame)
+        self.mainBtnTitle = mainBtnTitle
+
+    }
+    
+    func showSuccessMessage(msg: String) {
+        errorLabel.textColor = Colors.get(red: 0, green: 153, blue: 94, alpha: 1)
+        errorLabel.text = msg
+        errorLabel.layer.opacity = 1
         
+        UIView.animate(withDuration: 2, delay: 1, options: [], animations: {
+            self.errorLabel.layer.opacity = 0
+        }, completion: {(true) in
+                self.errorLabel.textColor = .red
+            self.errorLabel.text = ""
+        })
+    }
+    
+    func stopAnimating() {
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.8, options: [], animations: {
+            self.mainBtn.frame = CGRect(x: 0, y: self.mainBtn.frame.origin.y, width: self.frame.width*0.75, height: 40)
+            self.mainBtn.layer.cornerRadius = 10
+            self.mainBtn.center.x = self.center.x
+        }) { (true) in
+            
+        }
+        UIView.transition(with: self.mainBtn, duration: 0.2, options: [.transitionCrossDissolve], animations: {
+            self.mainBtn.setTitle(self.mainBtnTitle, for: .normal)
+        }, completion: nil)
+    }
+    
+    func startAnimating() {
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.8, options: [], animations: {
+            self.mainBtn.frame = CGRect(x: 0, y: self.mainBtn.frame.origin.y, width: 40, height: 40)
+            self.mainBtn.layer.cornerRadius = 20
+            self.mainBtn.center.x = self.center.x
+        }) { (true) in
+            
+        }
+        UIView.transition(with: self.mainBtn, duration: 0.2, options: [.transitionCrossDissolve], animations: {
+            self.mainBtn.setTitle("", for: .normal)
+        }, completion: nil)
     }
     
     func showErrorMessage(message: String) {
@@ -70,11 +111,11 @@ class LoginForm: UIView {
         emailField.frame = CGRect(x: 0, y: 0, width: self.frame.width * 0.75, height: 40)
         emailField.placeholder = "Email"
         emailField.font = UIFont.systemFont(ofSize: 14, weight: .light)
-        emailField.borderStyle = .roundedRect
         emailField.autocapitalizationType = .none
         emailField.center = CGPoint(x: self.center.x, y: emailField.frame.height/2)
         emailField.keyboardType = .emailAddress
         emailField.autocorrectionType = .no
+        emailField.addBottomBorder(color: .lightGray, width: 0.5)
         
         self.addSubview(emailField)
     }
@@ -91,6 +132,7 @@ class LoginForm: UIView {
         passwordField.autocorrectionType = .no
         passwordField.center = self.center
         passwordField.center.y = y
+        passwordField.addBottomBorder(color: .lightGray, width: 0.5)
         
         self.addSubview(passwordField)
     }

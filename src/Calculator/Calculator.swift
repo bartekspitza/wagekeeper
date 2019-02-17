@@ -73,7 +73,6 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func refreshDataAndAnimations() {
         makePeriodsSeperatedByYear()
         makePeriod()
-        fillLabelsWithStats()
         startCountingLabels()
         menuTable.reloadData()
         statsTable.reloadData()
@@ -220,7 +219,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func fillLabelsWithStats() {
         if period != nil {
-            salaryLbl.text = StringFormatter.addCurrencyToNumber(amount: period.salary)
+            salaryLbl.text = "test" // StringFormatter.addCurrencyToNumber(amount: period.salary)
             periodLbl.text = period.duration
         }
     }

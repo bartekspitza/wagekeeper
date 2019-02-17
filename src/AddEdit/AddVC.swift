@@ -100,10 +100,10 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
     }
     func configureToolbar() {
         toolbar = UIToolbar()
-        let buttons = addButtons(bar: toolbar, withUpDownButtons: true, color: .black)
+        let buttons = addButtons(bar: toolbar, withUpAndDown: true, color: .black)
         buttons[0].action = #selector(donePressed)
-        buttons[1].action = #selector(prevField(sender:))
-        buttons[2].action = #selector(nextField(sender:))
+        buttons[1].action = #selector(prevField)
+        buttons[2].action = #selector(nextField)
     }
     func configureTable() {
         let height = UIApplication.shared.statusBarFrame.height +
@@ -127,13 +127,13 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
     @objc func donePressed() {
         self.view.endEditing(true)
     }
-    @objc func prevField(sender: UIBarButtonItem) {
+    @objc func prevField() {
         let fields = [titleField, dateField, startingTimeField, endingTimeField, breakField]
         if currentField > 0 {
             fields[currentField-1]?.becomeFirstResponder()
         }
     }
-    @objc func nextField(sender: UIBarButtonItem) {
+    @objc func nextField() {
         let fields = [dateField, startingTimeField, endingTimeField, breakField, noteField]
         if currentField < 5 {
             fields[currentField]?.becomeFirstResponder()

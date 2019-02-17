@@ -688,7 +688,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="wfr-Ao-IIw"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Calculator" image="test" id="8y8-nW-cel"/>
+                    <tabBarItem key="tabBarItem" title="Calculator" image="Calculator" id="8y8-nW-cel"/>
                     <connections>
                         <outlet property="grossLbl" destination="TtS-Pn-NX2" id="c0x-id-vFJ"/>
                         <outlet property="salaryLbl" destination="QRh-C0-yJ0" id="oXG-Gn-u49"/>
@@ -1015,7 +1015,9 @@
         <scene sceneID="dgg-Jq-wcp">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="CUD-du-jcR" customClass="MainNav" customModule="WageKeeper" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Logger" image="Calc" id="zug-Md-xJG"/>
+                    <tabBarItem key="tabBarItem" title="Logger" image="Logger" id="zug-Md-xJG">
+                        <inset key="imageInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="-3"/>
+                    </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="M2j-nl-ibL">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -1216,12 +1218,12 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Calc" width="7.0866141319274902" height="7.0866141319274902"/>
+        <image name="Calculator" width="50" height="50"/>
+        <image name="Logger" width="50" height="50"/>
         <image name="Settings" width="7.0866141319274902" height="7.0866141319274902"/>
         <image name="account" width="48" height="48"/>
         <image name="currencyicon" width="200" height="200"/>
         <image name="taxIcon" width="200" height="200"/>
-        <image name="test" width="7.0866141319274902" height="7.0866141319274902"/>
         <image name="toolicon" width="200" height="200"/>
         <image name="wageIcon2" width="200" height="200"/>
     </resources>
