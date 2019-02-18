@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import FBSDKCoreKit
+import FirebaseAuth
 
 class AccountVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -24,8 +25,6 @@ class AccountVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.title = "Account"
         self.navigationController?.navigationBar.tintColor = .black
         
-        print("User logged in with facebook: ")
-        print(loggedInWithFacebook)
         addAmountOfShiftsElement()
         addUpdatingForm()
         createLoadingIndicator()
@@ -193,7 +192,7 @@ class AccountVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if loggedInWithFacebook {
+        if user.loggedInWithFacebook {
             logout()
         } else {
             if indexPath.row == 0 {
@@ -212,7 +211,7 @@ class AccountVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if loggedInWithFacebook {
+        if user.loggedInWithFacebook {
             return 1
         }
         return 3
@@ -224,7 +223,7 @@ class AccountVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         var titles = [String]()
         var imageNames = [String]()
         
-        if loggedInWithFacebook {
+        if user.loggedInWithFacebook {
             titles = ["Log out"]
             imageNames = ["account"]
         } else {

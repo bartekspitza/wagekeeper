@@ -12,7 +12,49 @@ import FirebaseAuth
 
 class CloudStorage {
     
-    
+    static func insertShifts(items: [Shift], successHandler: @escaping () -> (), failureHandler: @escaping () -> ()) {
+        let db = Firestore.firestore()
+        let shiftsRef = db.collection("users/" + user.ID + "/shifts/")
+        var batch = db.batch()
+        
+        for i in 0..<items.count {
+            let newDocumentID = shiftsRef.document()
+            let shift = ShiftModel.createFromCoreData(s: items[i])
+            
+            if i % 500 == 0 {
+                // 500 items added to batch, should try and write to DB and delete 500 from the local storage
+                batch.commit { (error) in
+                    if error == nil {
+                        print("Made a batch write of 500 items")
+                    } else {
+                        print("Something went wrong. Aborting the migration of local data")
+                        print(error!.localizedDescription)
+                        return
+                    }
+                }
+                batch = db.batch()
+            }
+            
+            batch.setData([
+                "title": shift.title,
+                "date": shift.date.description,
+                "startingTime": shift.startingTime.description,
+                "endingTime": shift.endingTime.description,
+                "breakTime": shift.breakTime,
+                "note": shift.note,
+                "beginsNewPeriod": shift.beginsNewPeriod
+                ], forDocument: newDocumentID)
+        }
+        batch.commit { (error) in
+            if error == nil {
+                print("Made a batch write with the rest of items")
+                successHandler()
+            } else {
+                failureHandler()
+                print(error!.localizedDescription)
+            }
+        }
+    }
     
     static func getAllShifts(fromUser: String, completionHandler: @escaping ([ShiftModel]) -> ()) {
         let db = Firestore.firestore()

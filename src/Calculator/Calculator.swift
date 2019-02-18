@@ -9,6 +9,7 @@ import UIKit
 import Foundation
 import FirebaseAuth
 
+
 class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var periodLbl = UILabel()
@@ -19,42 +20,31 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var upperLineOfArrowButton = UIView()
     var statsTable = UITableView()
     var menuTable = UITableView()
+    var loadingIndicator: UIActivityIndicatorView!
     
-    
-    var periodsSeperatedByYear = [[[ShiftModel]]]()
-    var period: Period!
     var pulldownMenuIsShowing = false
     var indexForChosenPeriod = [0,0]
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        makeGradient()
-        makeMenuBtn()
-        designLabels()
-        configureStatsTable()
-        configureMenuTable()
-        
-        
-        
-        // Called when user logs in
+        createLayout()
+
+        // Adds a listener that gets called each time users state changes
         Auth.auth().addStateDidChangeListener { (auth, currentUser) in
             if currentUser != nil {
                 
-                CloudStorage.getAllShifts(fromUser: user.ID) { (data) in
+                LocalStorage.transferAllShiftsToCloud()
+                CloudStorage.getAllShifts(fromUser: currentUser!.uid) { (data) in
                     var tmp = data
                     shifts = Periods.organizeShiftsIntoPeriods(ar: &tmp)
+                    periodsSeperatedByYear = Periods.organizePeriodsByYear(periods: shifts)
+                    period = Periods.makePeriod(yearIndex: 0, monthIndex: 0)
                     self.refreshDataAndAnimations()
+                    self.loadingIndicator.stopAnimating()
                 }
             }
         }
-        if usingLocalStorage {
-            print("Fetched data from local storage")
-            LocalStorage.values = LocalStorage.getAllShifts()
-            LocalStorage.organizedValues = Periods.organizeShiftsIntoPeriods(ar: &LocalStorage.values)
-            shifts = Periods.convertShiftsFromCoreDataToModels(arr: LocalStorage.organizedValues)
         
-        }
-        shouldFetchAllData = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -68,14 +58,26 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
             menuTable.frame = CGRect(x: 0, y: (btn.center.y + btn.frame.height/2), width: self.view.frame.width, height: 0)
             pulldownMenuIsShowing = false
         }
-        period = nil
         indexForChosenPeriod = [0, 0]
     }
     
+    func createLayout() {
+        makeGradient()
+        makeMenuBtn()
+        designLabels()
+        configureStatsTable()
+        configureMenuTable()
+        
+        loadingIndicator = UIActivityIndicatorView()
+        loadingIndicator.hidesWhenStopped = true
+        loadingIndicator.color = .white
+        loadingIndicator.center = CGPoint(x: self.view.center.x, y: grossLbl.frame.origin.y + grossLbl.frame.height + 40)
+        self.view.addSubview(loadingIndicator)
+        loadingIndicator.startAnimating()
+    }
+    
     func refreshDataAndAnimations() {
-        makePeriodsSeperatedByYear()
-        makePeriod()
-        periodLbl.text = (period == nil) ? "" : period.duration
+        periodLbl.text = (period == nil) ? "" : period!.duration
         startCountingLabels()
         menuTable.reloadData()
         statsTable.reloadData()
@@ -215,9 +217,9 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func startCountingLabels() {
         if period != nil {
-            if Int(period.grossSalary) > 0 {
-                grossLbl.count(fromValue: 0, to: Float(period.grossSalary), withDuration: 1.5, andAnimationtype: .EaseOut, andCounterType: .Int, currency: UserSettings.getCurrencySymbol(), preString: "Gross: ", afterString: "")
-                salaryLbl.count(fromValue: 0, to: Float(period.salary), withDuration: TimeInterval(1.5 * (Float(period.salary)/Float(period.grossSalary))), andAnimationtype: .EaseOut, andCounterType: .Int, currency: UserSettings.getCurrencySymbol(), preString: "", afterString: "")
+            if Int(period!.grossSalary) > 0 {
+                grossLbl.count(fromValue: 0, to: Float(period!.grossSalary), withDuration: 1.5, andAnimationtype: .EaseOut, andCounterType: .Int, currency: UserSettings.getCurrencySymbol(), preString: "Gross: ", afterString: "")
+                salaryLbl.count(fromValue: 0, to: Float(period!.salary), withDuration: TimeInterval(1.5 * (Float(period!.salary)/Float(period!.grossSalary))), andAnimationtype: .EaseOut, andCounterType: .Int, currency: UserSettings.getCurrencySymbol(), preString: "", afterString: "")
             }
         }
     }
@@ -225,30 +227,30 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func fillLabelsWithStats() {
         if period != nil {
             salaryLbl.text = "test" // StringFormatter.addCurrencyToNumber(amount: period.salary)
-            periodLbl.text = period.duration
+            periodLbl.text = period!.duration
         }
     }
     
-    func makePeriodsSeperatedByYear() {
-        periodsSeperatedByYear.removeAll()
-        var year = 4000
-        for section in shifts {
-            let decider = Int(String(Array(section[section.count-1].date.description)[0..<4]))
-            
-            if year == decider! {
-                periodsSeperatedByYear[periodsSeperatedByYear.count-1].append(section)
-            } else {
-                periodsSeperatedByYear.append([section])
-                year = decider!
-            }
-        }
-    }
-    
-    func makePeriod() {
-        if shifts.count > 0 {
-            period = Period(month: periodsSeperatedByYear[indexForChosenPeriod[0]][indexForChosenPeriod[1]])
-        }
-    }
+//    func makePeriodsSeperatedByYear() {
+//        periodsSeperatedByYear.removeAll()
+//        var year = 4000
+//        for section in shifts {
+//            let decider = Int(String(Array(section[section.count-1].date.description)[0..<4]))
+//
+//            if year == decider! {
+//                periodsSeperatedByYear[periodsSeperatedByYear.count-1].append(section)
+//            } else {
+//                periodsSeperatedByYear.append([section])
+//                year = decider!
+//            }
+//        }
+//    }
+//
+//    func makePeriod() {
+//        if shifts.count > 0 {
+//            period = Period(month: periodsSeperatedByYear[indexForChosenPeriod[0]][indexForChosenPeriod[1]])
+//        }
+//    }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if tableView.tag == 2 {
@@ -294,10 +296,14 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
             cellPressed.tintColor = .white
             if indexPath.section != indexForChosenPeriod[0] || indexPath.row != indexForChosenPeriod[1] {
                 indexForChosenPeriod = [indexPath.section, indexPath.row]
-                makePeriod()
+    
+                let year = indexForChosenPeriod[0]
+                let month = indexForChosenPeriod[1]
+                period = Periods.makePeriod(yearIndex: year, monthIndex: month)
                 statsTable.reloadData()
+                
                 startCountingLabels()
-                periodLbl.text = period.duration
+                periodLbl.text = period!.duration
             }
         }
     }
@@ -308,7 +314,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
             
             cell.insertStatsDesc(width: (self.view.frame.width), text: Period.statsDescriptions[indexPath.row])
             if period != nil {
-                cell.insertStatsInfo(width: self.view.frame.width, text: period.stats[indexPath.row])
+                cell.insertStatsInfo(width: self.view.frame.width, text: period!.stats[indexPath.row])
             } else {
                 cell.insertStatsInfo(width: self.view.frame.width, text: "0")
             }

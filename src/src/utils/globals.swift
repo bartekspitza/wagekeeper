@@ -10,4 +10,8 @@ import Foundation
 import FirebaseAuth
 
 var user: MyUser!
-var loggedInWithFacebook = false
+var shiftToEdit = [0,0]
+var shifts = [[ShiftModel]]()
+var shiftsNeedsReOrganizing = false
+var periodsSeperatedByYear = [[[ShiftModel]]]()
+var period: Period?

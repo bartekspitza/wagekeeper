@@ -21,18 +21,18 @@ class CloudAuth {
             
         }
         
-        if loggedInWithFacebook {
+        if user.loggedInWithFacebook {
             let loginManager = LoginManager()
             loginManager.logOut()
         }
-        loggedInWithFacebook = false
+        user.loggedInWithFacebook = false
     }
     
     static func userIsLoggedInWithFacebook() -> Bool {
         let currentUser = Auth.auth().currentUser
         
         if currentUser!.providerData.count > 0 {
-            loggedInWithFacebook = (currentUser!.providerData[0]).providerID == "facebook.com"
+            let loggedInWithFacebook = (currentUser!.providerData[0]).providerID == "facebook.com"
             return loggedInWithFacebook && FBSDKAccessToken.current() != nil
         }
         

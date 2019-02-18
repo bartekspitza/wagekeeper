@@ -13,6 +13,27 @@ class LocalStorage {
     static var values = [Shift]()
     static var organizedValues = [[Shift]]()
     
+    static func transferAllShiftsToCloud() {
+        if UserDefaults().bool(forKey: "hasLoggedInBefore") == false {
+            
+            
+            let shifts = getAllShifts()
+            print("going to try and batch write " + shifts.count.description + " items")
+            CloudStorage.insertShifts(items: getAllShifts(), successHandler: {
+                UserDefaults().set(true, forKey: "hasLoggedInBefore")
+            }, failureHandler: {
+                
+            })
+        }
+    }
+    
+    static func test() {
+        for _ in 0..<1000 {
+            let shift = ShiftModel(title: "", date: Date(), startingTime: Date(), endingTime: Date(), breakTime: 0, note: "", newPeriod: false, ID: "")
+            insertShift(shift: shift)
+        }
+    }
+    
     static func getAllShifts() -> [Shift] {
         var shiftsFromLocalStorage = [Shift]()
         let appDelegate = UIApplication.shared.delegate as! AppDelegate

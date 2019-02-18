@@ -9,12 +9,6 @@
 import UIKit
 import CoreData
 
-var shiftToEdit = [0,0]
-var shifts = [[ShiftModel]]()
-var shouldFetchAllData = false
-var usingLocalStorage = false
-var shiftsNeedsReOrganizing = false
-
 class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var myTableView: UITableView!
@@ -32,8 +26,9 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewWillAppear(_ animated: Bool) {
         if shiftsNeedsReOrganizing {
             Periods.reOrganize()
+            periodsSeperatedByYear = Periods.organizePeriodsByYear(periods: shifts)
+            period = Periods.makePeriod(yearIndex: 0, monthIndex: 0)
             shiftsNeedsReOrganizing = false
-            print("reorganized shifts")
         }
         hideTableIfEmpty()
         myTableView.reloadData()
@@ -42,10 +37,7 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewDidAppear(_ animated: Bool) {
         layoutView()
     }
-    
-    
-    
-    
+
     func hideTableIfEmpty() {
         if !(shifts.isEmpty) {
             myTableView.backgroundView = UIView()
@@ -104,26 +96,10 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: .normal, title: "Delete")   { (_ rowAction: UITableViewRowAction, _ indexPath: IndexPath) in
             
-            if usingLocalStorage {
-                let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                let context = appDelegate.persistentContainer.viewContext
+            let shiftToDelete = shifts[indexPath.section][indexPath.row]
                 
-                let shiftToDelete = LocalStorage.organizedValues[indexPath.section][indexPath.row]
-                context.delete(shiftToDelete)
-                
-                
-                do {
-                    try context.save()
-                    
-                } catch {
-                    
-                }
-                LocalStorage.organizedValues[indexPath.section].remove(at: indexPath.row)
-            } else {
-                let shiftToDelete = shifts[indexPath.section][indexPath.row]
-                
-                CloudStorage.deleteShift(fromUser: user.ID, shift: shiftToDelete)
-            }
+            CloudStorage.deleteShift(fromUser: user.ID, shift: shiftToDelete)
+            
             
             
             // Removes the shift from the in memory database
@@ -133,9 +109,7 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
             while i < shifts.count {
                 if shifts[i].count == 0 {
                     shifts.remove(at: i)
-                    if usingLocalStorage {
-                        LocalStorage.organizedValues.remove(at: i)
-                    }
+                    
                 } else {
                     i += 1
                 }

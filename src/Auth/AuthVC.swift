@@ -46,7 +46,7 @@ class AuthVC: UIViewController, UITextFieldDelegate {
         loginManager.logIn(readPermissions: [.publicProfile, .email], viewController: self) { (loginResult) in
             
             switch loginResult {
-            case .failed(let error):
+            case .failed( _):
                 self.loginForm.stopAnimating(button: self.loginForm.FBButton, title: "Sign in with Facebook")
                 self.loadingIndicator.stopAnimating()
                 self.loginForm.showErrorMessage(message: "Something went wrong. We're sorry.")

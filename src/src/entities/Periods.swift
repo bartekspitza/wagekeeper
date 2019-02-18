@@ -11,6 +11,34 @@ import UIKit
 
 class Periods {
     
+    static func makePeriod(yearIndex: Int, monthIndex: Int) -> Period? {
+        var p: Period?
+        
+        if periodsSeperatedByYear.count > 0 {
+            p = Period(month: periodsSeperatedByYear[yearIndex][monthIndex])
+        }
+        print("Made period for calculation")
+        return p
+    }
+    
+    static func organizePeriodsByYear(periods: [[ShiftModel]]) -> [[[ShiftModel]]] {
+        var ar = [[[ShiftModel]]]()
+        
+        var year = 4000
+        for section in periods {
+            let decider = Int(String(Array(section[section.count-1].date.description)[0..<4]))
+            
+            if year == decider! {
+                ar[ar.count-1].append(section)
+            } else {
+                ar.append([section])
+                year = decider!
+            }
+        }
+        print("Organized periods by year")
+        return ar
+    }
+    
     static func totalShifts() -> Int{
         var total = 0
         
@@ -40,6 +68,7 @@ class Periods {
         }
         
         shifts = Periods.organizeShiftsIntoPeriods(ar: &tmp)
+        print("Reorganized the shifts array")
     }
     
     static func convertShiftsFromCoreDataToModels(arr: [[Shift]]) -> [[ShiftModel]] {
