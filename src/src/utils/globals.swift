@@ -9,5 +9,5 @@
 import Foundation
 import FirebaseAuth
 
-var user: User!
+var user: MyUser!
 var loggedInWithFacebook = false

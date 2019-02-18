@@ -35,7 +35,6 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
             shiftsNeedsReOrganizing = false
             print("reorganized shifts")
         }
-        
         hideTableIfEmpty()
         myTableView.reloadData()
     }
@@ -123,7 +122,7 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
             } else {
                 let shiftToDelete = shifts[indexPath.section][indexPath.row]
                 
-                CloudStorage.deleteShift(fromUser: user.uid, shift: shiftToDelete)
+                CloudStorage.deleteShift(fromUser: user.ID, shift: shiftToDelete)
             }
             
             

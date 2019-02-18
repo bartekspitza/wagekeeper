@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import FBSDKCoreKit
 
 class AccountVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -30,6 +31,7 @@ class AccountVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         createLoadingIndicator()
         createUpdateMessageLabel()
         createTable()
+        
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -90,7 +92,6 @@ class AccountVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         user = nil
         performSegue(withIdentifier: "backtologin", sender: self)
         CloudAuth.signOut()
-        UserSettings.setEmail(email: nil)
     }
     @objc func showUpdateForm() {
         
@@ -249,33 +250,66 @@ class AccountVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50))
-        
-        
-        let descriptionLabel = UILabel(frame: CGRect(x: 16, y: 0, width: self.view.frame.width-32, height: 40))
-        descriptionLabel.text = "logged in with"
-        descriptionLabel.font = UIFont.systemFont(ofSize: 12, weight: .light)
-        descriptionLabel.textAlignment = .center
-        descriptionLabel.textColor = .gray
-        
-        let email = UILabel(frame: CGRect(x: 16, y: 15, width: self.view.frame.width-32, height: 40))
-        email.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
-        email.textAlignment = .center
-        email.textColor = .black
-        
-        if loggedInWithFacebook {
-            email.text = UserDefaults().string(forKey: "email")
+        if user.loggedInWithFacebook {
+            let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50))
+            
+            
+            let imageView = UIImageView(image: user.profileImage)
+            imageView.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+            imageView.frame.origin.x = 10
+            imageView.center.y = 25
+            imageView.layer.cornerRadius = 20
+            imageView.layer.masksToBounds = true
+            
+            let descriptionLabel = UILabel(frame: CGRect(x: 16, y: 0, width: self.view.frame.width-32, height: 40))
+            descriptionLabel.text = user.firstName + " " + user.lastName
+            descriptionLabel.font = UIFont.systemFont(ofSize: 12, weight: .light)
+            descriptionLabel.textAlignment = .center
+            descriptionLabel.textColor = .gray
+            
+            let email = UILabel(frame: CGRect(x: 16, y: 15, width: self.view.frame.width-32, height: 40))
+            email.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+            email.textAlignment = .center
+            email.textColor = .black
+            
+            email.text = user.email
+            
+            let separator = UIView(frame: CGRect(x: 0, y: 49, width: self.view.frame.width, height: 0.5))
+            separator.backgroundColor = UIColor.black.withAlphaComponent(0.11)
+            
+            view.addSubview(descriptionLabel)
+            view.addSubview(email)
+            view.addSubview(imageView)
+            view.addSubview(separator)
+            
+            return view
         } else {
-            email.text = user.email!
+            let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50))
+            
+            
+            let descriptionLabel = UILabel(frame: CGRect(x: 16, y: 0, width: self.view.frame.width-32, height: 40))
+            descriptionLabel.text = "logged in with"
+            descriptionLabel.font = UIFont.systemFont(ofSize: 12, weight: .light)
+            descriptionLabel.textAlignment = .center
+            descriptionLabel.textColor = .gray
+            
+            let email = UILabel(frame: CGRect(x: 16, y: 15, width: self.view.frame.width-32, height: 40))
+            email.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+            email.textAlignment = .center
+            email.textColor = .black
+            
+            email.text = user.email
+            
+            
+            let separator = UIView(frame: CGRect(x: 0, y: 49, width: self.view.frame.width, height: 0.5))
+            separator.backgroundColor = UIColor.black.withAlphaComponent(0.11)
+            
+            view.addSubview(descriptionLabel)
+            view.addSubview(separator)
+            view.addSubview(email)
+            
+            return view
         }
         
-        let separator = UIView(frame: CGRect(x: 0, y: 49, width: self.view.frame.width, height: 0.5))
-        separator.backgroundColor = UIColor.black.withAlphaComponent(0.11)
-        
-        view.addSubview(descriptionLabel)
-        view.addSubview(separator)
-        view.addSubview(email)
-        
-        return view
     }
 }

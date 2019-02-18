@@ -39,9 +39,8 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Called when user logs in
         Auth.auth().addStateDidChangeListener { (auth, currentUser) in
             if currentUser != nil {
-                user = currentUser!
                 
-                CloudStorage.getAllShifts(fromUser: user.uid) { (data) in
+                CloudStorage.getAllShifts(fromUser: user.ID) { (data) in
                     var tmp = data
                     shifts = Periods.organizeShiftsIntoPeriods(ar: &tmp)
                     self.refreshDataAndAnimations()

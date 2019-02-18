@@ -26,15 +26,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
+        // App configuration
         FirebaseConfiguration.shared.setLoggerLevel(.min)
         FirebaseApp.configure()
         UserSettings.setupNewUser()
         
+        // Authentication
         if let currentUser = Auth.auth().currentUser {
-            user = currentUser
+            user = MyUser.createFromFirebaseUser(user: currentUser)
             
-            if user.providerData.count > 0 {
-                loggedInWithFacebook = (user.providerData[0]).providerID == "facebook.com"
+            if CloudAuth.userIsLoggedInWithFacebook() {
+                CloudAuth.fetchFBProfile(successHandler: {
+                    
+                }, failureHandler: self.presentAuthVC)
             }
         } else {
             presentAuthVC()

@@ -34,9 +34,6 @@ class AuthVC: UIViewController, UITextFieldDelegate {
         addCreateAccountForm()
         addLoadingIndicator()
         addLogoImage()
-        
-        print("User logged in with facebook: ")
-        print(loggedInWithFacebook)
     }
     
     // Authentication
@@ -52,7 +49,7 @@ class AuthVC: UIViewController, UITextFieldDelegate {
             case .failed(let error):
                 self.loginForm.stopAnimating(button: self.loginForm.FBButton, title: "Sign in with Facebook")
                 self.loadingIndicator.stopAnimating()
-                self.loginForm.showErrorMessage(message: "Something wen't wrong. We are sorry.")
+                self.loginForm.showErrorMessage(message: "Something went wrong. We're sorry.")
             case .cancelled:
                 self.loginForm.stopAnimating(button: self.loginForm.FBButton, title: "Sign in with Facebook")
                 self.loadingIndicator.stopAnimating()
@@ -62,28 +59,19 @@ class AuthVC: UIViewController, UITextFieldDelegate {
                 
                 Auth.auth().signInAndRetrieveData(with: credential) { (result, error) in
                     if error == nil {
-                        user = result!.user
                         
-                        // Gets the email of the user
-                        let graphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "email"])
-                        graphRequest?.start(completionHandler: { (connection, result, er) in
-                            if er == nil {
-                                
-                                // Saves the user email for future use
-                                let fields = result as? [String: Any]
-                                UserDefaults().set(fields!["email"], forKey: "email")
-                                
-                                // Initiates the flag so that we know if user is authenticated with facebook
-                                let providerID = user.providerData.count > 0 ? user.providerData[0] : nil
-                                if providerID != nil {
-                                    loggedInWithFacebook = providerID?.providerID == "facebook.com"
-                                }
-                            }
+                        user = MyUser.createFromFirebaseUser(user: result!.user)
+                        
+                        CloudAuth.fetchFBProfile(successHandler: {
+                            self.performSegue(withIdentifier: "tabbar", sender: self)
+                        }, failureHandler: {
+                            self.loginForm.showErrorMessage(message: "Something went wrong. We're sorry.")
                         })
-                        self.performSegue(withIdentifier: "tabbar", sender: self)
+                        
+                        
                     } else {
                         print(error!.localizedDescription)
-                        self.onLoginFailure(message: "Something wen't wrong. We are sorry.")
+                        self.onLoginFailure(message: "Something went wrong. We're sorry.")
                     }
                     
                 }
@@ -94,13 +82,7 @@ class AuthVC: UIViewController, UITextFieldDelegate {
 
     func performLogin(result: AuthDataResult) {
         loadingIndicator.stopAnimating()
-        user = result.user
-        
-        // Sets flag to keep track if user logged in with facebook
-        let providerID = user.providerData.count > 0 ? user.providerData[0] : nil
-        if providerID != nil {
-            loggedInWithFacebook = providerID?.providerID == "facebook.com"
-        }
+        user = MyUser.createFromFirebaseUser(user: result.user)
         
         performSegue(withIdentifier: "tabbar", sender: self)
     }

@@ -56,7 +56,7 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
             ID: ""
         )
         
-        CloudStorage.addShift(toUser: user.uid, shift: shift, completionHandler: {})
+        CloudStorage.addShift(toUser: user.ID, shift: shift, completionHandler: {})
         
         Periods.insert(shift: shift)
         shiftsNeedsReOrganizing = true
