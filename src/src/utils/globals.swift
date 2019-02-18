@@ -15,3 +15,5 @@ var shifts = [[ShiftModel]]()
 var shiftsNeedsReOrganizing = false
 var periodsSeperatedByYear = [[[ShiftModel]]]()
 var period: Period?
+var loginListener: AuthStateDidChangeListenerHandle!
+var indexForChosenPeriod = [0,0]

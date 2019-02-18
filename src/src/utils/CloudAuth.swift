@@ -25,7 +25,6 @@ class CloudAuth {
             let loginManager = LoginManager()
             loginManager.logOut()
         }
-        user.loggedInWithFacebook = false
     }
     
     static func userIsLoggedInWithFacebook() -> Bool {

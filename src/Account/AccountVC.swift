@@ -88,9 +88,10 @@ class AccountVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func logout() {
-        user = nil
-        performSegue(withIdentifier: "backtologin", sender: self)
         CloudAuth.signOut()
+        performSegue(withIdentifier: "backtologin", sender: self)
+        user = nil
+        Auth.auth().removeStateDidChangeListener(loginListener)
     }
     @objc func showUpdateForm() {
         

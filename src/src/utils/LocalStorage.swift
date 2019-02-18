@@ -16,14 +16,16 @@ class LocalStorage {
     static func transferAllShiftsToCloud() {
         if UserDefaults().bool(forKey: "hasLoggedInBefore") == false {
             
-            
             let shifts = getAllShifts()
-            print("going to try and batch write " + shifts.count.description + " items")
-            CloudStorage.insertShifts(items: getAllShifts(), successHandler: {
-                UserDefaults().set(true, forKey: "hasLoggedInBefore")
-            }, failureHandler: {
-                
-            })
+            
+            if shifts.count > 0 {
+                print("going to try and batch write " + shifts.count.description + " items")
+                CloudStorage.insertShifts(items: getAllShifts(), successHandler: {
+                    UserDefaults().set(true, forKey: "hasLoggedInBefore")
+                }, failureHandler: {
+                    
+                })
+            }
         }
     }
     

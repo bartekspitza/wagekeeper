@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import KTLoadingLabel
 
 class LaunchCell: UITableViewCell {
 
     var statsDesc = UILabel()
-    var statsInfo = UILabel()
+    var statsInfo = KTLoadingLabel()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.selectionStyle = .none

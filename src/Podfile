@@ -12,5 +12,6 @@ target 'WageKeeper' do
   pod 'FBSDKLoginKit'
   pod 'FacebookCore'
   pod 'FacebookLogin'
+  pod 'KTLoadingLabel'
 
 end

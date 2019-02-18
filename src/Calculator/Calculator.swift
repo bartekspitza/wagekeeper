@@ -8,7 +8,7 @@
 import UIKit
 import Foundation
 import FirebaseAuth
-
+import KTLoadingLabel
 
 class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -23,28 +23,31 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var loadingIndicator: UIActivityIndicatorView!
     
     var pulldownMenuIsShowing = false
-    var indexForChosenPeriod = [0,0]
-        
+    var loadingLabel: KTLoadingLabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         createLayout()
-
+        loadingAnimation()
+        
         // Adds a listener that gets called each time users state changes
-        Auth.auth().addStateDidChangeListener { (auth, currentUser) in
+        loginListener = Auth.auth().addStateDidChangeListener { (auth, currentUser) in
             if currentUser != nil {
                 
                 LocalStorage.transferAllShiftsToCloud()
                 CloudStorage.getAllShifts(fromUser: currentUser!.uid) { (data) in
-                    var tmp = data
-                    shifts = Periods.organizeShiftsIntoPeriods(ar: &tmp)
-                    periodsSeperatedByYear = Periods.organizePeriodsByYear(periods: shifts)
-                    period = Periods.makePeriod(yearIndex: 0, monthIndex: 0)
-                    self.refreshDataAndAnimations()
-                    self.loadingIndicator.stopAnimating()
+                    
+                    Periods.organizeShiftsIntoPeriods(ar: data, successHandler: {
+                        Periods.organizePeriodsByYear(periods: shifts, successHandler: {
+                            Periods.makePeriod(yearIndex: 0, monthIndex: 0, successHandler: {
+                                self.stopLoadingAnimation()
+                                self.refreshDataAndAnimations()
+                            })
+                        })
+                    })
                 }
             }
         }
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -58,8 +61,38 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
             menuTable.frame = CGRect(x: 0, y: (btn.center.y + btn.frame.height/2), width: self.view.frame.width, height: 0)
             pulldownMenuIsShowing = false
         }
-        indexForChosenPeriod = [0, 0]
     }
+    
+    func loadingAnimation() {
+        grossLbl.layer.opacity = 0
+        salaryLbl.layer.opacity = 0
+        loadingLabel.layer.opacity = 1
+        loadingLabel.staticText = "Calculating"
+        loadingLabel.animate()
+        for cell in statsTable.visibleCells {
+            let cell = cell as! LaunchCell
+            
+            cell.statsInfo.animate()
+            cell.statsInfo.staticText = ""
+            cell.statsInfo.animateText = "..."
+        }
+    }
+    
+    func stopLoadingAnimation() {
+        loadingLabel.layer.opacity = 0
+        grossLbl.layer.opacity = 1
+        salaryLbl.layer.opacity = 1
+        loadingLabel.stopAnimate()
+        
+        for cell in statsTable.visibleCells {
+            let cell = cell as! LaunchCell
+            
+            cell.statsInfo.stopAnimate()
+            cell.statsInfo.staticText = ""
+            cell.statsInfo.animateText = ""
+        }
+    }
+    
     
     func createLayout() {
         makeGradient()
@@ -67,13 +100,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         designLabels()
         configureStatsTable()
         configureMenuTable()
-        
-        loadingIndicator = UIActivityIndicatorView()
-        loadingIndicator.hidesWhenStopped = true
-        loadingIndicator.color = .white
-        loadingIndicator.center = CGPoint(x: self.view.center.x, y: grossLbl.frame.origin.y + grossLbl.frame.height + 40)
-        self.view.addSubview(loadingIndicator)
-        loadingIndicator.startAnimating()
+        createLoadingLabel()
     }
     
     func refreshDataAndAnimations() {
@@ -159,7 +186,15 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         statsTable.isScrollEnabled = false
         self.view.addSubview(statsTable)
     }
-    
+    func createLoadingLabel() {
+        loadingLabel = KTLoadingLabel(staticString: "Retrieving shifts", animateString: "...")
+        loadingLabel.timerInterval = 0.5
+        loadingLabel.font = UIFont.systemFont(ofSize: 25, weight: .thin)
+        loadingLabel.textColor = .white
+        loadingLabel.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height*0.4)
+        loadingLabel.center = CGPoint(x: self.view.center.x, y: self.view.frame.height/5)
+        self.view.addSubview(loadingLabel)
+    }
     func makeGradient() {
         let gradientLayer: CAGradientLayer = CAGradientLayer()
         gradientLayer.colors = [navColor.cgColor, headerColor.cgColor]
@@ -196,12 +231,14 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         salaryLbl.center = CGPoint(x: Int(self.view.frame.width/2), y: Int(self.view.frame.height*0.2 * 0.9))
         salaryLbl.textColor = .white
         salaryLbl.textAlignment = .center
+        salaryLbl.layer.opacity = 0
         
         grossLbl.frame = CGRect(x: 0, y: 0, width: Int((self.view.frame.width/2) * 0.66), height: Int((gradientMaxY-horizontalY) * 0.66))
         grossLbl.font = UIFont.systemFont(ofSize: 13, weight: .light)
         grossLbl.center = CGPoint(x: Int(self.view.center.x), y: Int(salaryLbl.center.y + grossLbl.frame.height/2))
         grossLbl.textAlignment = .center
         grossLbl.textColor = .white
+        grossLbl.layer.opacity = 0
         
         periodLbl.textColor = .white
         periodLbl.font = UIFont.systemFont(ofSize: 13, weight: .light)
@@ -230,27 +267,6 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
             periodLbl.text = period!.duration
         }
     }
-    
-//    func makePeriodsSeperatedByYear() {
-//        periodsSeperatedByYear.removeAll()
-//        var year = 4000
-//        for section in shifts {
-//            let decider = Int(String(Array(section[section.count-1].date.description)[0..<4]))
-//
-//            if year == decider! {
-//                periodsSeperatedByYear[periodsSeperatedByYear.count-1].append(section)
-//            } else {
-//                periodsSeperatedByYear.append([section])
-//                year = decider!
-//            }
-//        }
-//    }
-//
-//    func makePeriod() {
-//        if shifts.count > 0 {
-//            period = Period(month: periodsSeperatedByYear[indexForChosenPeriod[0]][indexForChosenPeriod[1]])
-//        }
-//    }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if tableView.tag == 2 {
@@ -299,14 +315,18 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
                 let year = indexForChosenPeriod[0]
                 let month = indexForChosenPeriod[1]
-                period = Periods.makePeriod(yearIndex: year, monthIndex: month)
-                statsTable.reloadData()
-                
-                startCountingLabels()
-                periodLbl.text = period!.duration
+                loadingAnimation()
+                Periods.makePeriod(yearIndex: year, monthIndex: month, successHandler: {
+                    self.periodLbl.text = period?.duration
+                    self.stopLoadingAnimation()
+                    self.statsTable.reloadData()
+                    self.startCountingLabels()
+                })
             }
         }
     }
+    
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Stats Table
         if tableView.tag == 1 {

@@ -25,13 +25,17 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func viewWillAppear(_ animated: Bool) {
         if shiftsNeedsReOrganizing {
-            Periods.reOrganize()
-            periodsSeperatedByYear = Periods.organizePeriodsByYear(periods: shifts)
-            period = Periods.makePeriod(yearIndex: 0, monthIndex: 0)
-            shiftsNeedsReOrganizing = false
+            Periods.reOrganize(successHandler: {
+                Periods.organizePeriodsByYear(periods: shifts, successHandler: {
+                    Periods.makePeriod(yearIndex: 0, monthIndex: 0, successHandler: {
+                        shiftsNeedsReOrganizing = false
+                        self.myTableView.reloadData()
+                    })
+                })
+            })
         }
         hideTableIfEmpty()
-        myTableView.reloadData()
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -97,23 +101,23 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let deleteAction = UITableViewRowAction(style: .normal, title: "Delete")   { (_ rowAction: UITableViewRowAction, _ indexPath: IndexPath) in
             
             let shiftToDelete = shifts[indexPath.section][indexPath.row]
-                
             CloudStorage.deleteShift(fromUser: user.ID, shift: shiftToDelete)
             
-            
-            
-            // Removes the shift from the in memory database
             shifts[indexPath.section].remove(at: indexPath.row)
             // Cleans the arrays of empty sub arrays
             var i = 0
             while i < shifts.count {
                 if shifts[i].count == 0 {
                     shifts.remove(at: i)
-                    
                 } else {
                     i += 1
                 }
             }
+            
+            // Reorganized the periods and makes the new period
+            Periods.organizePeriodsByYear(periods: shifts, successHandler: {
+                Periods.makePeriod(yearIndex: 0, monthIndex: 0, successHandler: {})
+            })
             
             if self.myTableView.numberOfRows(inSection: indexPath.section) > 1 {
                 self.myTableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)

@@ -26,27 +26,23 @@ class UserSettings {
         return UserDefaults().string(forKey: "email")
     }
     
-//    static func forgetLoginInfo() {
-//        UserDefaults().set(nil, forKey: "email")
-//        UserDefaults().set(nil, forKey: "password")
-//    }
-//    
-//    static func saveLoginInfo(email: String, password: String) {
-//        UserDefaults().set(email, forKey: "email")
-//        UserDefaults().set(password, forKey: "password")
-//    }
-    
     static func OTRulesForDay(day: String) -> [Any] {
-        if UserDefaults().value(forKey: day) != nil {
-            let instanceEncoded: [NSData] = UserDefaults().object(forKey: day) as! [NSData]
-            let startsUnpacked = NSKeyedUnarchiver.unarchiveObject(with: instanceEncoded[0] as Data)
-            let endsUnpacked = NSKeyedUnarchiver.unarchiveObject(with: instanceEncoded[1] as Data)
-            let rateFieldsUnpacked = NSKeyedUnarchiver.unarchiveObject(with: instanceEncoded[2] as Data)
-            
-            return [startsUnpacked!, endsUnpacked!, rateFieldsUnpacked!]
-        } else {
-            return [[], [], []]
+        var startsUnpacked: Any?
+        var endsUnpacked: Any?
+        var rateFieldsUnpacked: Any?
+        DispatchQueue.main.sync {
+            if UserDefaults().value(forKey: day) != nil {
+                let instanceEncoded: [NSData] = UserDefaults().object(forKey: day) as! [NSData]
+                startsUnpacked = NSKeyedUnarchiver.unarchiveObject(with: instanceEncoded[0] as Data)
+                endsUnpacked = NSKeyedUnarchiver.unarchiveObject(with: instanceEncoded[1] as Data)
+                rateFieldsUnpacked = NSKeyedUnarchiver.unarchiveObject(with: instanceEncoded[2] as Data)
+            }
         }
+        
+        if startsUnpacked != nil {
+            return [startsUnpacked!, endsUnpacked!, rateFieldsUnpacked!]
+        }
+        return [[], [], []]
     }
     
     static func getCurrencySymbol() -> String {
