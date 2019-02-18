@@ -28,7 +28,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         createLayout()
-        loadingAnimation()
+        loadingAnimation(withTitle: "Retrieving shifts")
         
         // Adds a listener that gets called each time users state changes
         loginListener = Auth.auth().addStateDidChangeListener { (auth, currentUser) in
@@ -36,7 +36,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 
                 LocalStorage.transferAllShiftsToCloud()
                 CloudStorage.getAllShifts(fromUser: currentUser!.uid) { (data) in
-                    
+                    self.loadingLabel.staticText = "Calculating"
                     Periods.organizeShiftsIntoPeriods(ar: data, successHandler: {
                         Periods.organizePeriodsByYear(periods: shifts, successHandler: {
                             Periods.makePeriod(yearIndex: 0, monthIndex: 0, successHandler: {
@@ -63,11 +63,11 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func loadingAnimation() {
+    func loadingAnimation(withTitle: String) {
         grossLbl.layer.opacity = 0
         salaryLbl.layer.opacity = 0
         loadingLabel.layer.opacity = 1
-        loadingLabel.staticText = "Calculating"
+        loadingLabel.staticText = withTitle
         loadingLabel.animate()
         for cell in statsTable.visibleCells {
             let cell = cell as! LaunchCell
@@ -315,7 +315,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
                 let year = indexForChosenPeriod[0]
                 let month = indexForChosenPeriod[1]
-                loadingAnimation()
+                loadingAnimation(withTitle: "Calculating")
                 Periods.makePeriod(yearIndex: year, monthIndex: month, successHandler: {
                     self.periodLbl.text = period?.duration
                     self.stopLoadingAnimation()

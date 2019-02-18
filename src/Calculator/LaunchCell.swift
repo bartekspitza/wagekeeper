@@ -34,6 +34,7 @@ class LaunchCell: UITableViewCell {
         statsInfo.textAlignment = .right
         statsInfo.text = text
         statsInfo.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        statsInfo.timerInterval = 0.5
         self.contentView.addSubview(statsInfo)
     }
     

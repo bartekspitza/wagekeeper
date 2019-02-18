@@ -57,6 +57,16 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
+        if shiftsNeedsReOrganizing {
+            Periods.reOrganize(successHandler: {
+                Periods.organizePeriodsByYear(periods: shifts, successHandler: {
+                    Periods.makePeriod(yearIndex: 0, monthIndex: 0, successHandler: {
+                        shiftsNeedsReOrganizing = false
+                    })
+                })
+            })
+        }
+        
         if self.isMovingFromParent {
             if autoTextField.text == "" && mySwitch.isOn == false || mySwitch.isOn {
                 UserDefaults().set(true, forKey: "manuallyNewMonth")

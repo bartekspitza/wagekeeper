@@ -114,7 +114,7 @@ class LoginForm: UIView {
         FBButton = UIButton(type: .custom)
         FBButton.backgroundColor = Colors.get(red: 60, green: 84, blue: 155, alpha: 1)
         FBButton.frame = CGRect(x: 0, y: 0, width: self.frame.width*0.75, height: 40)
-        FBButton.center = CGPoint(x: self.center.x, y: self.frame.height/2)
+        FBButton.center = CGPoint(x: self.center.x, y: forgotPassBtn.frame.origin.y + forgotPassBtn.frame.height + 30 + FBButton.frame.height/2)
         FBButton.setTitle("Sign in with Facebook", for: .normal)
         FBButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
         FBButton.layer.cornerRadius = 10
