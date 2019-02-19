@@ -780,17 +780,11 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="aEk-3B-1wg"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Shifts" id="NMV-9i-27i">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="rV6-p1-jsi">
-                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <connections>
-                                <segue destination="z62-Wo-wbl" kind="show" identifier="gotoadd" id="gLV-E0-uXk"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Shifts" id="NMV-9i-27i"/>
                     <connections>
                         <outlet property="myTableView" destination="iSP-76-veX" id="RzB-hY-vJN"/>
                         <segue destination="CDT-CX-OrS" kind="show" identifier="gotoedit" id="HMY-QG-Bq1"/>
+                        <segue destination="z62-Wo-wbl" kind="show" identifier="gotoadd" id="l4t-ud-I2j"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mm0-3x-ELm" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -14,11 +14,13 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var myTableView: UITableView!
     
     let instructionsLabel = UILabel()
+    var floatingButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.automaticallyAdjustsScrollViewInsets = false
         
+        addFloatingButton()
         myTableView.delegate = self
         myTableView.dataSource = self
     }
@@ -40,6 +42,7 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func viewDidAppear(_ animated: Bool) {
         layoutView()
+        
     }
 
     func hideTableIfEmpty() {
@@ -95,6 +98,31 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBAction func unwindSegue(_ sender: UIStoryboardSegue) {
         
+    }
+    func addFloatingButton() {
+        let tabBarY = self.tabBarController!.tabBar.frame.origin.y
+        
+        floatingButton = UIButton(type: .roundedRect)
+        floatingButton.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
+        floatingButton.backgroundColor = Colors.test1
+        floatingButton.layer.cornerRadius = 30
+        floatingButton.setTitle("+", for: .normal)
+        floatingButton.center = CGPoint(x: self.view.frame.width - floatingButton.frame.width/2 - 30, y: tabBarY - floatingButton.frame.height/2 - 30)
+        floatingButton.setTitleColor(.white, for: .normal)
+        floatingButton.titleLabel!.font = UIFont.systemFont(ofSize: 30, weight: .light)
+        floatingButton.contentVerticalAlignment = .center
+        floatingButton.addTarget(self, action: #selector(gotoadd), for: .touchUpInside)
+        floatingButton.layer.shadowColor = UIColor.black.cgColor
+        floatingButton.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
+        floatingButton.layer.masksToBounds = false
+        floatingButton.layer.shadowRadius = 1.0
+        floatingButton.layer.shadowOpacity = 0.5
+        floatingButton.layer.cornerRadius = floatingButton.frame.width / 2
+        self.view.addSubview(floatingButton)
+    }
+    
+    @objc func gotoadd() {
+        performSegue(withIdentifier: "gotoadd", sender: self)
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
@@ -152,10 +180,10 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
         cell.lunchLbl.font = UIFont.systemFont(ofSize: 11, weight: .light)
         cell.accessoryLbl.font = UIFont.systemFont(ofSize: 11, weight: .light)
         
-        cell.dateLbl.textColor = Colors.get(red: 60, green: 60, blue: 60, alpha: 1)
-        cell.timeLbl.textColor = Colors.get(red: 60, green: 60, blue: 60, alpha: 1)
-        cell.lunchLbl.textColor = Colors.get(red: 60, green: 60, blue: 60, alpha: 1)
-        cell.accessoryLbl.textColor = Colors.get(red: 60, green: 60, blue: 60, alpha: 1)
+        cell.dateLbl.textColor = Colors.gray
+        cell.timeLbl.textColor = Colors.gray
+        cell.lunchLbl.textColor = Colors.gray
+        cell.accessoryLbl.textColor = Colors.gray
         
         cell.timeLbl.sizeToFit()
         cell.accessoryLbl.sizeToFit()
@@ -180,7 +208,7 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
         var year = Time.dateToString(date: shifts[section][shifts[section].count-1].date, withDayName: false)
         year = String(year.suffix(4))
         let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 40))
-        view.backgroundColor = .gray
+        view.backgroundColor = Colors.test1 //.gray
         
         let periodLabel = UILabel(frame: CGRect(x: 15, y: 10, width:
             tableView.bounds.size.width, height: 30))

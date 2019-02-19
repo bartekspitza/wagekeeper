@@ -163,7 +163,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         periodLbl.text = ""
     }
     func configureMenuTable() {
-        menuTable.backgroundColor = headerColor
+        menuTable.backgroundColor = Colors.test
         menuTable.separatorColor = UIColor.white.withAlphaComponent(0.2)
         menuTable.delegate = self
         menuTable.dataSource = self
@@ -197,7 +197,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     func makeGradient() {
         let gradientLayer: CAGradientLayer = CAGradientLayer()
-        gradientLayer.colors = [navColor.cgColor, headerColor.cgColor]
+        gradientLayer.colors = [Colors.test1.cgColor, Colors.test.cgColor]
         gradientLayer.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height*0.4)
         let startingLocation = NSNumber(floatLiteral: Double(Double(66)/Double(gradientLayer.frame.height)))
         gradientLayer.locations = [startingLocation, 1.0]
@@ -272,7 +272,6 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if tableView.tag == 2 {
             let startingString = String(Array(periodsSeperatedByYear[section][0][periodsSeperatedByYear[section][0].count-1].date.description)[0..<4])
             let headerView = UIView()
-            headerView.backgroundColor = headerColor
             
             let headerLabel = UILabel(frame: CGRect(x: 15, y: 28, width:
                 tableView.bounds.size.width, height: tableView.bounds.size.height))
@@ -351,7 +350,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
             cell.textLabel?.textColor = .white
             cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .light)
             cell.selectionStyle = .none
-            cell.backgroundColor = headerColor
+            cell.backgroundColor = UIColor.black.withAlphaComponent(0)
             if indexPath.section == indexForChosenPeriod[0] && indexPath.row == indexForChosenPeriod[1] {
                 cell.tintColor = .white
                 cell.accessoryType = .checkmark

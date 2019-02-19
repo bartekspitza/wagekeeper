@@ -198,7 +198,7 @@ class AuthVC: UIViewController, UITextFieldDelegate {
         let image = UIImage(named: "icon.png")
         
         let imageView = UIImageView(image: image)
-        imageView.setImageColor(color: navColor)
+        imageView.setImageColor(color: Colors.test1)
         imageView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width/2, height: self.view.frame.width/2)
         imageView.center = CGPoint(x: self.view.center.x + 10, y: self.view.frame.height*0.25)
         

@@ -32,7 +32,7 @@ class LoginForm: UIView {
     
     
     func showSuccessMessage(msg: String) {
-        errorLabel.textColor = Colors.get(red: 0, green: 153, blue: 94, alpha: 1)
+        errorLabel.textColor = Colors.successGreen
         errorLabel.text = msg
         errorLabel.layer.opacity = 1
         
@@ -112,7 +112,7 @@ class LoginForm: UIView {
     }
     func addFBButton() {
         FBButton = UIButton(type: .custom)
-        FBButton.backgroundColor = Colors.get(red: 60, green: 84, blue: 155, alpha: 1)
+        FBButton.backgroundColor = Colors.fb
         FBButton.frame = CGRect(x: 0, y: 0, width: self.frame.width*0.75, height: 40)
         FBButton.center = CGPoint(x: self.center.x, y: forgotPassBtn.frame.origin.y + forgotPassBtn.frame.height + 30 + FBButton.frame.height/2)
         FBButton.setTitle("Sign in with Facebook", for: .normal)
@@ -155,7 +155,7 @@ class LoginForm: UIView {
     func addMainButton(title: String, y: CGFloat) {
         mainBtn = UIButton(frame: CGRect(x: 50, y: 50, width: self.frame.width*0.75, height: 40))
         mainBtn.setTitle(title, for: .normal)
-        mainBtn.backgroundColor = navColor
+        mainBtn.backgroundColor = Colors.test1
         mainBtn.tintColor = .white
         mainBtn.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
         mainBtn.layer.cornerRadius = 10
