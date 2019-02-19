@@ -14,10 +14,9 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var periodLbl = UILabel()
     var btn: UIButton!
+    var btnImage: UIImageView!
     @IBOutlet weak var grossLbl: CountingLabel!
     @IBOutlet weak var salaryLbl: CountingLabel!
-    var seperatorLineHorizontal = UIView()
-    var upperLineOfArrowButton = UIView()
     var statsTable = UITableView()
     var menuTable = UITableView()
     var loadingIndicator: UIActivityIndicatorView!
@@ -114,13 +113,20 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         btn = UIButton()
         let gradientMaxY = (self.view.frame.height*0.4)
         let horizontalY = gradientMaxY * 0.60
+        let imageWidth = Int(gradientMaxY-(horizontalY + gradientMaxY*0.25))/2
+        let imageCenterY = Int(gradientMaxY)-imageWidth/2 - 10
         
-        let btnImage = UIImage(named: "downArrow.png")
-        btn.setImage(btnImage, for: .normal)
-        btn.frame = CGRect(x: 0, y: 0, width: Int(gradientMaxY-(horizontalY + gradientMaxY*0.25)), height: Int(gradientMaxY-(horizontalY + gradientMaxY*0.25)))
-        btn.center = CGPoint(x: Int(self.view.frame.width/2), y: Int(gradientMaxY-btn.frame.height/2))
+        let image = UIImage(named: "pulldown_icon.png")
+        btn.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: CGFloat(imageWidth*2))
+        btn.frame.origin.y = gradientMaxY-btn.frame.height
         btn.addTarget(self, action: #selector(btnPressed(sender:)), for: UIControl.Event.touchUpInside)
-        btn.adjustsImageWhenHighlighted = false
+        
+        btnImage = UIImageView(image: image)
+        btnImage.setImageColor(color: .white)
+        btnImage.frame = CGRect(x: 0, y: 0, width: imageWidth, height: imageWidth)
+        btnImage.center = CGPoint(x: self.view.center.x, y: btn.center.y)
+        
+        self.view.addSubview(btnImage)
         self.view.addSubview(btn)
     }
     
@@ -132,7 +138,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
                     self.menuTable.frame = CGRect(x: 0, y: (sender.center.y + sender.frame.height/2), width: self.view.frame.width, height: 0)
                 })
                 UIView.animate(withDuration: 0.3, animations: {
-                    sender.transform = .identity
+                    self.btnImage.transform = .identity
                 })
             } else {
                 UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.8, options: [], animations: {
@@ -140,12 +146,12 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 }, completion: nil)
                 
                 UIView.animate(withDuration: 0.3, animations: {
-                    sender.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+                    self.btnImage.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
                 })
             }
             pulldownMenuIsShowing = !pulldownMenuIsShowing
         } else {
-            sender.shake(direction: "vertical", swings: 1)
+            self.btnImage.shake(direction: "vertical", swings: 1)
         }
     }
     
@@ -206,21 +212,6 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.view.layer.insertSublayer(gradientLayer, at: UInt32(0))
     }
     
-    
-    
-    func addUpperLineOfArrowButtonSection() {
-        let gradientMaxY = (self.view.frame.height*0.4)
-        let horizontalY = gradientMaxY * 0.60
-        seperatorLineHorizontal.frame = CGRect(x: self.view.frame.width/2, y: 0, width: 1, height: gradientMaxY * 0.25)
-        seperatorLineHorizontal.center.y = horizontalY + seperatorLineHorizontal.frame.height/2
-        seperatorLineHorizontal.backgroundColor = UIColor.white.withAlphaComponent(0.15)
-        upperLineOfArrowButton.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 1)
-        upperLineOfArrowButton.center.y = seperatorLineHorizontal.center.y + seperatorLineHorizontal.frame.height/2
-        upperLineOfArrowButton.backgroundColor = UIColor.white.withAlphaComponent(0.15)
-
-        self.view.addSubview(upperLineOfArrowButton)
-    }
-    
     func designLabels() {
         let gradientMaxY = (self.view.frame.height*0.4)
         let horizontalY = gradientMaxY * 0.60
@@ -244,9 +235,8 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         periodLbl.font = UIFont.systemFont(ofSize: 13, weight: .light)
         
         periodLbl.text = ""
-        periodLbl.textAlignment = .right
-        periodLbl.frame = CGRect(x: 0, y: 0, width: Int(self.view.frame.width/3), height: Int(30))
-        periodLbl.center = CGPoint(x: Int(self.view.frame.width*0.95 - periodLbl.frame.width/2), y: Int(btn.center.y))
+        periodLbl.frame = CGRect(x: self.view.frame.width/20, y: 0, width: self.view.frame.width/3, height: 50)
+        periodLbl.center.y = btn.center.y
         
         resetLabels()
         self.view.addSubview(periodLbl)

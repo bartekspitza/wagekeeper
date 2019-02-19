@@ -195,7 +195,7 @@ extension String {
 
 // Button animation
 
-extension UIButton {
+extension UIImageView {
     
     func shake(direction: String, swings: Float) {
         
