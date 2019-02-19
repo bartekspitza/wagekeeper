@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		488118C6201405880C9FB4B6 /* Pods_WageKeeper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A2FEDCE8102FEBDF20CDA71 /* Pods_WageKeeper.framework */; };
 		980B984F2211837800414EB9 /* EditVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980B984E2211837800414EB9 /* EditVC.swift */; };
-		980D1DD01FA3A4770091E06D /* SettingsTableNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980D1DCF1FA3A4770091E06D /* SettingsTableNav.swift */; };
 		9813682C2218AB3E00F04187 /* Methods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9813682B2218AB3E00F04187 /* Methods.swift */; };
 		981E7FD42209FF0E006A492C /* CloudStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981E7FD32209FF0E006A492C /* CloudStorage.swift */; };
 		981FBFC4221AC189005B8F4C /* MyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981FBFC3221AC189005B8F4C /* MyUser.swift */; };
@@ -22,7 +21,6 @@
 		982F934E220884DA005D9C99 /* ShiftModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934D220884DA005D9C99 /* ShiftModel.swift */; };
 		982F93502208B103005D9C99 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934F2208B103005D9C99 /* UserSettings.swift */; };
 		982F93542208C386005D9C99 /* StringFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F93532208C386005D9C99 /* StringFormatter.swift */; };
-		982FFE8E22130F9F007400C6 /* AccountVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982FFE8D22130F9F007400C6 /* AccountVC.swift */; };
 		982FFE9222134B27007400C6 /* LoginForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982FFE9122134B27007400C6 /* LoginForm.swift */; };
 		982FFE9422134F59007400C6 /* CreateAccountForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982FFE9322134F59007400C6 /* CreateAccountForm.swift */; };
 		9830C1FD220793CB0023B582 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9830C1FB220793CB0023B582 /* LaunchScreen.storyboard */; };
@@ -41,7 +39,7 @@
 		988FDEC41F9F7AFA0090DEF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 988FDEC31F9F7AFA0090DEF1 /* Assets.xcassets */; };
 		989392DC1FCEF322002475EA /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989392DB1FCEF322002475EA /* Extensions.swift */; };
 		98A54977220E03C000CBEE5D /* AddVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A54976220E03C000CBEE5D /* AddVC.swift */; };
-		98ACD1671FA381D800B78C7D /* SettingsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98ACD1661FA381D800B78C7D /* SettingsTable.swift */; };
+		98AD6DDC221C34E7009364EF /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AD6DDB221C34E7009364EF /* SettingsVC.swift */; };
 		98B3B8802209DA8C000D153B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 98B3B87F2209DA8C000D153B /* GoogleService-Info.plist */; };
 		98BD37F12214AF9E0047F10E /* globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BD37F02214AF9E0047F10E /* globals.swift */; };
 		98CA61941FB0A6D900463FF7 /* OvertimeRuleTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CA61931FB0A6D900463FF7 /* OvertimeRuleTable.swift */; };
@@ -58,7 +56,6 @@
 		6106A203491D43CA4ED87591 /* Pods-WageKeeper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WageKeeper.release.xcconfig"; path = "Pods/Target Support Files/Pods-WageKeeper/Pods-WageKeeper.release.xcconfig"; sourceTree = "<group>"; };
 		6A2FEDCE8102FEBDF20CDA71 /* Pods_WageKeeper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WageKeeper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		980B984E2211837800414EB9 /* EditVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVC.swift; sourceTree = "<group>"; };
-		980D1DCF1FA3A4770091E06D /* SettingsTableNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableNav.swift; sourceTree = "<group>"; };
 		9813682B2218AB3E00F04187 /* Methods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Methods.swift; sourceTree = "<group>"; };
 		981E7FD32209FF0E006A492C /* CloudStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorage.swift; sourceTree = "<group>"; };
 		981FBFC3221AC189005B8F4C /* MyUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyUser.swift; sourceTree = "<group>"; };
@@ -71,7 +68,6 @@
 		982F934D220884DA005D9C99 /* ShiftModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftModel.swift; sourceTree = "<group>"; };
 		982F934F2208B103005D9C99 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		982F93532208C386005D9C99 /* StringFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringFormatter.swift; sourceTree = "<group>"; };
-		982FFE8D22130F9F007400C6 /* AccountVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountVC.swift; sourceTree = "<group>"; };
 		982FFE9122134B27007400C6 /* LoginForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginForm.swift; sourceTree = "<group>"; };
 		982FFE9322134F59007400C6 /* CreateAccountForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountForm.swift; sourceTree = "<group>"; };
 		9830C1FB220793CB0023B582 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -92,7 +88,7 @@
 		988FDEC31F9F7AFA0090DEF1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		989392DB1FCEF322002475EA /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		98A54976220E03C000CBEE5D /* AddVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddVC.swift; sourceTree = "<group>"; };
-		98ACD1661FA381D800B78C7D /* SettingsTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTable.swift; sourceTree = "<group>"; };
+		98AD6DDB221C34E7009364EF /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		98B3B87F2209DA8C000D153B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		98BD37F02214AF9E0047F10E /* globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = globals.swift; sourceTree = "<group>"; };
 		98CA61931FB0A6D900463FF7 /* OvertimeRuleTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OvertimeRuleTable.swift; sourceTree = "<group>"; };
@@ -232,10 +228,10 @@
 		98ACD18A1FA39EC700B78C7D /* Settings  */ = {
 			isa = PBXGroup;
 			children = (
-				980D1DCF1FA3A4770091E06D /* SettingsTableNav.swift */,
-				98CA61931FB0A6D900463FF7 /* OvertimeRuleTable.swift */,
+				98AD6DDB221C34E7009364EF /* SettingsVC.swift */,
 				9862A5701FCC33AA0047671D /* AdvancedSettingsTable.swift */,
-				98ACD1661FA381D800B78C7D /* SettingsTable.swift */,
+				98CA61931FB0A6D900463FF7 /* OvertimeRuleTable.swift */,
+				98D6628E2216003F001B2422 /* UpdateForm.swift */,
 			);
 			path = "Settings ";
 			sourceTree = "<group>";
@@ -258,7 +254,6 @@
 				98D40CBF220B3594006E59E0 /* Auth */,
 				98ACD18A1FA39EC700B78C7D /* Settings  */,
 				98ACD18B1FA39EE100B78C7D /* Logger */,
-				98D6628D22160027001B2422 /* Account */,
 			);
 			name = Views;
 			path = ..;
@@ -272,15 +267,6 @@
 				982FFE9322134F59007400C6 /* CreateAccountForm.swift */,
 			);
 			path = Auth;
-			sourceTree = "<group>";
-		};
-		98D6628D22160027001B2422 /* Account */ = {
-			isa = PBXGroup;
-			children = (
-				982FFE8D22130F9F007400C6 /* AccountVC.swift */,
-				98D6628E2216003F001B2422 /* UpdateForm.swift */,
-			);
-			path = Account;
 			sourceTree = "<group>";
 		};
 		DDF3811D744F0B753A21B7F7 /* Frameworks */ = {
@@ -444,7 +430,6 @@
 				988FDEC21F9F7AFA0090DEF1 /* adding_shifts.xcdatamodeld in Sources */,
 				98D40CC3220B3C6A006E59E0 /* CloudAuth.swift in Sources */,
 				9886E9BE2211DEA000A4207A /* Colors.swift in Sources */,
-				980D1DD01FA3A4770091E06D /* SettingsTableNav.swift in Sources */,
 				988FDEBC1F9F7AFA0090DEF1 /* Logger.swift in Sources */,
 				980B984F2211837800414EB9 /* EditVC.swift in Sources */,
 				982FFE9222134B27007400C6 /* LoginForm.swift in Sources */,
@@ -461,7 +446,6 @@
 				98CA61941FB0A6D900463FF7 /* OvertimeRuleTable.swift in Sources */,
 				98D6628F2216003F001B2422 /* UpdateForm.swift in Sources */,
 				98D40CC1220B35A9006E59E0 /* AuthVC.swift in Sources */,
-				98ACD1671FA381D800B78C7D /* SettingsTable.swift in Sources */,
 				982548312210D70D00BA182D /* DurationCell.swift in Sources */,
 				982FFE9422134F59007400C6 /* CreateAccountForm.swift in Sources */,
 				981FBFC4221AC189005B8F4C /* MyUser.swift in Sources */,
@@ -469,12 +453,12 @@
 				9864BB0C1FD4700E005DB5F2 /* Calculator.swift in Sources */,
 				9830C2012207A0EF0023B582 /* Period.swift in Sources */,
 				98A54977220E03C000CBEE5D /* AddVC.swift in Sources */,
+				98AD6DDC221C34E7009364EF /* SettingsVC.swift in Sources */,
 				982F934E220884DA005D9C99 /* ShiftModel.swift in Sources */,
 				9820A5551FBCBF6B00EAEE6A /* MainNav.swift in Sources */,
 				98E284E31FC70CC1004FD2D2 /* TabBarController.swift in Sources */,
 				98BD37F12214AF9E0047F10E /* globals.swift in Sources */,
 				982F93542208C386005D9C99 /* StringFormatter.swift in Sources */,
-				982FFE8E22130F9F007400C6 /* AccountVC.swift in Sources */,
 				989392DC1FCEF322002475EA /* Extensions.swift in Sources */,
 				9886E9BC2211C11D00A4207A /* Periods.swift in Sources */,
 				9813682C2218AB3E00F04187 /* Methods.swift in Sources */,

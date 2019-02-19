@@ -12,7 +12,6 @@ class UserSettings {
     
     static func setupNewUser() {
         if UserDefaults().value(forKey: "FirstTime") == nil {
-            LocalStorage.insertExampleShift()
             UserSettings.initiateUserDefaults()
             UserDefaults().set("Visited", forKey: "FirstTime")
         }
@@ -55,8 +54,8 @@ class UserSettings {
     
     static func taxRate() -> Float {
         var taxRate: Float = 1.0
-        if UserDefaults().string(forKey: "baseTaxRate") != nil {
-            taxRate -= Float(UserDefaults().string(forKey: "baseTaxRate")!)! / 100
+        if UserDefaults().string(forKey: "taxRate") != nil {
+            taxRate -= Float(UserDefaults().string(forKey: "taxRate")!)! / 100
         }
         return taxRate
     }
@@ -70,8 +69,8 @@ class UserSettings {
         UserDefaults().set("0", forKey: "minHours")
         UserDefaults().set(Time.createDefaultST(), forKey: "defaultST")
         UserDefaults().set(Time.createDefaultET(), forKey: "defaultET")
-        UserDefaults().set("Example (Delete this)", forKey: "defaultNote")
-        UserDefaults().set("0", forKey: "defaultLunch")
+        UserDefaults().set("My job", forKey: "defaultNote")
+        UserDefaults().set("60", forKey: "defaultLunch")
     }
     
     static func getDefaultShiftName() -> String {

@@ -57,6 +57,7 @@ class CloudAuth {
                         let url = URL(string: imageURL)
                         let data = NSData(contentsOf: url!)
                         user.profileImage = UIImage(data: data! as Data)
+                        print(url)
                     }
                     
                     user.loggedInWithFacebook = true
