@@ -8,13 +8,14 @@
 
 import Foundation
 import UIKit
+import PasswordTextField
 
 class CreateAccountForm: LoginForm {
     
     var password2Field: UITextField!
     
-    override init(frame: CGRect, mainBtnTitle: String) {
-        super.init(frame: frame, mainBtnTitle: mainBtnTitle)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
     }
     
     override func clear() {
@@ -49,7 +50,7 @@ class CreateAccountForm: LoginForm {
     }
     
     func addPassword2FieldToView() {
-        password2Field = UITextField()
+        password2Field = PasswordTextField()
         password2Field.frame = CGRect(x: 0, y: 0, width: self.frame.width * 0.75, height: 40)
         password2Field.placeholder = "Confirm password"
         password2Field.font = UIFont.systemFont(ofSize: 14, weight: .light)
