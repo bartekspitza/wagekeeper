@@ -84,7 +84,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         updateForm.backButton.addTarget(self, action: #selector(hideForm), for: .touchUpInside)
         updateForm.formButton.addTarget(self, action: #selector(updatePressed), for: .touchUpInside)
         let toolbar = UIToolbar()
-        let buttons = addButtons(bar: toolbar, withUpAndDown: true, color: .black)
+        let buttons = addButtons(bar: toolbar, withUpAndDown: false, color: .black)
         updateForm.field1.inputAccessoryView = toolbar
         updateForm.field2.inputAccessoryView = toolbar
         updateForm.passwordField.inputAccessoryView = toolbar
@@ -203,7 +203,8 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     func addTable() {
-        table = UITableView(frame: CGRect(x: 0, y: accountView.frame.origin.y + accountView.frame.height + 50, width: self.view.frame.width, height: self.view.frame.height*0.6))
+        let tabBarHeight = self.tabBarController?.tabBar.frame.height
+        table = UITableView(frame: CGRect(x: 0, y: accountView.frame.origin.y + accountView.frame.height + 50, width: self.view.frame.width, height: self.view.frame.height*0.6 - tabBarHeight))
         table.delegate = self
         table.dataSource = self
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")

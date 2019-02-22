@@ -9,40 +9,24 @@
 import Foundation
 import UIKit
 import Firebase
-import EMSpinnerButton
 import PasswordTextField
 
 class LoginForm: UIView {
     
     var emailField: UITextField!
     var passwordField: PasswordTextField!
-    var mainBtn: EMSpinnerButton!
+    var mainBtn: UIButton!
     var accessoryBtn: UIButton!
     var forgotPassBtn: UIButton!
     var errorLabel: UILabel!
     
     var errorLabelIsConfigured = false
     var mainBtnTitle: String!
-    var FBButton: EMSpinnerButton!
+    var FBButton: UIButton!
+    var loadingIndicator: UIActivityIndicatorView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-    }
-    
-    func startMainBtnAnimation() {
-        self.mainBtn.animate(animation: .collapse)
-    }
-    
-    func stopMainBtnAnimation() {
-        self.mainBtn.animate(animation: .expand)
-    }
-    
-    func startFBButtonAnimation() {
-        self.FBButton.animate(animation: .collapse)
-    }
-    
-    func stopFBButtonAnimation() {
-        self.FBButton.animate(animation: .expand)
     }
     
     func showSuccessMessage(msg: String) {
@@ -72,6 +56,38 @@ class LoginForm: UIView {
         self.errorLabel.layer.opacity = 0
     }
     
+    func stopAnimating(button: UIButton, title: String) {
+        loadingIndicator.stopAnimating()
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.8, options: [], animations: {
+            button.frame = CGRect(x: 0, y: button.frame.origin.y, width: self.frame.width*0.75, height: 40)
+            button.layer.cornerRadius = 10
+            button.center.x = self.center.x
+        }) { (true) in
+            
+        }
+        UIView.transition(with: button, duration: 0.2, options: [.transitionCrossDissolve], animations: {
+            button.setTitle(title, for: .normal)
+        }, completion: nil)
+    }
+    
+    func startAnimating(button: UIButton) {
+        loadingIndicator.center.y = button.center.y
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.8, options: [], animations: {
+            button.frame = CGRect(x: 0, y: button.frame.origin.y, width: 40, height: 40)
+            button.layer.cornerRadius = 20
+            button.center.x = self.center.x
+        }) { (true) in
+            
+        }
+        UIView.transition(with: button, duration: 0.2, options: [.transitionCrossDissolve], animations: {
+            button.setTitle("", for: .normal)
+        }, completion: { (true) in
+            self.loadingIndicator.startAnimating()
+        })
+    }
+    
+    
+    
     func configureErrorLabel() {
         errorLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 20))
         errorLabel.text = "Wrong password"
@@ -96,15 +112,23 @@ class LoginForm: UIView {
         addForgotPasswordButton()
         addAccessoryButton(title: "Create account")
         addFBButton()
+        addLoadingIndicator()
+    }
+    func addLoadingIndicator() {
+        loadingIndicator = UIActivityIndicatorView()
+        loadingIndicator.hidesWhenStopped = true
+        loadingIndicator.color = .white
+        loadingIndicator.center = CGPoint(x: self.center.x, y: self.frame.height/2 + mainBtn.center.y)
+        self.addSubview(loadingIndicator)
     }
     func addFBButton() {
-        FBButton = EMSpinnerButton(title: "Sign in with Facebook")
+        FBButton = UIButton()
         FBButton.backgroundColor = Colors.fb
         FBButton.frame = CGRect(x: 0, y: 0, width: self.frame.width*0.75, height: 40)
         FBButton.center = CGPoint(x: self.center.x, y: forgotPassBtn.frame.origin.y + forgotPassBtn.frame.height + 30 + FBButton.frame.height/2)
         FBButton.setTitle("Sign in with Facebook", for: .normal)
         FBButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
-        FBButton.cornerRadius = 10
+        FBButton.layer.cornerRadius = 10
         FBButton.setTitleColor(.lightGray, for: .highlighted)
         self.addSubview(FBButton)
     }
@@ -140,13 +164,13 @@ class LoginForm: UIView {
         self.addSubview(passwordField)
     }
     func addMainButton(title: String, y: CGFloat) {
-        mainBtn = EMSpinnerButton(title: title)
+        mainBtn = UIButton()
         mainBtn.frame = CGRect(x: 50, y: 50, width: self.frame.width*0.75, height: 40)
-        //mainBtn.setTitle(title, for: .normal)
+        mainBtn.setTitle(title, for: .normal)
         mainBtn.backgroundColor = Colors.test1
         mainBtn.tintColor = .white
         mainBtn.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
-        mainBtn.cornerRadius = 10
+        mainBtn.layer.cornerRadius = 10
         mainBtn.setTitleColor(.lightGray, for: .highlighted)
         mainBtn.center = CGPoint(x: self.center.x, y: y)
         

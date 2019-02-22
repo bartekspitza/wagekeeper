@@ -156,7 +156,7 @@ class CloudAuth {
         
         switch (code) {
         case 17007:
-            msg = "Account with given email adress already exists"
+            msg = "Account with that email adress already exists"
             break
         case 17008:
             msg = "Email is badly formatted"

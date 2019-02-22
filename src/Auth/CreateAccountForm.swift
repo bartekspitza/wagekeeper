@@ -31,6 +31,7 @@ class CreateAccountForm: LoginForm {
         
         addMainButton(title: "Create account", y: password2Field.center.y + 70)
         addAccessoryButton(title: "Log in")
+        addLoadingIndicator()
     }
     
     override func configureErrorLabel() {
