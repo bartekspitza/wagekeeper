@@ -9,13 +9,11 @@
 import Foundation
 import UIKit
 import Firebase
-import PasswordTextField
 
 class UpdateForm: UIView {
     
     var field1: UITextField!
     var field2: UITextField!
-    var passwordField: PasswordTextField!
     var formButton: UIButton!
     var backButton: UIButton!
     var errorLabel: UILabel!
@@ -50,7 +48,7 @@ class UpdateForm: UIView {
         errorLabel.textColor = .red
         errorLabel.textAlignment = .center
         errorLabel.font = UIFont.systemFont(ofSize: 12, weight: .light)
-        errorLabel.center = CGPoint(x: self.center.x, y: passwordField.center.y + passwordField.frame.height/2 + 15)
+        errorLabel.center = CGPoint(x: self.center.x, y: field2.center.y + field2.frame.height/2 + 15)
         errorLabel.layer.opacity = 0
         
         self.addSubview(errorLabel)
@@ -59,7 +57,6 @@ class UpdateForm: UIView {
     func clear() {
         field1.text = ""
         field2.text = ""
-        passwordField.text = ""
     }
     
     func addField1(isEmailField: Bool) {
@@ -102,29 +99,15 @@ class UpdateForm: UIView {
         
         self.addSubview(field2)
     }
-    func addPasswordField() {
-        passwordField = PasswordTextField()
-        passwordField.frame = CGRect(x: 0, y: 0, width: self.frame.width * 0.75, height: 40)
-        passwordField.font = UIFont.systemFont(ofSize: 14, weight: .light)
-        passwordField.autocapitalizationType = .none
-        passwordField.autocorrectionType = .no
-        passwordField.center = self.center
-        passwordField.center.y = field2.center.y + field2.frame.height/2 + 30
-        passwordField.addBottomBorderWithColor(color: .lightGray, width: 0.5)
-        passwordField.placeholder = "Old password"
-        passwordField.isSecureTextEntry = true
-        
-        self.addSubview(passwordField)
-    }
     func addFormButton(title: String) {
         formButton = UIButton(frame: CGRect(x: 50, y: 50, width: self.frame.width*0.75, height: 40))
         formButton.setTitle(title, for: .normal)
-        formButton.backgroundColor = Colors.test1
+        formButton.backgroundColor = navColor
         formButton.tintColor = .white
         formButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
         formButton.layer.cornerRadius = 10
         formButton.setTitleColor(.lightGray, for: .highlighted)
-        formButton.center = CGPoint(x: self.center.x, y: passwordField.center.y + 100)
+        formButton.center = CGPoint(x: self.center.x, y: field2.center.y + 100)
         formButton.layer.zPosition = 1
         
         self.addSubview(formButton)
@@ -135,8 +118,7 @@ class UpdateForm: UIView {
         backButton.setTitleColor(.black, for: .normal)
         backButton.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .light)
         backButton.sizeToFit()
-        backButton.center.x = self.center.x
-        backButton.frame.origin.y = formButton.frame.origin.y + formButton.frame.height
+        backButton.center = CGPoint(x: self.center.x, y: self.frame.height * 0.9)
         backButton.setTitleColor(UIColor.black.withAlphaComponent(0.7), for: .highlighted)
         self.addSubview(backButton)
     }
