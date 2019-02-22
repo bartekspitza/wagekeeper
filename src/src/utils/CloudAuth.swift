@@ -129,6 +129,7 @@ class CloudAuth {
                 
             } else {
                 let e = er! as NSError
+                print(e.localizedDescription)
                 failureHandler(errorCodeToString(code: e.code))
             }
             
@@ -151,16 +152,27 @@ class CloudAuth {
     }
     
     static private func errorCodeToString(code: Int) -> String {
-        var msg = "We're sorry. Something went wrong"
+        var msg: String!
         
-        if code == 17011 {
-            msg = "No account found with that email adress"
-        } else if code == 17009 {
-            msg = "Wrong password"
-        } else if code == 17008 {
+        switch (code) {
+        case 17007:
+            msg = "Account with given email adress already exists"
+            break
+        case 17008:
             msg = "Email is badly formatted"
-        } else if code == 17026 {
+            break
+        case 17009:
+            msg = "Wrong password"
+            break
+        case 17011:
+            msg = "No account found with that email adress"
+            break
+        case 17026:
             msg = "Password must be atleast 6 characters long"
+            break
+        default:
+            msg = "We're sorry. Something went wrong"
+            break
         }
         
         return msg
