@@ -26,6 +26,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     var updateForm: UpdateForm!
     let currencies = ["SEK", "EUR", "GPD", "NOR", "USD"]
+    var cellsAreRecycled = false
     
     var isUpdatingPassword = true
     var updateMessageLbl: UILabel!
@@ -43,8 +44,8 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         self.navigationController?.navigationBar.tintColor = Colors.navbarFG
         self.navigationController?.navigationBar.barTintColor = Colors.navbarBG
         
-        addAmountOfShiftsElement()
         addAccountView()
+        addAmountOfShiftsElement()
         addTable()
         configurePickers()
         addUpdatingForm()
@@ -166,9 +167,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         amountShiftsLbl.text = Periods.totalShifts().description
         amountShiftsLbl.sizeToFit()
         
-        amountShiftsLbl.center = CGPoint(x: self.view.center.x, y: self.view.frame.height/5)
-        shiftsLbl.center.y = amountShiftsLbl.frame.origin.y + amountShiftsLbl.font.ascender - shiftsLbl.frame.height/2 + 5
-        shiftsLbl.frame.origin.x = amountShiftsLbl.frame.origin.x + amountShiftsLbl.frame.width + 5
+        amountShiftsLbl.center.x = self.view.center.x
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -190,7 +189,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     func addTable() {
         let tabBarHeight = self.tabBarController?.tabBar.frame.height
-        table = UITableView(frame: CGRect(x: 0, y: accountView.frame.origin.y + accountView.frame.height + 50, width: self.view.frame.width, height: self.view.frame.height*0.6 - tabBarHeight! - 50))
+        table = UITableView(frame: CGRect(x: 0, y: self.view.frame.height*0.4 + 1, width: self.view.frame.width, height: self.view.frame.height*0.6 - tabBarHeight! - 50))
         table.delegate = self
         table.dataSource = self
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
@@ -202,64 +201,64 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     func addAccountView() {
-        accountView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50))
-        accountView.center.y = self.view.frame.height * 0.4
+        let height = UIApplication.shared.statusBarFrame.height +
+            self.navigationController!.navigationBar.frame.height
+        
+        accountView = UIView(frame: CGRect(x: 0, y: height, width: self.view.frame.width, height: 80))
         let imageView = UIImageView(image: user.profileImage)
-        imageView.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        imageView.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
         imageView.frame.origin.x = 10
-        imageView.center.y = 25
-        imageView.layer.cornerRadius = 20
+        imageView.center.y = 40
+        imageView.layer.cornerRadius = 30
         imageView.layer.masksToBounds = true
         
-        let nameLabel = UILabel(frame: CGRect(x: 16, y: 0, width: self.view.frame.width-32, height: 40))
+        let nameLabel = UILabel(frame: CGRect(x: 16, y: accountView.frame.height/2 - 40, width: self.view.frame.width-32, height: 40))
         nameLabel.text = "logged in with"
         nameLabel.font = UIFont.systemFont(ofSize: 12, weight: .light)
         nameLabel.textColor = .gray
         nameLabel.textAlignment = .center
+        nameLabel.sizeToFit()
+        nameLabel.frame.origin.y = accountView.frame.height/2 - nameLabel.frame.height
         
-        let email = UILabel(frame: CGRect(x: 16, y: 15, width: self.view.frame.width-32, height: 40))
+        let email = UILabel(frame: CGRect(x: 16, y: accountView.frame.height/2, width: self.view.frame.width-32, height: 40))
         email.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
         email.textColor = .black
         email.textAlignment = .center
         email.text = user.email
-        
-        let separator = UIView(frame: CGRect(x: 0, y: 49, width: self.view.frame.width, height: 0.5))
-        separator.backgroundColor = UIColor.black.withAlphaComponent(0.11)
-        let upperseparator = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 0.5))
-        upperseparator.backgroundColor = UIColor.black.withAlphaComponent(0.11)
+        email.sizeToFit()
+        email.frame.origin.y = accountView.frame.height/2
         
         if user.loggedInWithFacebook {
             accountView.addSubview(imageView)
-            nameLabel.frame.origin.x = imageView.frame.origin.x + 40 + 10
+            nameLabel.frame.origin.x = imageView.endX() + 10
             nameLabel.textAlignment = .left
             nameLabel.text = user.firstName + " " + user.lastName
             nameLabel.textColor = .black
             nameLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-            email.frame.origin.x = imageView.frame.origin.x + 40 + 10
+            nameLabel.sizeToFit()
+            email.frame.origin.x = imageView.endX() + 10
             email.textAlignment = .left
             email.font = UIFont.systemFont(ofSize: 14, weight: .light)
         }
         
+        accountView.addBottomBorderWithColor(color: UIColor.black.withAlphaComponent(0.1), width: 0.5)
         accountView.addSubview(nameLabel)
         accountView.addSubview(email)
-        accountView.addSubview(separator)
-        accountView.addSubview(upperseparator)
         self.view.addSubview(accountView)
     }
     
     func addAmountOfShiftsElement() {
-        //let navigationBarHeight: CGFloat = self.navigationController!.navigationBar.frame.height
-        let shiftsAmountView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height*0.4))
+        let shiftsAmountView = UIView(frame: CGRect(x: 0, y: accountView.endY(), width: self.view.frame.width, height: self.view.frame.height*0.4 - accountView.endY()))
         
-        amountShiftsLbl = UILabel(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        amountShiftsLbl = UILabel()
         amountShiftsLbl.font = UIFont.systemFont(ofSize: 60, weight: .light)
         amountShiftsLbl.text = Periods.totalShifts().description
         amountShiftsLbl.textAlignment = .center
         amountShiftsLbl.textColor = .black
         amountShiftsLbl.sizeToFit()
-        amountShiftsLbl.center = CGPoint(x: self.view.center.x, y: shiftsAmountView.frame.height/2)
+        amountShiftsLbl.center.y = shiftsAmountView.frame.height/2
         
-        shiftsLbl = UILabel(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        shiftsLbl = UILabel()
         shiftsLbl.font = UIFont.systemFont(ofSize: 12, weight: .light)
         shiftsLbl.text = "completed shifts"
         shiftsLbl.textColor = .gray
@@ -267,7 +266,10 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         shiftsLbl.center.y = amountShiftsLbl.frame.origin.y + amountShiftsLbl.font.ascender - shiftsLbl.frame.height/2 + 5
         shiftsLbl.frame.origin.x = amountShiftsLbl.frame.origin.x + amountShiftsLbl.frame.width + 5
 
-        shiftsAmountView.center.y = self.view.frame.height/4 //+ navigationBarHeight
+        shiftsLbl.frame.origin.y = amountShiftsLbl.endY()
+        shiftsLbl.center.x = self.view.center.x
+        
+        shiftsAmountView.addBottomBorderWithColor(color: UIColor.black.withAlphaComponent(0.1), width: 0.5)
         shiftsAmountView.addSubview(shiftsLbl)
         shiftsAmountView.addSubview(amountShiftsLbl)
         self.view.addSubview(shiftsAmountView)
@@ -347,46 +349,48 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
         
-        let imageNames = [
-            ["taxIcon.png", "wageIcon2", "currencyicon.png", "toolicon.png"],
-            (user.loggedInWithFacebook) ? ["account"] : ["email_icon", "key_icon", "account"]
-        ]
-        
-        let titles = [
-            ["Tax rate", "Hourly wage", "Currency", "Advanced tools"],
-            (user.loggedInWithFacebook) ? ["Log out"] : ["Change email", "Change password", "Log out"]
-        ]
-        
-        let image = UIImage(named: imageNames[indexPath.section][indexPath.row])
-   
-        cell?.textLabel?.text = titles[indexPath.section][indexPath.row]
-        
-        let imageView = UIImageView(image: image)
-        imageView.setImageColor(color: .black)
-        imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
-        imageView.center = CGPoint(x: 25, y: (cell?.frame.height)!/2)
-        cell?.contentView.addSubview(imageView)
-        cell?.indentationLevel = 5
-        cell?.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
-        
-        if (indexPath.section == 0 && indexPath.row < 3) {
-            cell?.selectionStyle = .none
-            let field = UITextField()
-            field.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
-            field.frame.origin.x = self.view.frame.width - 15 - field.frame.width
-            field.textAlignment = .right
-            if indexPath.row == 0 {
-                taxrateField = field
-            } else if indexPath.row == 1 {
-                wageRateField = field
-            } else {
-                currencyField = field
-                configureFields()
-                loadUserDefaults()
+        if !cellsAreRecycled {
+            let imageNames = [
+                ["taxIcon.png", "wageIcon2", "currencyicon.png", "toolicon.png"],
+                (user.loggedInWithFacebook) ? ["account"] : ["email_icon", "key_icon", "account"]
+            ]
+            
+            let titles = [
+                ["Tax rate", "Hourly wage", "Currency", "Advanced tools"],
+                (user.loggedInWithFacebook) ? ["Log out"] : ["Change email", "Change password", "Log out"]
+            ]
+            cellsAreRecycled = (user.loggedInWithFacebook) ? indexPath.row == 0 && indexPath.section == 1 : indexPath.row == 2 && indexPath.section == 1
+            print(cellsAreRecycled)
+            let image = UIImage(named: imageNames[indexPath.section][indexPath.row])
+       
+            cell?.textLabel?.text = titles[indexPath.section][indexPath.row]
+            
+            let imageView = UIImageView(image: image)
+            imageView.setImageColor(color: .black)
+            imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+            imageView.center = CGPoint(x: 25, y: (cell?.frame.height)!/2)
+            cell?.contentView.addSubview(imageView)
+            cell?.indentationLevel = 5
+            cell?.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
+            
+            if (indexPath.section == 0 && indexPath.row < 3) {
+                cell?.selectionStyle = .none
+                let field = UITextField()
+                field.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
+                field.frame.origin.x = self.view.frame.width - 15 - field.frame.width
+                field.textAlignment = .right
+                if indexPath.row == 0 {
+                    taxrateField = field
+                } else if indexPath.row == 1 {
+                    wageRateField = field
+                } else {
+                    currencyField = field
+                    configureFields()
+                    loadUserDefaults()
+                }
+                cell?.contentView.addSubview(field)
             }
-            cell?.contentView.addSubview(field)
         }
-        
         return cell!
     }
     
@@ -431,7 +435,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
-        if pickerView.tag == 2 {
+        if pickerView.tag == 1 {
             if component == 1 {
                 return 15
             } else {

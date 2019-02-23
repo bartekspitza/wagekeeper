@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+
+
 extension UIColor {
     convenience init(red: Int, green: Int, blue: Int) {
         assert(red >= 0 && red <= 255, "Invalid red component")
@@ -90,6 +92,14 @@ extension UITableView {
 
 
 extension UIView {
+    
+    func endY() -> CGFloat {
+        return self.frame.origin.y + self.frame.height
+    }
+    
+    func endX() -> CGFloat {
+        return self.frame.origin.x + self.frame.width
+    }
     
     func dropShadow(color: UIColor, opacity: Float = 0.5, offSet: CGSize, radius: CGFloat = 1, scale: Bool = true) {
         let shadowLayer = CAShapeLayer()

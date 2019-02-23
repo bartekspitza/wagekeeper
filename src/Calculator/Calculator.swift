@@ -114,7 +114,6 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let gradientMaxY = (self.view.frame.height*0.4)
         let horizontalY = gradientMaxY * 0.60
         let imageWidth = Int(gradientMaxY-(horizontalY + gradientMaxY*0.25))/2
-        let imageCenterY = Int(gradientMaxY)-imageWidth/2 - 10
         
         let image = UIImage(named: "pulldown_icon.png")
         btn.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: CGFloat(imageWidth*2))
