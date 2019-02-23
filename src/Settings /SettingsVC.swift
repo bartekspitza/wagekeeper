@@ -28,7 +28,6 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     let currencies = ["SEK", "EUR", "GPD", "NOR", "USD"]
     
     var isUpdatingPassword = true
-    var loadingIndicator: UIActivityIndicatorView!
     var updateMessageLbl: UILabel!
     var table: UITableView!
     
@@ -41,7 +40,8 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     override func viewDidLoad() {
         self.title = "Account"
-        self.navigationController?.navigationBar.tintColor = .black
+        self.navigationController?.navigationBar.tintColor = Colors.navbarFG
+        self.navigationController?.navigationBar.barTintColor = Colors.navbarBG
         
         addAmountOfShiftsElement()
         addAccountView()
@@ -49,7 +49,6 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         configurePickers()
         addUpdatingForm()
         createUpdateMessageLabel()
-        createLoadingIndicator()
     }
     
     func createUpdateMessageLabel() {
@@ -63,16 +62,6 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         self.view.addSubview(updateMessageLbl)
     }
     
-    func createLoadingIndicator() {
-        loadingIndicator = UIActivityIndicatorView()
-        loadingIndicator.hidesWhenStopped = true
-        loadingIndicator.color = .white
-        loadingIndicator.center.x = self.view.center.x
-        loadingIndicator.center.y = self.view.frame.height/2 + updateForm.formButton.center.y
-        loadingIndicator.layer.zPosition = 2
-        self.view.addSubview(loadingIndicator)
-    }
-    
     func addUpdatingForm() {
         updateForm = UpdateForm(frame: CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: self.view.frame.height/2))
         updateForm.addField1(isEmailField: true)
@@ -82,7 +71,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         updateForm.addBackButton()
         updateForm.center.x += self.view.frame.width
         updateForm.backButton.addTarget(self, action: #selector(hideForm), for: .touchUpInside)
-        updateForm.formButton.addTarget(self, action: #selector(updatePressed), for: .touchUpInside)
+        updateForm.formButton.button.addTarget(self, action: #selector(updatePressed), for: .touchUpInside)
         let toolbar = UIToolbar()
         let buttons = addButtons(bar: toolbar, withUpAndDown: false, color: .black)
         updateForm.field1.inputAccessoryView = toolbar
@@ -107,8 +96,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         } else if updateForm.field1.text != updateForm.field2.text {
             updateForm.showErrorMessage(message: "Fields must match")
         } else {
-            loadingIndicator.startAnimating()
-            updateForm.formButton.setTitle("", for: .normal)
+            updateForm.formButton.startAnimating()
             if isUpdatingPassword {
                 CloudAuth.login(email: user.email, password: updateForm.passwordField.text!, successHandler: { (result) in
                     CloudAuth.updatePassword(password: self.updateForm.field1.text!, successHandler: {
@@ -148,8 +136,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     func onFormOperationFailure(msg: String) {
         updateForm.showErrorMessage(message: msg)
-        loadingIndicator.stopAnimating()
-        updateForm.formButton.setTitle("Update", for: .normal)
+        updateForm.formButton.stopAnimating(newTitle: nil)
     }
     func onFormOperationSuccess() {
         if isUpdatingPassword {
@@ -160,8 +147,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         }
         
         table.reloadData()
-        loadingIndicator.stopAnimating()
-        updateForm.formButton.setTitle("Update", for: .normal)
+        updateForm.formButton.stopAnimating(newTitle: nil)
         hideForm()
     }
     func showSuccessMessage(msg: String) {
@@ -204,7 +190,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     func addTable() {
         let tabBarHeight = self.tabBarController?.tabBar.frame.height
-        table = UITableView(frame: CGRect(x: 0, y: accountView.frame.origin.y + accountView.frame.height + 50, width: self.view.frame.width, height: self.view.frame.height*0.6 - tabBarHeight))
+        table = UITableView(frame: CGRect(x: 0, y: accountView.frame.origin.y + accountView.frame.height + 50, width: self.view.frame.width, height: self.view.frame.height*0.6 - tabBarHeight! - 50))
         table.delegate = self
         table.dataSource = self
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")

@@ -52,6 +52,7 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
     override func viewWillAppear(_ animated: Bool) {
         loadUserDefaults()
         configureDaysCells()
+        mySwitch.onTintColor = Colors.test1
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -287,10 +288,10 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
             let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30))
             let label = UILabel(frame: CGRect(x: 16, y: 10 + ((section == 0) ? 20 : 0), width: self.view.frame.width-32, height: 40))
             label.text = sectionTitles[section]
-            label.font = UIFont.systemFont(ofSize: 12, weight: .light)
+            label.font = UIFont.boldSystemFont(ofSize: 10)
             label.numberOfLines = 3
             label.sizeToFit()
-            label.textColor = .gray
+            label.textColor = .black
             
             view.addSubview(label)
             

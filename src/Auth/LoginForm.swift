@@ -15,14 +15,14 @@ class LoginForm: UIView {
     
     var emailField: UITextField!
     var passwordField: PasswordTextField!
-    var mainBtn: UIButton!
+    var mainBtn: SpinnerButton!
     var accessoryBtn: UIButton!
     var forgotPassBtn: UIButton!
     var errorLabel: UILabel!
     
     var errorLabelIsConfigured = false
     var mainBtnTitle: String!
-    var FBButton: UIButton!
+    var FBButton: SpinnerButton!
     var loadingIndicator: UIActivityIndicatorView!
     
     override init(frame: CGRect) {
@@ -55,38 +55,6 @@ class LoginForm: UIView {
     func hideErrorMessage() {
         self.errorLabel.layer.opacity = 0
     }
-    
-    func stopAnimating(button: UIButton, title: String) {
-        loadingIndicator.stopAnimating()
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.8, options: [], animations: {
-            button.frame = CGRect(x: 0, y: button.frame.origin.y, width: self.frame.width*0.75, height: 40)
-            button.layer.cornerRadius = 10
-            button.center.x = self.center.x
-        }) { (true) in
-            
-        }
-        UIView.transition(with: button, duration: 0.2, options: [.transitionCrossDissolve], animations: {
-            button.setTitle(title, for: .normal)
-        }, completion: nil)
-    }
-    
-    func startAnimating(button: UIButton) {
-        loadingIndicator.center.y = button.center.y
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.8, options: [], animations: {
-            button.frame = CGRect(x: 0, y: button.frame.origin.y, width: 40, height: 40)
-            button.layer.cornerRadius = 20
-            button.center.x = self.center.x
-        }) { (true) in
-            
-        }
-        UIView.transition(with: button, duration: 0.2, options: [.transitionCrossDissolve], animations: {
-            button.setTitle("", for: .normal)
-        }, completion: { (true) in
-            self.loadingIndicator.startAnimating()
-        })
-    }
-    
-    
     
     func configureErrorLabel() {
         errorLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 20))
@@ -122,14 +90,13 @@ class LoginForm: UIView {
         self.addSubview(loadingIndicator)
     }
     func addFBButton() {
-        FBButton = UIButton()
-        FBButton.backgroundColor = Colors.fb
-        FBButton.frame = CGRect(x: 0, y: 0, width: self.frame.width*0.75, height: 40)
+        FBButton = SpinnerButton(frame: CGRect(x: 0, y: 0, width: self.frame.width*0.75, height: 40), spinnerColor: UIColor.white)
+        FBButton.button.backgroundColor = Colors.fb
+        FBButton.button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
+        FBButton.button.setTitleColor(.lightGray, for: .highlighted)
         FBButton.center = CGPoint(x: self.center.x, y: forgotPassBtn.frame.origin.y + forgotPassBtn.frame.height + 30 + FBButton.frame.height/2)
-        FBButton.setTitle("Sign in with Facebook", for: .normal)
-        FBButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
-        FBButton.layer.cornerRadius = 10
-        FBButton.setTitleColor(.lightGray, for: .highlighted)
+        FBButton.setCornerRadius(radius: 10)
+        FBButton.setTitle(title: "Sign in with facebook")
         self.addSubview(FBButton)
     }
     
@@ -164,15 +131,14 @@ class LoginForm: UIView {
         self.addSubview(passwordField)
     }
     func addMainButton(title: String, y: CGFloat) {
-        mainBtn = UIButton()
-        mainBtn.frame = CGRect(x: 50, y: 50, width: self.frame.width*0.75, height: 40)
-        mainBtn.setTitle(title, for: .normal)
-        mainBtn.backgroundColor = Colors.test1
-        mainBtn.tintColor = .white
-        mainBtn.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
-        mainBtn.layer.cornerRadius = 10
-        mainBtn.setTitleColor(.lightGray, for: .highlighted)
+        mainBtn = SpinnerButton(frame: CGRect(x: 50, y: 50, width: self.frame.width*0.75, height: 40), spinnerColor: UIColor.white)
+        mainBtn.button.backgroundColor = Colors.test1
+        mainBtn.button.tintColor = .white
+        mainBtn.button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
+        mainBtn.button.setTitleColor(.lightGray, for: .highlighted)
         mainBtn.center = CGPoint(x: self.center.x, y: y)
+        mainBtn.setCornerRadius(radius: 10)
+        mainBtn.setTitle(title: title)
         
         self.addSubview(mainBtn)
     }

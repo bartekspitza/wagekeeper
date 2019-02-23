@@ -346,10 +346,10 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30))
         let label = UILabel(frame: CGRect(x: 16, y: 20, width: self.view.frame.width-32, height: 40))
         label.text = "Rule " + (section + 1).description
-        label.font = UIFont.systemFont(ofSize: 12, weight: .light)
+        label.font = UIFont.boldSystemFont(ofSize: 10)
         label.numberOfLines = 3
         label.sizeToFit()
-        label.textColor = .gray
+        label.textColor = .black
         
         view.addSubview(label)
         

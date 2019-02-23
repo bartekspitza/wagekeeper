@@ -16,7 +16,7 @@ class UpdateForm: UIView {
     var field1: UITextField!
     var field2: UITextField!
     var passwordField: PasswordTextField!
-    var formButton: UIButton!
+    var formButton: SpinnerButton!
     var backButton: UIButton!
     var errorLabel: UILabel!
     
@@ -117,15 +117,14 @@ class UpdateForm: UIView {
         self.addSubview(passwordField)
     }
     func addFormButton(title: String) {
-        formButton = UIButton(frame: CGRect(x: 50, y: 50, width: self.frame.width*0.75, height: 40))
-        formButton.setTitle(title, for: .normal)
-        formButton.backgroundColor = Colors.test1
-        formButton.tintColor = .white
-        formButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
-        formButton.layer.cornerRadius = 10
-        formButton.setTitleColor(.lightGray, for: .highlighted)
+        formButton = SpinnerButton(frame: CGRect(x: 50, y: 50, width: self.frame.width*0.75, height: 40), spinnerColor: UIColor.white)
+        formButton.button.backgroundColor = Colors.test1
+        formButton.button.tintColor = .white
+        formButton.button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
+        formButton.button.setTitleColor(.lightGray, for: .highlighted)
         formButton.center = CGPoint(x: self.center.x, y: passwordField.center.y + 100)
-        formButton.layer.zPosition = 1
+        formButton.setTitle(title: title)
+        formButton.setCornerRadius(radius: 10)
         
         self.addSubview(formButton)
     }

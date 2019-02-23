@@ -13,10 +13,6 @@
 		981E7FD42209FF0E006A492C /* CloudStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981E7FD32209FF0E006A492C /* CloudStorage.swift */; };
 		981FBFC4221AC189005B8F4C /* MyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981FBFC3221AC189005B8F4C /* MyUser.swift */; };
 		9820A5551FBCBF6B00EAEE6A /* MainNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9820A5541FBCBF6B00EAEE6A /* MainNav.swift */; };
-		982548292210987600BA182D /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982548282210987600BA182D /* SwitchCell.swift */; };
-		9825482D2210AB0500BA182D /* NoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9825482C2210AB0500BA182D /* NoteCell.swift */; };
-		9825482F2210ADF500BA182D /* FullTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9825482E2210ADF500BA182D /* FullTextFieldCell.swift */; };
-		982548312210D70D00BA182D /* DurationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982548302210D70D00BA182D /* DurationCell.swift */; };
 		982F934B22087796005D9C99 /* LocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934A22087796005D9C99 /* LocalStorage.swift */; };
 		982F934E220884DA005D9C99 /* ShiftModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934D220884DA005D9C99 /* ShiftModel.swift */; };
 		982F93502208B103005D9C99 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934F2208B103005D9C99 /* UserSettings.swift */; };
@@ -30,6 +26,7 @@
 		984319182207923E00C9B6FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988FDEB91F9F7AFA0090DEF1 /* AppDelegate.swift */; };
 		9852F1071FA2309B00E7BDB5 /* MainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9852F1061FA2309B00E7BDB5 /* MainCell.swift */; };
 		9858E0EC220866D7007600C3 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9858E0EB220866D7007600C3 /* Version.swift */; };
+		98594B022220159F00EE7E62 /* SpinnerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98594B012220159F00EE7E62 /* SpinnerButton.swift */; };
 		9862A5711FCC33AA0047671D /* AdvancedSettingsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9862A5701FCC33AA0047671D /* AdvancedSettingsTable.swift */; };
 		9864BB0C1FD4700E005DB5F2 /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9864BB0B1FD4700E005DB5F2 /* Calculator.swift */; };
 		9886E9BC2211C11D00A4207A /* Periods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9886E9BB2211C11D00A4207A /* Periods.swift */; };
@@ -60,10 +57,6 @@
 		981E7FD32209FF0E006A492C /* CloudStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorage.swift; sourceTree = "<group>"; };
 		981FBFC3221AC189005B8F4C /* MyUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyUser.swift; sourceTree = "<group>"; };
 		9820A5541FBCBF6B00EAEE6A /* MainNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNav.swift; sourceTree = "<group>"; };
-		982548282210987600BA182D /* SwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchCell.swift; sourceTree = "<group>"; };
-		9825482C2210AB0500BA182D /* NoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCell.swift; sourceTree = "<group>"; };
-		9825482E2210ADF500BA182D /* FullTextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullTextFieldCell.swift; sourceTree = "<group>"; };
-		982548302210D70D00BA182D /* DurationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationCell.swift; sourceTree = "<group>"; };
 		982F934A22087796005D9C99 /* LocalStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorage.swift; sourceTree = "<group>"; };
 		982F934D220884DA005D9C99 /* ShiftModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftModel.swift; sourceTree = "<group>"; };
 		982F934F2208B103005D9C99 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
@@ -77,6 +70,7 @@
 		9843191422078EC000C9B6FF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9852F1061FA2309B00E7BDB5 /* MainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCell.swift; sourceTree = "<group>"; };
 		9858E0EB220866D7007600C3 /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
+		98594B012220159F00EE7E62 /* SpinnerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerButton.swift; sourceTree = "<group>"; };
 		9862A5701FCC33AA0047671D /* AdvancedSettingsTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsTable.swift; sourceTree = "<group>"; };
 		9864BB0B1FD4700E005DB5F2 /* Calculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculator.swift; sourceTree = "<group>"; };
 		9886E9BB2211C11D00A4207A /* Periods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Periods.swift; sourceTree = "<group>"; };
@@ -134,22 +128,10 @@
 		982548242210952700BA182D /* AddEdit */ = {
 			isa = PBXGroup;
 			children = (
-				982548252210953C00BA182D /* Cells */,
 				98A54976220E03C000CBEE5D /* AddVC.swift */,
 				980B984E2211837800414EB9 /* EditVC.swift */,
 			);
 			path = AddEdit;
-			sourceTree = "<group>";
-		};
-		982548252210953C00BA182D /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				9825482E2210ADF500BA182D /* FullTextFieldCell.swift */,
-				982548302210D70D00BA182D /* DurationCell.swift */,
-				9825482C2210AB0500BA182D /* NoteCell.swift */,
-				982548282210987600BA182D /* SwitchCell.swift */,
-			);
-			path = Cells;
 			sourceTree = "<group>";
 		};
 		982F934C220880D7005D9C99 /* entities */ = {
@@ -165,6 +147,7 @@
 		9830C1FF220794CE0023B582 /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				98594B012220159F00EE7E62 /* SpinnerButton.swift */,
 				982F934F2208B103005D9C99 /* UserSettings.swift */,
 				989392DB1FCEF322002475EA /* Extensions.swift */,
 				9813682B2218AB3E00F04187 /* Methods.swift */,
@@ -435,20 +418,17 @@
 				988FDEBC1F9F7AFA0090DEF1 /* Logger.swift in Sources */,
 				980B984F2211837800414EB9 /* EditVC.swift in Sources */,
 				982FFE9222134B27007400C6 /* LoginForm.swift in Sources */,
-				9825482F2210ADF500BA182D /* FullTextFieldCell.swift in Sources */,
 				98FD4C5D1FC8390F002B91B1 /* LaunchCell.swift in Sources */,
 				9862A5711FCC33AA0047671D /* AdvancedSettingsTable.swift in Sources */,
-				982548292210987600BA182D /* SwitchCell.swift in Sources */,
 				9830C2062207B3AD0023B582 /* Time.swift in Sources */,
-				9825482D2210AB0500BA182D /* NoteCell.swift in Sources */,
 				982F934B22087796005D9C99 /* LocalStorage.swift in Sources */,
 				9858E0EC220866D7007600C3 /* Version.swift in Sources */,
 				981E7FD42209FF0E006A492C /* CloudStorage.swift in Sources */,
 				984319182207923E00C9B6FF /* AppDelegate.swift in Sources */,
 				98CA61941FB0A6D900463FF7 /* OvertimeRuleTable.swift in Sources */,
 				98D6628F2216003F001B2422 /* UpdateForm.swift in Sources */,
+				98594B022220159F00EE7E62 /* SpinnerButton.swift in Sources */,
 				98D40CC1220B35A9006E59E0 /* AuthVC.swift in Sources */,
-				982548312210D70D00BA182D /* DurationCell.swift in Sources */,
 				982FFE9422134F59007400C6 /* CreateAccountForm.swift in Sources */,
 				981FBFC4221AC189005B8F4C /* MyUser.swift in Sources */,
 				98E2EF9A1FB4D657006C3F96 /* CountingLabel.swift in Sources */,

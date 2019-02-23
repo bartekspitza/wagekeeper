@@ -18,6 +18,8 @@ class Colors {
     static public var test = UIColor(red: 67, green: 183, blue: 133)
     static var test1 = UIColor(rgb: 0x43b785)
     
+    static var navbarBG = UIColor(red: 247, green: 247, blue: 247)
+    static var navbarFG = UIColor.black
 //     Blend of green and turcoise
 //    static var test1 = UIColor(rgb: 0x158482)
 //    static var test = UIColor(rgb: 0x1DBAB8)

@@ -36,7 +36,7 @@ class AuthVC: UIViewController, UITextFieldDelegate {
     
     // Authentication
     @objc func facebooklogin() {
-        loginForm.startAnimating(button: loginForm.FBButton)
+        loginForm.FBButton.startAnimating()
         let loginManager = LoginManager()
         loginManager.logIn(readPermissions: [.publicProfile, .email], viewController: self) { (loginResult) in
             
@@ -44,7 +44,7 @@ class AuthVC: UIViewController, UITextFieldDelegate {
             case .failed( _):
                 self.onFacebookLoginFailure()
             case .cancelled:
-                self.loginForm.stopAnimating(button: self.loginForm.FBButton, title: "Sign in with Facebook")
+                self.loginForm.FBButton.stopAnimating(newTitle: nil)
             case .success:
                 let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
                 
@@ -72,8 +72,8 @@ class AuthVC: UIViewController, UITextFieldDelegate {
     }
 
     func onFacebookLoginFailure() {
-        self.loginForm.stopAnimating(button: self.loginForm.FBButton, title: "Sign in with Facebook")
-        self.loginForm.showErrorMessage(message: "Something went wrong. We're sorry.")
+        loginForm.FBButton.stopAnimating(newTitle: nil)
+        loginForm.showErrorMessage(message: "Something went wrong. We're sorry.")
     }
     
     func performLogin(result: AuthDataResult) {
@@ -82,11 +82,11 @@ class AuthVC: UIViewController, UITextFieldDelegate {
     }
     func onLoginFailure(message: String) {
         
-        loginForm.stopAnimating(button: loginForm.mainBtn, title: loginForm.mainBtnTitle)
+        loginForm.mainBtn.stopAnimating(newTitle: nil)
         loginForm.showErrorMessage(message: message)
     }
     func onCreateAccountFailure(message: String) {
-        createAccountForm.stopAnimating(button: createAccountForm.mainBtn, title: createAccountForm.mainBtnTitle)
+        createAccountForm.mainBtn.stopAnimating(newTitle: nil)
         createAccountForm.showErrorMessage(message: message)
     }
     @objc func createAccount() {
@@ -101,7 +101,7 @@ class AuthVC: UIViewController, UITextFieldDelegate {
         } else if password != pass2 {
             createAccountForm.showErrorMessage(message: "Passwords must match")
         } else {
-            createAccountForm.startAnimating(button: createAccountForm.mainBtn)
+            createAccountForm.mainBtn.startAnimating()
             CloudAuth.createUserAccount(email: email, password: password, completionHandler: self.performLogin, failureHandler: self.onCreateAccountFailure)
         }
     }
@@ -114,7 +114,7 @@ class AuthVC: UIViewController, UITextFieldDelegate {
         if email == "" || password == "" {
             loginForm.showErrorMessage(message: "Both fields must be entered")
         } else {
-            loginForm.startAnimating(button: loginForm.mainBtn)
+            loginForm.mainBtn.startAnimating()
             CloudAuth.login(email: email, password: password, successHandler: self.performLogin, failureHandler: self.onLoginFailure)
         }
     }
@@ -123,15 +123,15 @@ class AuthVC: UIViewController, UITextFieldDelegate {
             loginForm.showErrorMessage(message: "Field must be entered")
         } else {
             loginForm.hideErrorMessage()
-            loginForm.startAnimating(button: loginForm.mainBtn)
+            loginForm.mainBtn.startAnimating()
             CloudAuth.sendResetEmail(to: loginForm.emailField.text!, successHandler: {
-                self.loginForm.stopAnimating(button: self.loginForm.mainBtn, title: self.loginForm.mainBtnTitle)
+                self.loginForm.mainBtn.stopAnimating(newTitle: nil)
                 self.hideForgotPasswordView()
                 self.loginForm.showSuccessMessage(msg: "Reset email sent")
                 
                 
             }) { (msg) in
-                self.loginForm.stopAnimating(button: self.loginForm.mainBtn, title: "Send reset email")
+                self.loginForm.mainBtn.stopAnimating(newTitle: "Send reset email")
                 self.loginForm.showErrorMessage(message: msg)
                 
             }
@@ -147,13 +147,13 @@ class AuthVC: UIViewController, UITextFieldDelegate {
         }
         
         UIView.transition(with: self.loginForm.mainBtn, duration: 0.3, options: [.transitionCrossDissolve], animations: {
-            self.loginForm.mainBtn.setTitle("Send reset email", for: .normal)
+            self.loginForm.mainBtn.button.setTitle("Send reset email", for: .normal)
             self.loginForm.accessoryBtn.setTitle("Cancel", for: .normal)
         }) { (true) in
             self.loginForm.accessoryBtn.removeTarget(nil, action: nil, for: .allEvents)
             self.loginForm.accessoryBtn.addTarget(self, action: #selector(self.hideForgotPasswordView), for: .touchUpInside)
-            self.loginForm.mainBtn.removeTarget(nil, action: nil, for: .allEvents)
-            self.loginForm.mainBtn.addTarget(self, action: #selector(self.resetPassword), for: .touchUpInside)
+            self.loginForm.mainBtn.button.removeTarget(nil, action: nil, for: .allEvents)
+            self.loginForm.mainBtn.button.addTarget(self, action: #selector(self.resetPassword), for: .touchUpInside)
         }
 
     }
@@ -165,13 +165,13 @@ class AuthVC: UIViewController, UITextFieldDelegate {
         }
         
         UIView.transition(with: self.loginForm.mainBtn, duration: 0.3, options: [.transitionCrossDissolve], animations: {
-            self.loginForm.mainBtn.setTitle("Log in", for: .normal)
+            self.loginForm.mainBtn.button.setTitle("Log in", for: .normal)
             self.loginForm.accessoryBtn.setTitle("Create account", for: .normal)
         }) { (true) in
             self.loginForm.accessoryBtn.removeTarget(nil, action: nil, for: .allEvents)
             self.loginForm.accessoryBtn.addTarget(self, action: #selector(self.presentCreateForm), for: .touchUpInside)
-            self.loginForm.mainBtn.removeTarget(nil, action: nil, for: .allEvents)
-            self.loginForm.mainBtn.addTarget(self, action: #selector(self.login), for: .touchUpInside)
+            self.loginForm.mainBtn.button.removeTarget(nil, action: nil, for: .allEvents)
+            self.loginForm.mainBtn.button.addTarget(self, action: #selector(self.login), for: .touchUpInside)
         }
         
     }
@@ -217,7 +217,7 @@ class AuthVC: UIViewController, UITextFieldDelegate {
         createAccountForm.passwordField.inputAccessoryView = toolbar
         createAccountForm.password2Field.delegate = self
         createAccountForm.password2Field.inputAccessoryView = toolbar
-        createAccountForm.mainBtn.addTarget(self, action: #selector(createAccount), for: .touchUpInside)
+        createAccountForm.mainBtn.button.addTarget(self, action: #selector(createAccount), for: .touchUpInside)
         createAccountForm.configureErrorLabel()
         
         self.view.addSubview(createAccountForm)
@@ -228,13 +228,13 @@ class AuthVC: UIViewController, UITextFieldDelegate {
         loginForm.mainBtnTitle = "Log in"
         loginForm.create()
         loginForm.accessoryBtn.addTarget(self, action: #selector(presentCreateForm), for: .touchUpInside)
-        loginForm.mainBtn.addTarget(self, action: #selector(login), for: .touchUpInside)
+        loginForm.mainBtn.button.addTarget(self, action: #selector(login), for: .touchUpInside)
         loginForm.emailField.delegate = self
         loginForm.emailField.inputAccessoryView = toolbar
         loginForm.passwordField.delegate = self
         loginForm.passwordField.inputAccessoryView = toolbar
         loginForm.forgotPassBtn.addTarget(self, action: #selector(presentForgotPasswordView), for: .touchUpInside)
-        loginForm.FBButton.addTarget(self, action: #selector(facebooklogin), for: .touchUpInside)
+        loginForm.FBButton.button.addTarget(self, action: #selector(facebooklogin), for: .touchUpInside)
         loginForm.configureErrorLabel()
     }
     func addLogoImage() {

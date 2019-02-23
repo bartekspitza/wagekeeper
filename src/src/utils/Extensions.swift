@@ -135,27 +135,18 @@ extension UIView {
     }
 }
 
-extension String
-{
+extension String {
+    func sizeOfString(usingFont font: UIFont) -> CGSize {
+        let fontAttributes = [NSAttributedString.Key.font: font]
+        return self.size(withAttributes: fontAttributes)
+    }
+    
     func toDateTime() -> Date
     {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
         
         return dateFormatter.date(from: self)!
-    }
-}
-
-func getShifts(fromCloud: Bool) {
-    
-    if fromCloud {
-        // do something
-        
-    } else {
-        print("Fetched data from local storage")
-        LocalStorage.values = LocalStorage.getAllShifts()
-        LocalStorage.organizedValues = Periods.organizeShiftsIntoPeriods(ar: &LocalStorage.values)
-        shifts = Periods.convertShiftsFromCoreDataToModels(arr: LocalStorage.organizedValues)
     }
 }
 
