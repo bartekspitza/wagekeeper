@@ -54,7 +54,17 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Gecco.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>GoogleUtilities.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Instructions.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

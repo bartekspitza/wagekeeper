@@ -70,6 +70,7 @@ PODS:
     - FirebaseCore (~> 5.2)
     - GoogleUtilities/Environment (~> 5.3)
     - GoogleUtilities/UserDefaults (~> 5.3)
+  - Gecco (1.0.0)
   - GoogleAppMeasurement (5.5.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 5.2)
     - GoogleUtilities/MethodSwizzler (~> 5.2)
@@ -111,6 +112,7 @@ PODS:
     - nanopb (~> 0.3)
   - gRPC-Core/Interface (1.17.0)
   - GTMSessionFetcher/Core (1.2.1)
+  - Instructions (1.2.2)
   - KTLoadingLabel (1.0.2)
   - leveldb-library (1.20)
   - nanopb (0.3.901):
@@ -128,6 +130,8 @@ DEPENDENCIES:
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Firestore
+  - Gecco
+  - Instructions
   - KTLoadingLabel
   - PasswordTextField
 
@@ -146,11 +150,13 @@ SPEC REPOS:
     - FirebaseCore
     - FirebaseFirestore
     - FirebaseInstanceID
+    - Gecco
     - GoogleAppMeasurement
     - GoogleUtilities
     - "gRPC-C++"
     - gRPC-Core
     - GTMSessionFetcher
+    - Instructions
     - KTLoadingLabel
     - leveldb-library
     - nanopb
@@ -171,17 +177,19 @@ SPEC CHECKSUMS:
   FirebaseCore: ea2d1816723ef21492b8e9113303e1350db5e08c
   FirebaseFirestore: 6f2b93b4f7bb8416628142763c91ccc00fa04c86
   FirebaseInstanceID: 97ea7a5dca9afd72c79bfcdddb7a44aa1cbb42a1
+  Gecco: e662f949821e742997787bad7b730ccc0052e43c
   GoogleAppMeasurement: 621f3bc6211d5ba548debe01fafad30cf5ab6859
   GoogleUtilities: 111a012f4c3a29c9e7c954c082fafd6ee3c999c0
   "gRPC-C++": e76441995900ac90e9bd98644ab4733f12521edf
   gRPC-Core: 4028031ed2c5267cca0d846c876d8046b1ecb9b6
   GTMSessionFetcher: 32aeca0aa144acea523e1c8e053089dec2cb98ca
+  Instructions: baff1b8ac41e195556c2b3453be1fcdd92e18612
   KTLoadingLabel: e2bc929ac0b5cadddde3ea4c8a66f2f09e1f9123
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   PasswordTextField: 2548de43f150fc90a014da47b0d97e31aada4b94
   Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
 
-PODFILE CHECKSUM: 64cf2d1d4fd956f08f3ee9aaedf12e325a575112
+PODFILE CHECKSUM: 22af549aa7e114be1eba82f344745e3109d813dd
 
 COCOAPODS: 1.5.3
