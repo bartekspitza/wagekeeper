@@ -30,4 +30,10 @@ class MyUser {
         
         return MyUser(ID: user.uid, email: email, firstName: "", lastName: "", loggedInWithFacebook: false)
     }
+    
+    func setImage(path: String) {
+        let url = URL(string: path)
+        let data = NSData(contentsOf: url!)
+        self.profileImage = UIImage(data: data! as Data)
+    }
 }

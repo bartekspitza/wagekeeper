@@ -15,7 +15,6 @@ target 'WageKeeper' do
   pod 'FacebookLogin'
   pod 'KTLoadingLabel'
   pod 'PasswordTextField'
-  pod 'Gecco'
   pod 'Instructions'
 
 end

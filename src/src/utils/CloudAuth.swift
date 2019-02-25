@@ -39,7 +39,7 @@ class CloudAuth {
     }
     
     static func fetchFBProfile(successHandler: @escaping () -> (), failureHandler: @escaping () -> () ) {
-        let graphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "first_name, last_name, email, picture.width(100).height(100)"])
+        let graphRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "first_name, last_name, email, picture.width(200).height(200)"])
         graphRequest?.start(completionHandler: { (connection, result, er) in
             if er == nil {
                 
@@ -53,12 +53,16 @@ class CloudAuth {
                     user.email = email
                     
                     // Tries to get profile picture URL
+                    var url: String!
                     if let imageURL = ((fields["picture"] as? [String: Any])?["data"] as? [String: Any])?["url"] as? String {
-                        let url = URL(string: imageURL)
-                        let data = NSData(contentsOf: url!)
-                        user.profileImage = UIImage(data: data! as Data)
-                        print(url)
+                        url = imageURL
+                    } else {
+                        // Gets profile picture when missing
+                        url = EMPTY_PROFILE_PICTURE_URL
                     }
+                    //url = EMPTY_PROFILE_PICTURE_URL
+
+                    user.setImage(path: url)
                     
                     user.loggedInWithFacebook = true
                     successHandler()

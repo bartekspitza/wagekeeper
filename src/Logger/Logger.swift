@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreData
-import Gecco
 import Instructions
 
 class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource, CoachMarksControllerDelegate, CoachMarksControllerDataSource {
@@ -48,12 +47,12 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource, Coac
     override func viewDidAppear(_ animated: Bool) {
         layoutView()
 
-        coachMarksController.delegate = self
-        coachMarksController.dataSource = self
-        coachMarksController.overlay.color = UIColor.black.withAlphaComponent(0.4)
-        coachMarksController.overlay.allowTap = true
-        
-        self.coachMarksController.start(in: .window(over: self))
+//        coachMarksController.delegate = self
+//        coachMarksController.dataSource = self
+//        coachMarksController.overlay.color = UIColor.black.withAlphaComponent(0.4)
+//        coachMarksController.overlay.allowTap = true
+//
+//        self.coachMarksController.start(in: .window(over: self))
     }
     
     func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkViewsAt index: Int, madeFrom coachMark: CoachMark) -> (bodyView: CoachMarkBodyView, arrowView: CoachMarkArrowView?) {

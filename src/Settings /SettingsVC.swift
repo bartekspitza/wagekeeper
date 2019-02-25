@@ -36,6 +36,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     var accountView: UIView!
     
     // Displays amount of shifts and the "compeleted shifts" after-text
+    var amountShiftsView: UIView!
     var shiftsLbl: UILabel!
     var amountShiftsLbl: UILabel!
     
@@ -165,9 +166,11 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     func refreshAmountOfShifts() {
         amountShiftsLbl.text = Periods.totalShifts().description
-        amountShiftsLbl.sizeToFit()
+        let textSize = amountShiftsLbl.text?.sizeOfString(usingFont: amountShiftsLbl.font)
+        amountShiftsLbl.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: textSize!.height)
         
-        amountShiftsLbl.center.x = self.view.center.x
+        let spaceBetweenAccountViewAndMenu = table.frame.origin.y - accountView.endY()
+        amountShiftsView.center.y = accountView.endY() + spaceBetweenAccountViewAndMenu/2
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -189,13 +192,13 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     func addTable() {
         let tabBarHeight = self.tabBarController?.tabBar.frame.height
-        table = UITableView(frame: CGRect(x: 0, y: self.view.frame.height*0.4 + 1, width: self.view.frame.width, height: self.view.frame.height*0.6 - tabBarHeight! - 50))
+        table = UITableView(frame: CGRect(x: 0, y: self.view.frame.height*0.4 + 1, width: self.view.frame.width, height: self.view.frame.height*0.6 - tabBarHeight!))
         table.delegate = self
         table.dataSource = self
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         table.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         table.separatorColor = UIColor.black.withAlphaComponent(0.11)
-        table.tableFooterView = UIView()
+        table.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 1))
         table.tableHeaderView = UIView()
         self.view.addSubview(table)
     }
@@ -241,6 +244,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
             email.font = UIFont.systemFont(ofSize: 14, weight: .light)
         }
         
+        
         accountView.addBottomBorderWithColor(color: UIColor.black.withAlphaComponent(0.1), width: 0.5)
         accountView.addSubview(nameLabel)
         accountView.addSubview(email)
@@ -248,31 +252,32 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     func addAmountOfShiftsElement() {
-        let shiftsAmountView = UIView(frame: CGRect(x: 0, y: accountView.endY(), width: self.view.frame.width, height: self.view.frame.height*0.4 - accountView.endY()))
+        amountShiftsView = UIView()
         
         amountShiftsLbl = UILabel()
         amountShiftsLbl.font = UIFont.systemFont(ofSize: 60, weight: .light)
         amountShiftsLbl.text = Periods.totalShifts().description
         amountShiftsLbl.textAlignment = .center
         amountShiftsLbl.textColor = .black
-        amountShiftsLbl.sizeToFit()
-        amountShiftsLbl.center.y = shiftsAmountView.frame.height/2
+        
+        var textSize = amountShiftsLbl.text?.sizeOfString(usingFont: amountShiftsLbl.font)
+        amountShiftsLbl.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: textSize!.height)
         
         shiftsLbl = UILabel()
         shiftsLbl.font = UIFont.systemFont(ofSize: 12, weight: .light)
         shiftsLbl.text = "completed shifts"
+        shiftsLbl.textAlignment = .center
         shiftsLbl.textColor = .gray
         shiftsLbl.sizeToFit()
-        shiftsLbl.center.y = amountShiftsLbl.frame.origin.y + amountShiftsLbl.font.ascender - shiftsLbl.frame.height/2 + 5
-        shiftsLbl.frame.origin.x = amountShiftsLbl.frame.origin.x + amountShiftsLbl.frame.width + 5
-
-        shiftsLbl.frame.origin.y = amountShiftsLbl.endY()
-        shiftsLbl.center.x = self.view.center.x
         
-        shiftsAmountView.addBottomBorderWithColor(color: UIColor.black.withAlphaComponent(0.1), width: 0.5)
-        shiftsAmountView.addSubview(shiftsLbl)
-        shiftsAmountView.addSubview(amountShiftsLbl)
-        self.view.addSubview(shiftsAmountView)
+        textSize = shiftsLbl.text?.sizeOfString(usingFont: shiftsLbl.font)
+        shiftsLbl.frame = CGRect(x: 0, y: amountShiftsLbl.endY(), width: self.view.frame.width, height: textSize!.height)
+        amountShiftsView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: amountShiftsLbl.frame.height + shiftsLbl.frame.height)
+        amountShiftsLbl.textAlignment = .center
+        
+        amountShiftsView.addSubview(shiftsLbl)
+        amountShiftsView.addSubview(amountShiftsLbl)
+        self.view.addSubview(amountShiftsView)
     }
     
     
@@ -351,12 +356,12 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         
         if !cellsAreRecycled {
             let imageNames = [
-                ["taxIcon.png", "wageIcon2", "currencyicon.png", "toolicon.png"],
-                (user.loggedInWithFacebook) ? ["account"] : ["email_icon", "key_icon", "account"]
+                ["government_filled", "wagerate_filled", "currency_filled", "tool_filled"],
+                (user.loggedInWithFacebook) ? ["logout_filled"] : ["email_filled", "password_filled", "logout_filled"]
             ]
             
             let titles = [
-                ["Tax rate", "Hourly wage", "Currency", "Advanced tools"],
+                ["Tax rate", "Hourly rate", "Currency", "Advanced tools"],
                 (user.loggedInWithFacebook) ? ["Log out"] : ["Change email", "Change password", "Log out"]
             ]
             cellsAreRecycled = (user.loggedInWithFacebook) ? indexPath.row == 0 && indexPath.section == 1 : indexPath.row == 2 && indexPath.section == 1
@@ -366,7 +371,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
             cell?.textLabel?.text = titles[indexPath.section][indexPath.row]
             
             let imageView = UIImageView(image: image)
-            imageView.setImageColor(color: .black)
+            imageView.setImageColor(color: UIColor.black.withAlphaComponent(1))
             imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
             imageView.center = CGPoint(x: 25, y: (cell?.frame.height)!/2)
             cell?.contentView.addSubview(imageView)

@@ -628,11 +628,11 @@
             </objects>
             <point key="canvasLocation" x="-926" y="224"/>
         </scene>
-        <!--Item-->
+        <!--Settings-->
         <scene sceneID="aX6-wC-YDx">
             <objects>
                 <navigationController id="NfH-69-qOG" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="54A-l6-J6a"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="settings" id="54A-l6-J6a"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Vxe-xX-eT0">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -666,13 +666,11 @@
             </objects>
             <point key="canvasLocation" x="-188" y="1407"/>
         </scene>
-        <!--Logger-->
+        <!--Journal-->
         <scene sceneID="dgg-Jq-wcp">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="CUD-du-jcR" customClass="MainNav" customModule="WageKeeper" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Logger" image="Logger" id="zug-Md-xJG">
-                        <inset key="imageInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="-3"/>
-                    </tabBarItem>
+                    <tabBarItem key="tabBarItem" title="Journal" image="journal" id="zug-Md-xJG"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="M2j-nl-ibL">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -727,6 +725,7 @@
     </scenes>
     <resources>
         <image name="Calculator" width="50" height="50"/>
-        <image name="Logger" width="50" height="50"/>
+        <image name="journal" width="45" height="45"/>
+        <image name="settings" width="75" height="75"/>
     </resources>
 </document>
