@@ -91,13 +91,18 @@ class LoginForm: UIView {
     }
     func addFBButton() {
         FBButton = SpinnerButton(frame: CGRect(x: 0, y: 0, width: self.frame.width*0.75, height: 40), spinnerColor: UIColor.white)
-        FBButton.button.backgroundColor = Colors.fb
+        FBButton.button.backgroundColor = Colors.facebook
         FBButton.button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         FBButton.button.setTitleColor(.lightGray, for: .highlighted)
         FBButton.center = CGPoint(x: self.center.x, y: forgotPassBtn.frame.origin.y + forgotPassBtn.frame.height + 30 + FBButton.frame.height/2)
         FBButton.setCornerRadius(radius: 10)
         FBButton.setTitle(title: "Sign in with facebook")
+        FBButton.addFBLogo()
+        
         self.addSubview(FBButton)
+        
+        
+        
     }
     
     func addEmailFieldToView() {
@@ -132,7 +137,7 @@ class LoginForm: UIView {
     }
     func addMainButton(title: String, y: CGFloat) {
         mainBtn = SpinnerButton(frame: CGRect(x: 50, y: 50, width: self.frame.width*0.75, height: 40), spinnerColor: UIColor.white)
-        mainBtn.button.backgroundColor = Colors.test1
+        mainBtn.button.backgroundColor = Colors.theme
         mainBtn.button.tintColor = .white
         mainBtn.button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         mainBtn.button.setTitleColor(.lightGray, for: .highlighted)

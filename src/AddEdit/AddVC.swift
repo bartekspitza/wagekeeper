@@ -34,6 +34,7 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Add shift"
+        self.hideKeyboardWhenTappedAround()
         configureToolbar()
         createTitleField()
         configureTable()
@@ -42,7 +43,10 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
         print("asdf")
     }
     
-    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
     
     @objc func onButtonPress() {
        
@@ -81,9 +85,9 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
     }
     func createAddShiftButton() {
         btn = UIButton(type: .system)
-        btn.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height * 0.1)
+        btn.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height * 0.15)
         btn.center = CGPoint(x: self.view.center.x, y: self.view.frame.height - btn.frame.height/2)
-        btn.backgroundColor = Colors.test1
+        btn.backgroundColor = Colors.theme
         btn.setTitle("Add shift", for: .normal)
         btn.setTitleColor(.white, for: .normal)
         btn.addTarget(self, action: #selector(onButtonPress), for: .touchUpInside)
@@ -275,7 +279,7 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
                 
                 periodSwitch = UISwitch()
                 periodSwitch.isOn = false
-                periodSwitch.onTintColor = Colors.test1
+                periodSwitch.onTintColor = Colors.theme
                 periodSwitch.frame.origin.x = lbl.frame.width + 20
                 
                 view.frame = CGRect(x: 0, y: 0, width: lbl.frame.width + 20 + periodSwitch.frame.width, height: 40)

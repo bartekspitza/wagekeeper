@@ -329,7 +329,10 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
     @objc func donePressed() {
         self.view.endEditing(true)
     }
-
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if section == starts.count-1 {
             return 40

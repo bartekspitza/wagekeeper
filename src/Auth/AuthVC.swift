@@ -17,21 +17,36 @@ class AuthVC: UIViewController, UITextFieldDelegate {
     
     var loginForm: LoginForm!
     var createAccountForm: CreateAccountForm!
-    
-    let toolbar = UIToolbar()
-    
+
     var email = ""
     var password = ""
 
+    var logo: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: self.view.window)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: self.view.window)
-        configureToolbar()
+
         addLoginForm()
         addCreateAccountForm()
         addLogoImage()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        loginForm.layer.opacity = 0
+        logo.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+        
+        logo.center = self.view.center
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        UIView.animate(withDuration: 0.3) {
+            self.logo.frame = CGRect(x: 0, y: 0, width: self.view.frame.width/2, height: self.view.frame.width/2)
+            self.logo.center = CGPoint(x: self.view.center.x, y: self.view.frame.height/5)
+            
+            self.loginForm.layer.opacity = 1
+        }
     }
     
     // Authentication
@@ -193,17 +208,12 @@ class AuthVC: UIViewController, UITextFieldDelegate {
             self.loginForm.clear()
         }
     }
-    
-    // Layout methods
-    func configureToolbar() {
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: self, action: nil)
-        
-        doneButton.tintColor = .black
-        toolbar.setItems([flexSpace, doneButton], animated: false)
-        toolbar.sizeToFit()
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
     
+    // Layout methods
     func addCreateAccountForm() {
         let frame = CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: self.view.frame.height/2)
         createAccountForm = CreateAccountForm(frame: frame)
@@ -212,27 +222,22 @@ class AuthVC: UIViewController, UITextFieldDelegate {
         createAccountForm.center.x += createAccountForm.frame.width
         createAccountForm.accessoryBtn.addTarget(self, action: #selector(presentLoginForm), for: .touchUpInside)
         createAccountForm.emailField.delegate = self
-        createAccountForm.emailField.inputAccessoryView = toolbar
         createAccountForm.passwordField.delegate = self
-        createAccountForm.passwordField.inputAccessoryView = toolbar
         createAccountForm.password2Field.delegate = self
-        createAccountForm.password2Field.inputAccessoryView = toolbar
         createAccountForm.mainBtn.button.addTarget(self, action: #selector(createAccount), for: .touchUpInside)
         createAccountForm.configureErrorLabel()
         
         self.view.addSubview(createAccountForm)
     }
     func addLoginForm() {
-        loginForm = LoginForm(frame: CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: self.view.frame.height/2))
+        loginForm = LoginForm(frame: CGRect(x: 0, y: self.view.frame.height*0.4, width: self.view.frame.width, height: self.view.frame.height*0.6))
         self.view.addSubview(loginForm)
         loginForm.mainBtnTitle = "Log in"
         loginForm.create()
         loginForm.accessoryBtn.addTarget(self, action: #selector(presentCreateForm), for: .touchUpInside)
         loginForm.mainBtn.button.addTarget(self, action: #selector(login), for: .touchUpInside)
         loginForm.emailField.delegate = self
-        loginForm.emailField.inputAccessoryView = toolbar
         loginForm.passwordField.delegate = self
-        loginForm.passwordField.inputAccessoryView = toolbar
         loginForm.forgotPassBtn.addTarget(self, action: #selector(presentForgotPasswordView), for: .touchUpInside)
         loginForm.FBButton.button.addTarget(self, action: #selector(facebooklogin), for: .touchUpInside)
         loginForm.configureErrorLabel()
@@ -240,12 +245,12 @@ class AuthVC: UIViewController, UITextFieldDelegate {
     func addLogoImage() {
         let image = UIImage(named: "icon.png")
         
-        let imageView = UIImageView(image: image)
-        imageView.setImageColor(color: Colors.test1)
-        imageView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width/2, height: self.view.frame.width/2)
-        imageView.center = CGPoint(x: self.view.center.x + 10, y: self.view.frame.height*0.25)
+        logo = UIImageView(image: image)
+        logo.setImageColor(color: Colors.theme)
+        logo.frame = CGRect(x: 0, y: 0, width: self.view.frame.width/2, height: self.view.frame.width/2)
+        logo.center = CGPoint(x: self.view.center.x, y: self.view.frame.height*0.2)
         
-        self.view.addSubview(imageView)
+        self.view.addSubview(logo)
     }
     
     @objc func donePressed() {

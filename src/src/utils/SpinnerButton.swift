@@ -15,10 +15,23 @@ class SpinnerButton: UIView {
     
     var button: UIButton!
     var title: String!
+    var FBLogo: UIImageView?
+    
+    func addFBLogo() {
+        let image = UIImage(named: "facebook")
+        
+        FBLogo = UIImageView(image: image)
+        FBLogo!.setImageColor(color: UIColor.white)
+        FBLogo!.frame = CGRect(x: 0, y: 0, width: self.frame.height, height: self.frame.height)
+        FBLogo!.center = CGPoint(x: 20, y: self.frame.height/2)
+        
+        self.addSubview(FBLogo!)
+    }
     
     init(frame: CGRect, spinnerColor: UIColor) {
         super.init(frame: frame)
-        button = UIButton(frame: frame)
+        button = UIButton(type: .custom)
+        button.frame = frame
         button.center = CGPoint(x: frame.width/2, y: frame.height/2)
         self.addSubview(button)
         
@@ -52,6 +65,12 @@ class SpinnerButton: UIView {
         UIView.transition(with: self, duration: 0.2, options: [.transitionCrossDissolve], animations: {
             self.button.setTitle(new, for: .normal)
         }, completion: nil)
+        
+        if self.FBLogo != nil {
+            UIView.animate(withDuration: 0.1) {
+                self.FBLogo?.layer.opacity = 1
+            }
+        }
     }
     
     func startAnimating() {
@@ -69,6 +88,11 @@ class SpinnerButton: UIView {
         }, completion: { (true) in
             self.loadingIndicator.startAnimating()
         })
+        if self.FBLogo != nil {
+            UIView.animate(withDuration: 0.1) {
+                self.FBLogo?.layer.opacity = 0
+            }
+        }
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

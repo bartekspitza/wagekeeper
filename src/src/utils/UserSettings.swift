@@ -64,7 +64,7 @@ class UserSettings {
         UserDefaults().set("0.0", forKey: "taxRate")
         UserDefaults().set("10", forKey: "wageRate")
         UserDefaults().set("USD", forKey: "currency")
-        UserDefaults().set(false, forKey: "manuallyNewMonth")
+        UserDefaults().set(true, forKey: "manuallyNewMonth")
         UserDefaults().set("1", forKey: "newMonth")
         UserDefaults().set("0", forKey: "minHours")
         UserDefaults().set(Time.createDefaultST(), forKey: "defaultST")

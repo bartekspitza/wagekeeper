@@ -7,12 +7,9 @@
 //
 
 import UIKit
-import CoreData
-import Instructions
 
-class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource, CoachMarksControllerDelegate, CoachMarksControllerDataSource {
+class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    let coachMarksController = CoachMarksController()
     @IBOutlet weak var myTableView: UITableView!
     
     let instructionsLabel = UILabel()
@@ -46,41 +43,8 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource, Coac
     
     override func viewDidAppear(_ animated: Bool) {
         layoutView()
-
-//        coachMarksController.delegate = self
-//        coachMarksController.dataSource = self
-//        coachMarksController.overlay.color = UIColor.black.withAlphaComponent(0.4)
-//        coachMarksController.overlay.allowTap = true
-//
-//        self.coachMarksController.start(in: .window(over: self))
     }
     
-    func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkViewsAt index: Int, madeFrom coachMark: CoachMark) -> (bodyView: CoachMarkBodyView, arrowView: CoachMarkArrowView?) {
-        let coachViews = coachMarksController.helper.makeDefaultCoachViews(withArrow: true, arrowOrientation: coachMark.arrowOrientation)
-        
-        coachViews.bodyView.hintLabel.text = "Let's get you started! Click here to add a shift."
-        coachViews.bodyView.hintLabel.font = UIFont.systemFont(ofSize: 14, weight: .light)
-        coachViews.bodyView.hintLabel.textColor = .black
-        coachViews.bodyView.addTarget(self, action: #selector(test), for: .touchUpInside)
-        
-        coachViews.bodyView.nextLabel.text = "Ok!"
-        coachViews.bodyView.nextLabel.font = UIFont.systemFont(ofSize: 14, weight: .light)
-        coachViews.bodyView.nextLabel.textColor = .black
-        
-        return (bodyView: coachViews.bodyView, arrowView: coachViews.arrowView)
-    }
-    @objc func test() { print(234234)}
-    func coachMarksController(_ coachMarksController: CoachMarksController, coachMarkAt index: Int) -> CoachMark {
-        
-        let test = coachMarksController.helper.makeCoachMark(for: floatingButton, pointOfInterest: floatingButton.center, cutoutPathMaker: { (frame) -> UIBezierPath in
-            return UIBezierPath(ovalIn: frame)
-        })
-        
-        return test
-    }
-    func numberOfCoachMarks(for coachMarksController: CoachMarksController) -> Int {
-        return 1
-    }
     func hideTableIfEmpty() {
         if !(shifts.isEmpty) {
             myTableView.backgroundView = UIView()
@@ -140,7 +104,7 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource, Coac
         
         floatingButton = UIButton(type: .roundedRect)
         floatingButton.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
-        floatingButton.backgroundColor = Colors.test1
+        floatingButton.backgroundColor = Colors.theme
         floatingButton.layer.cornerRadius = 30
         floatingButton.setTitle("+", for: .normal)
         floatingButton.center = CGPoint(x: self.view.frame.width - floatingButton.frame.width/2 - 30, y: tabBarY - floatingButton.frame.height/2 - 30)
@@ -244,7 +208,7 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource, Coac
         var year = Time.dateToString(date: shifts[section][shifts[section].count-1].date, withDayName: false)
         year = String(year.suffix(4))
         let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 40))
-        view.backgroundColor = Colors.test1 //.gray
+        view.backgroundColor = Colors.theme //.gray
         
         let periodLabel = UILabel(frame: CGRect(x: 15, y: 10, width:
             tableView.bounds.size.width, height: 30))

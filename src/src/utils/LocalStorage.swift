@@ -13,15 +13,17 @@ class LocalStorage {
     static var values = [Shift]()
     static var organizedValues = [[Shift]]()
     
-    static func transferAllShiftsToCloud() {
+    static func transferAllShiftsToCloud(loadingHandler: () -> ()) {
         if UserDefaults().bool(forKey: "hasLoggedInBefore") == false {
             
             let shifts = getAllShifts()
             
             if shifts.count > 0 {
+                loadingHandler()
                 print("going to try and batch write " + shifts.count.description + " items")
                 CloudStorage.insertShifts(items: getAllShifts(), successHandler: {
                     UserDefaults().set(true, forKey: "hasLoggedInBefore")
+                    print("in success handler of transfering all shifts")
                 }, failureHandler: {
                     
                 })
@@ -29,7 +31,8 @@ class LocalStorage {
         }
     }
     
-    static func test() {
+    static func insertThousand() {
+        print("going to insert thousand shifts to local storage")
         for _ in 0..<1000 {
             let shift = ShiftModel(title: "", date: Date(), startingTime: Date(), endingTime: Date(), breakTime: 0, note: "", newPeriod: false, ID: "")
             insertShift(shift: shift)

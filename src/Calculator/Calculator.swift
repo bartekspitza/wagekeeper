@@ -33,7 +33,9 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         loginListener = Auth.auth().addStateDidChangeListener { (auth, currentUser) in
             if currentUser != nil {
                 
-                LocalStorage.transferAllShiftsToCloud()
+                LocalStorage.transferAllShiftsToCloud(loadingHandler: {
+                    self.loadingLabel.staticText = "Syncing"
+                })
                 CloudStorage.getAllShifts(fromUser: currentUser!.uid) { (data) in
                     self.loadingLabel.staticText = "Calculating"
                     Periods.organizeShiftsIntoPeriods(ar: data, successHandler: {
@@ -168,7 +170,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         periodLbl.text = ""
     }
     func configureMenuTable() {
-        menuTable.backgroundColor = Colors.test
+        menuTable.backgroundColor = Colors.calculatorGradientBottom
         menuTable.separatorColor = UIColor.white.withAlphaComponent(0.2)
         menuTable.delegate = self
         menuTable.dataSource = self
@@ -202,7 +204,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     func makeGradient() {
         let gradientLayer: CAGradientLayer = CAGradientLayer()
-        gradientLayer.colors = [Colors.test1.cgColor, Colors.test.cgColor]
+        gradientLayer.colors = [Colors.calculatorGradientTop.cgColor, Colors.calculatorGradientBottom.cgColor]
         gradientLayer.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height*0.4)
         let startingLocation = NSNumber(floatLiteral: Double(Double(66)/Double(gradientLayer.frame.height)))
         gradientLayer.locations = [startingLocation, 1.0]

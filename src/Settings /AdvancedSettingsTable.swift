@@ -52,7 +52,7 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
     override func viewWillAppear(_ animated: Bool) {
         loadUserDefaults()
         configureDaysCells()
-        mySwitch.onTintColor = Colors.test1
+        mySwitch.onTintColor = Colors.theme
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -122,6 +122,7 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
     }
     
     func configureNoteLunchField() {
+        noteField.delegate = self
         noteField.inputAccessoryView = toolbar
         lunchField.inputAccessoryView = toolbar
         noteField.autocapitalizationType = .sentences
@@ -282,13 +283,17 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
             return 0
         }
     }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 || section == 1 || section == 2{
             let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30))
             let label = UILabel(frame: CGRect(x: 16, y: 10 + ((section == 0) ? 20 : 0), width: self.view.frame.width-32, height: 40))
             label.text = sectionTitles[section]
-            label.font = UIFont.boldSystemFont(ofSize: 10)
+            label.font = UIFont.boldSystemFont(ofSize: 11)
             label.numberOfLines = 3
             label.sizeToFit()
             label.textColor = .black

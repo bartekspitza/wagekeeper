@@ -44,6 +44,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         self.title = "Account"
         self.navigationController?.navigationBar.tintColor = Colors.navbarFG
         self.navigationController?.navigationBar.barTintColor = Colors.navbarBG
+        self.hideKeyboardWhenTappedAround()
         
         addAccountView()
         addAmountOfShiftsElement()
@@ -245,7 +246,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         }
         
         
-        accountView.addBottomBorderWithColor(color: UIColor.black.withAlphaComponent(0.1), width: 0.5)
+        accountView.addBottomBorderWithColor(color: UIColor.black.withAlphaComponent(0.05), width: 0.5)
         accountView.addSubview(nameLabel)
         accountView.addSubview(email)
         self.view.addSubview(accountView)
@@ -280,7 +281,10 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         self.view.addSubview(amountShiftsView)
     }
     
-    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
     func textFieldDidEndEditing(_ textField: UITextField) {
         Periods.makePeriod(yearIndex: indexForChosenPeriod[0], monthIndex: indexForChosenPeriod[1], successHandler: {})
         if textField.tag == 1 {
@@ -299,7 +303,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         
         let headerLabel = UILabel(frame: CGRect(x: 15, y: 0, width:
             tableView.bounds.size.width, height: 30))
-        headerLabel.font = UIFont.boldSystemFont(ofSize: 10)
+        headerLabel.font = UIFont.boldSystemFont(ofSize: 11)
         headerLabel.text = ["App settings", "Account"][section]
         headerLabel.center.y = 15
         headerView.addSubview(headerLabel)

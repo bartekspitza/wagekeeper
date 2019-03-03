@@ -118,7 +118,7 @@ class UpdateForm: UIView {
     }
     func addFormButton(title: String) {
         formButton = SpinnerButton(frame: CGRect(x: 50, y: 50, width: self.frame.width*0.75, height: 40), spinnerColor: UIColor.white)
-        formButton.button.backgroundColor = Colors.test1
+        formButton.button.backgroundColor = Colors.theme
         formButton.button.tintColor = .white
         formButton.button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
         formButton.button.setTitleColor(.lightGray, for: .highlighted)
@@ -128,6 +128,7 @@ class UpdateForm: UIView {
         
         self.addSubview(formButton)
     }
+    
     func addBackButton() {
         backButton = UIButton()
         backButton.setTitle("Cancel", for: .normal)
