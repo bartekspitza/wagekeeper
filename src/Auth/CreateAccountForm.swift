@@ -59,7 +59,8 @@ class CreateAccountForm: LoginForm {
         password2Field.isSecureTextEntry = true
         password2Field.center = CGPoint(x: self.center.x, y: passwordField.center.y + 50)
         password2Field.addBottomBorder(color: .lightGray, width: 0.5)
-        
+        password2Field.attributedPlaceholder = NSAttributedString(string: "Confirm password",
+                                                              attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.5)])
         self.addSubview(password2Field)
     }
     

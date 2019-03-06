@@ -123,7 +123,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         btn.addTarget(self, action: #selector(btnPressed(sender:)), for: UIControl.Event.touchUpInside)
         
         btnImage = UIImageView(image: image)
-        btnImage.setImageColor(color: .white)
+        btnImage.setImageColor(color: Colors.detailColor)
         btnImage.frame = CGRect(x: 0, y: 0, width: imageWidth, height: imageWidth)
         btnImage.center = CGPoint(x: self.view.center.x, y: btn.center.y)
         

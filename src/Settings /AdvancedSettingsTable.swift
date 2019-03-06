@@ -37,7 +37,7 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.tintColor = navColor
+        tableView.tintColor = Colors.detailColor
         tableView.tableFooterView = UIView()
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         self.title = "Advanced tools"
@@ -208,7 +208,7 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
     func configureDaysCells() {
         for i in 0..<daysCells.count {
             daysCells[i].selectionStyle = .default
-            daysCells[i].tintColor = navColor
+            daysCells[i].tintColor = Colors.detailColor
             
             if UserDefaults().value(forKey: days[i]) != nil {
                 daysCells[i].accessoryType = .checkmark

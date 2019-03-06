@@ -35,6 +35,7 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
         super.viewDidLoad()
         self.title = "Add shift"
         self.hideKeyboardWhenTappedAround()
+
         configureToolbar()
         createTitleField()
         configureTable()

@@ -91,6 +91,11 @@ extension UITableView {
 }
 
 extension UIViewController {
+    
+    func hideNavBarSeparator() {
+        self.navigationController?.navigationBar.setValue(true, forKey: "hidesShadow")
+    }
+    
     func hideKeyboardWhenTappedAround() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false

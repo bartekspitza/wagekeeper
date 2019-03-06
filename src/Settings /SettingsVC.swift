@@ -42,9 +42,10 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     override func viewDidLoad() {
         self.title = "Account"
-        self.navigationController?.navigationBar.tintColor = Colors.navbarFG
+        let textAttributes = [NSAttributedString.Key.foregroundColor: Colors.navbarFG]
+        self.navigationController?.navigationBar.titleTextAttributes = textAttributes
         self.navigationController?.navigationBar.barTintColor = Colors.navbarBG
-        self.hideKeyboardWhenTappedAround()
+        self.hideNavBarSeparator()
         
         addAccountView()
         addAmountOfShiftsElement()
@@ -189,6 +190,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         periodsSeperatedByYear = [[[ShiftModel]]]()
         period = nil
         indexForChosenPeriod = [0, 0]
+        loginViewShouldAnimate = true
     }
     
     func addTable() {
@@ -247,6 +249,16 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         
         
         accountView.addBottomBorderWithColor(color: UIColor.black.withAlphaComponent(0.05), width: 0.5)
+       // accountView.backgroundColor = Colors.navbarBG
+        
+        let gradientLayer: CAGradientLayer = CAGradientLayer()
+        gradientLayer.colors = [Colors.navbarBG.cgColor, UIColor.white.cgColor]
+        gradientLayer.frame = CGRect(x: 0, y: 0, width: accountView.frame.width, height: accountView.frame.height)
+        let startingLocation = NSNumber(floatLiteral: Double(Double(66)/Double(gradientLayer.frame.height)))
+        gradientLayer.locations = [0, 1.0]
+        
+        accountView.layer.insertSublayer(gradientLayer, at: UInt32(0))
+        
         accountView.addSubview(nameLabel)
         accountView.addSubview(email)
         self.view.addSubview(accountView)

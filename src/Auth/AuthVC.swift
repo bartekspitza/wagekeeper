@@ -25,6 +25,8 @@ class AuthVC: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.hideKeyboardWhenTappedAround()
+        self.view.backgroundColor = Colors.theme
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: self.view.window)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: self.view.window)
@@ -35,22 +37,25 @@ class AuthVC: UIViewController, UITextFieldDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        loginForm.layer.opacity = 0
-        logo.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
-        
-        logo.center = self.view.center
+        if loginViewShouldAnimate {
+            loginForm.layer.opacity = 0
+            logo.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+            logo.center = self.view.center
+        }
     }
     override func viewDidAppear(_ animated: Bool) {
-        UIView.animate(withDuration: 0.3) {
-            self.logo.frame = CGRect(x: 0, y: 0, width: self.view.frame.width/2, height: self.view.frame.width/2)
-            self.logo.center = CGPoint(x: self.view.center.x, y: self.view.frame.height/5)
-            
-            self.loginForm.layer.opacity = 1
+        if loginViewShouldAnimate {
+            UIView.animate(withDuration: 0.3) {
+                self.logo.frame = CGRect(x: 0, y: 0, width: self.view.frame.width/2, height: self.view.frame.width/2)
+                self.logo.center = CGPoint(x: self.view.center.x, y: self.view.frame.height/5)
+                self.loginForm.layer.opacity = 1
+            }
         }
     }
     
     // Authentication
     @objc func facebooklogin() {
+        loginViewShouldAnimate = false
         loginForm.FBButton.startAnimating()
         let loginManager = LoginManager()
         loginManager.logIn(readPermissions: [.publicProfile, .email], viewController: self) { (loginResult) in
@@ -243,10 +248,10 @@ class AuthVC: UIViewController, UITextFieldDelegate {
         loginForm.configureErrorLabel()
     }
     func addLogoImage() {
-        let image = UIImage(named: "icon.png")
+        let image = UIImage(named: "app_icon")
         
         logo = UIImageView(image: image)
-        logo.setImageColor(color: Colors.theme)
+        //logo.setImageColor(color: Colors.theme)
         logo.frame = CGRect(x: 0, y: 0, width: self.view.frame.width/2, height: self.view.frame.width/2)
         logo.center = CGPoint(x: self.view.center.x, y: self.view.frame.height*0.2)
         

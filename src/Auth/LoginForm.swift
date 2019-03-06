@@ -93,16 +93,13 @@ class LoginForm: UIView {
         FBButton = SpinnerButton(frame: CGRect(x: 0, y: 0, width: self.frame.width*0.75, height: 40), spinnerColor: UIColor.white)
         FBButton.button.backgroundColor = Colors.facebook
         FBButton.button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        FBButton.button.setTitleColor(.lightGray, for: .highlighted)
         FBButton.center = CGPoint(x: self.center.x, y: forgotPassBtn.frame.origin.y + forgotPassBtn.frame.height + 30 + FBButton.frame.height/2)
+        FBButton.button.setTitleColor(.white, for: .normal)
         FBButton.setCornerRadius(radius: 10)
         FBButton.setTitle(title: "Sign in with facebook")
         FBButton.addFBLogo()
         
         self.addSubview(FBButton)
-        
-        
-        
     }
     
     func addEmailFieldToView() {
@@ -115,7 +112,9 @@ class LoginForm: UIView {
         emailField.keyboardType = .emailAddress
         emailField.autocorrectionType = .no
         emailField.addBottomBorder(color: .lightGray, width: 0.5)
-        
+        emailField.attributedPlaceholder = NSAttributedString(string: "Email",
+                                                                 attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.5)])
+
         self.addSubview(emailField)
     }
     
@@ -131,16 +130,17 @@ class LoginForm: UIView {
         passwordField.autocorrectionType = .no
         passwordField.center = self.center
         passwordField.center.y = y
+        passwordField.attributedPlaceholder = NSAttributedString(string: "Password",
+                                                               attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.5)])
         passwordField.addBottomBorder(color: .lightGray, width: 0.5)
         
         self.addSubview(passwordField)
     }
     func addMainButton(title: String, y: CGFloat) {
         mainBtn = SpinnerButton(frame: CGRect(x: 50, y: 50, width: self.frame.width*0.75, height: 40), spinnerColor: UIColor.white)
-        mainBtn.button.backgroundColor = Colors.theme
+        mainBtn.button.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         mainBtn.button.tintColor = .white
         mainBtn.button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        mainBtn.button.setTitleColor(.lightGray, for: .highlighted)
         mainBtn.center = CGPoint(x: self.center.x, y: y)
         mainBtn.setCornerRadius(radius: 10)
         mainBtn.setTitle(title: title)
@@ -148,24 +148,23 @@ class LoginForm: UIView {
         self.addSubview(mainBtn)
     }
     func addForgotPasswordButton() {
-        forgotPassBtn = UIButton()
+        forgotPassBtn = UIButton(type: .system)
         forgotPassBtn.setTitle("Forgot your password?", for: .normal)
-        forgotPassBtn.setTitleColor(.black, for: .normal)
+        forgotPassBtn.setTitleColor(.white, for: .normal)
         forgotPassBtn.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .light)
         forgotPassBtn.sizeToFit()
-        forgotPassBtn.setTitleColor(UIColor.black.withAlphaComponent(0.7), for: .highlighted)
         forgotPassBtn.center = CGPoint(x: self.center.x, y: mainBtn.center.y + mainBtn.frame.height/2 + forgotPassBtn.frame.height/2 + 5)
 
         self.addSubview(forgotPassBtn)
     }
     func addAccessoryButton(title: String) {
-        accessoryBtn = UIButton()
+        accessoryBtn = UIButton(type: .system)
         accessoryBtn.setTitle(title, for: .normal)
-        accessoryBtn.setTitleColor(.black, for: .normal)
+        accessoryBtn.setTitleColor(.white, for: .normal)
         accessoryBtn.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .light)
         accessoryBtn.sizeToFit()
         accessoryBtn.center = CGPoint(x: self.center.x, y: self.frame.height * 0.9)
-        accessoryBtn.setTitleColor(UIColor.black.withAlphaComponent(0.7), for: .highlighted)
+
         self.addSubview(accessoryBtn)
     }
 

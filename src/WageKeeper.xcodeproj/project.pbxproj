@@ -19,7 +19,6 @@
 		982F93542208C386005D9C99 /* StringFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F93532208C386005D9C99 /* StringFormatter.swift */; };
 		982FFE9222134B27007400C6 /* LoginForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982FFE9122134B27007400C6 /* LoginForm.swift */; };
 		982FFE9422134F59007400C6 /* CreateAccountForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982FFE9322134F59007400C6 /* CreateAccountForm.swift */; };
-		9830C1FD220793CB0023B582 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9830C1FB220793CB0023B582 /* LaunchScreen.storyboard */; };
 		9830C1FE220793CB0023B582 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9830C1FC220793CB0023B582 /* Main.storyboard */; };
 		9830C2012207A0EF0023B582 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9830C2002207A0EF0023B582 /* Period.swift */; };
 		9830C2062207B3AD0023B582 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9830C2052207B3AD0023B582 /* Time.swift */; };
@@ -28,7 +27,8 @@
 		98594B022220159F00EE7E62 /* SpinnerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98594B012220159F00EE7E62 /* SpinnerButton.swift */; };
 		9862A5711FCC33AA0047671D /* AdvancedSettingsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9862A5701FCC33AA0047671D /* AdvancedSettingsTable.swift */; };
 		9864BB0C1FD4700E005DB5F2 /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9864BB0B1FD4700E005DB5F2 /* Calculator.swift */; };
-		988068E822218107009EBEEF /* InstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988068E722218107009EBEEF /* InstructionsView.swift */; };
+		9873A001222C514C000CCFEF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9873A000222C514C000CCFEF /* GoogleService-Info.plist */; };
+		9873A003222DEE53000CCFEF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9873A002222DEE53000CCFEF /* LaunchScreen.storyboard */; };
 		9886E9BC2211C11D00A4207A /* Periods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9886E9BB2211C11D00A4207A /* Periods.swift */; };
 		9886E9BE2211DEA000A4207A /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9886E9BD2211DEA000A4207A /* Colors.swift */; };
 		988FDEBC1F9F7AFA0090DEF1 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988FDEBB1F9F7AFA0090DEF1 /* Logger.swift */; };
@@ -37,7 +37,6 @@
 		989392DC1FCEF322002475EA /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989392DB1FCEF322002475EA /* Extensions.swift */; };
 		98A54977220E03C000CBEE5D /* AddVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A54976220E03C000CBEE5D /* AddVC.swift */; };
 		98AD6DDC221C34E7009364EF /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AD6DDB221C34E7009364EF /* SettingsVC.swift */; };
-		98B3B8802209DA8C000D153B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 98B3B87F2209DA8C000D153B /* GoogleService-Info.plist */; };
 		98BD37F12214AF9E0047F10E /* globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BD37F02214AF9E0047F10E /* globals.swift */; };
 		98CA61941FB0A6D900463FF7 /* OvertimeRuleTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98CA61931FB0A6D900463FF7 /* OvertimeRuleTable.swift */; };
 		98D40CC1220B35A9006E59E0 /* AuthVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D40CC0220B35A9006E59E0 /* AuthVC.swift */; };
@@ -63,7 +62,6 @@
 		982F93532208C386005D9C99 /* StringFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringFormatter.swift; sourceTree = "<group>"; };
 		982FFE9122134B27007400C6 /* LoginForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginForm.swift; sourceTree = "<group>"; };
 		982FFE9322134F59007400C6 /* CreateAccountForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountForm.swift; sourceTree = "<group>"; };
-		9830C1FB220793CB0023B582 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9830C1FC220793CB0023B582 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		9830C2002207A0EF0023B582 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
 		9830C2052207B3AD0023B582 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
@@ -72,7 +70,8 @@
 		98594B012220159F00EE7E62 /* SpinnerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerButton.swift; sourceTree = "<group>"; };
 		9862A5701FCC33AA0047671D /* AdvancedSettingsTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsTable.swift; sourceTree = "<group>"; };
 		9864BB0B1FD4700E005DB5F2 /* Calculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculator.swift; sourceTree = "<group>"; };
-		988068E722218107009EBEEF /* InstructionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionsView.swift; sourceTree = "<group>"; };
+		9873A000222C514C000CCFEF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		9873A002222DEE53000CCFEF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9886E9BB2211C11D00A4207A /* Periods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Periods.swift; sourceTree = "<group>"; };
 		9886E9BD2211DEA000A4207A /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		988FDEB61F9F7AFA0090DEF1 /* WageKeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WageKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -83,7 +82,6 @@
 		989392DB1FCEF322002475EA /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		98A54976220E03C000CBEE5D /* AddVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddVC.swift; sourceTree = "<group>"; };
 		98AD6DDB221C34E7009364EF /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
-		98B3B87F2209DA8C000D153B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		98BD37F02214AF9E0047F10E /* globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = globals.swift; sourceTree = "<group>"; };
 		98CA61931FB0A6D900463FF7 /* OvertimeRuleTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OvertimeRuleTable.swift; sourceTree = "<group>"; };
 		98D40CC0220B35A9006E59E0 /* AuthVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthVC.swift; sourceTree = "<group>"; };
@@ -188,9 +186,9 @@
 				98D40CBE220B3548006E59E0 /* Views */,
 				982F934C220880D7005D9C99 /* entities */,
 				9830C1FF220794CE0023B582 /* utils */,
-				9830C1FB220793CB0023B582 /* LaunchScreen.storyboard */,
+				9873A000222C514C000CCFEF /* GoogleService-Info.plist */,
+				9873A002222DEE53000CCFEF /* LaunchScreen.storyboard */,
 				9830C1FC220793CB0023B582 /* Main.storyboard */,
-				98B3B87F2209DA8C000D153B /* GoogleService-Info.plist */,
 				988FDEC31F9F7AFA0090DEF1 /* Assets.xcassets */,
 				98ACD1891FA39EA100B78C7D /* Supporting files */,
 			);
@@ -223,7 +221,6 @@
 			children = (
 				9852F1061FA2309B00E7BDB5 /* MainCell.swift */,
 				988FDEBB1F9F7AFA0090DEF1 /* Logger.swift */,
-				988068E722218107009EBEEF /* InstructionsView.swift */,
 				9820A5541FBCBF6B00EAEE6A /* MainNav.swift */,
 			);
 			path = Logger;
@@ -323,9 +320,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				9830C1FE220793CB0023B582 /* Main.storyboard in Resources */,
-				98B3B8802209DA8C000D153B /* GoogleService-Info.plist in Resources */,
-				9830C1FD220793CB0023B582 /* LaunchScreen.storyboard in Resources */,
 				988FDEC41F9F7AFA0090DEF1 /* Assets.xcassets in Resources */,
+				9873A003222DEE53000CCFEF /* LaunchScreen.storyboard in Resources */,
+				9873A001222C514C000CCFEF /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,7 +419,6 @@
 				9862A5711FCC33AA0047671D /* AdvancedSettingsTable.swift in Sources */,
 				9830C2062207B3AD0023B582 /* Time.swift in Sources */,
 				982F934B22087796005D9C99 /* LocalStorage.swift in Sources */,
-				988068E822218107009EBEEF /* InstructionsView.swift in Sources */,
 				981E7FD42209FF0E006A492C /* CloudStorage.swift in Sources */,
 				984319182207923E00C9B6FF /* AppDelegate.swift in Sources */,
 				98CA61941FB0A6D900463FF7 /* OvertimeRuleTable.swift in Sources */,

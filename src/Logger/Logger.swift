@@ -18,8 +18,10 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.automaticallyAdjustsScrollViewInsets = false
-        self.navigationController?.navigationBar.tintColor = Colors.navbarFG
         self.navigationController?.navigationBar.barTintColor = Colors.navbarBG
+        self.navigationController?.navigationBar.tintColor = Colors.navbarFG
+        let textAttributes = [NSAttributedString.Key.foregroundColor: Colors.navbarFG]
+        self.navigationController?.navigationBar.titleTextAttributes = textAttributes
         
         addFloatingButton()
         myTableView.delegate = self
@@ -212,7 +214,7 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         let periodLabel = UILabel(frame: CGRect(x: 15, y: 10, width:
             tableView.bounds.size.width, height: 30))
-        periodLabel.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+        periodLabel.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         periodLabel.textColor = .white
         periodLabel.text = text
         periodLabel.sizeToFit()

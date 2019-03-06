@@ -30,7 +30,7 @@ class SpinnerButton: UIView {
     
     init(frame: CGRect, spinnerColor: UIColor) {
         super.init(frame: frame)
-        button = UIButton(type: .custom)
+        button = UIButton(type: .system)
         button.frame = frame
         button.center = CGPoint(x: frame.width/2, y: frame.height/2)
         self.addSubview(button)

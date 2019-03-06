@@ -18,4 +18,5 @@ class MainNav: UINavigationController {
         self.navigationBar.barTintColor = .white
         
     }
+    
 }

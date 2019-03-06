@@ -15,10 +15,11 @@ class Colors {
     
     
     // One shade of green
-    static public var theme = UIColor(rgb: 0x005b6d)
+    static public var theme = UIColor(rgb: 0x363a3d) //UIColor(rgb: 0x004052)
     
-    static var calculatorGradientTop = UIColor(red: 67, green: 183, blue: 133)
-    static var calculatorGradientBottom = UIColor(rgb: 0x43b785)
+    static var detailColor = UIColor(rgb: 0x00d9dc)
+    static var calculatorGradientTop = UIColor(rgb: 0x363a3d)
+    static var calculatorGradientBottom = UIColor(rgb: 0x292c2e)
     
     static var navbarBG = UIColor(red: 247, green: 247, blue: 247)
     static var navbarFG = UIColor.black
