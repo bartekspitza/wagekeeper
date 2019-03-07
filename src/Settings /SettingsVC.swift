@@ -62,12 +62,12 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     func createUpdateMessageLabel() {
-        updateMessageLbl = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50))
+        updateMessageLbl = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30))
         updateMessageLbl.font = UIFont.systemFont(ofSize: 14, weight: .light)
         updateMessageLbl.text = "Logged in with"
         updateMessageLbl.textAlignment = .center
-        updateMessageLbl.center = self.view.center
-        updateMessageLbl.frame.origin.y = accountView.frame.origin.y + accountView.frame.height + 5
+        updateMessageLbl.frame.origin.y = accountView.endY() + 5
+        updateMessageLbl.center.x = self.view.center.x
         updateMessageLbl.layer.opacity = 0
         self.view.addSubview(updateMessageLbl)
     }
@@ -150,18 +150,18 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         if isUpdatingPassword {
             showSuccessMessage(msg: "Updated password!")
         } else {
-            updateForm.field1.text = user.email
+            user.email = updateForm.field1.text!
             showSuccessMessage(msg: "Updated email!")
+            addAccountView()
         }
         
-        table.reloadData()
         updateForm.formButton.stopAnimating(newTitle: nil)
         hideForm()
     }
     func showSuccessMessage(msg: String) {
         updateMessageLbl.text = msg
         updateMessageLbl.layer.opacity = 1
-        
+        updateMessageLbl.textColor = Colors.success
         UIView.animate(withDuration: 3) {
             self.updateMessageLbl.layer.opacity = 0
         }
@@ -384,11 +384,10 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         ]
         let image = UIImage(named: imageNames[indexPath.section][indexPath.row])
         
-        cell.indentationLevel = 5
-        cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
         cell.textLabel?.text = titles[indexPath.section][indexPath.row]
         cell.img.image = image
         cell.field.layer.opacity = 0
+        cell.field.frame.origin.x = self.view.frame.width - 15 - cell.field.frame.width
         
         if (indexPath.section == 0 && indexPath.row < 3) {
             cell.field.layer.opacity = 1

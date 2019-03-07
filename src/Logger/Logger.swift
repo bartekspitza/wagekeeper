@@ -105,9 +105,9 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let tabBarY = self.tabBarController!.tabBar.frame.origin.y
         
         floatingButton = UIButton(type: .roundedRect)
-        floatingButton.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
+        floatingButton.frame = CGRect(x: 0, y: 0, width: self.view.frame.width*0.15, height: self.view.frame.width*0.15)
         floatingButton.backgroundColor = Colors.theme
-        floatingButton.layer.cornerRadius = 30
+        floatingButton.layer.cornerRadius = floatingButton.frame.width/2
         floatingButton.setTitle("+", for: .normal)
         floatingButton.center = CGPoint(x: self.view.frame.width - floatingButton.frame.width/2 - 30, y: tabBarY - floatingButton.frame.height/2 - 30)
         floatingButton.setTitleColor(.white, for: .normal)

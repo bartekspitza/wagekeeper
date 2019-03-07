@@ -24,7 +24,6 @@ class SettingsCell: UITableViewCell {
 
         field = UITextField()
         field.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
-        field.frame.origin.x = self.frame.width - 15 - field.frame.width
         field.textAlignment = .right
         
         self.contentView.addSubview(img)
