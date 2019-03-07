@@ -37,7 +37,7 @@ class CreateAccountForm: LoginForm {
     override func configureErrorLabel() {
         errorLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 20))
         errorLabel.text = "Wrong password"
-        errorLabel.textColor = .red
+        errorLabel.textColor = Colors.error
         errorLabel.textAlignment = .center
         errorLabel.font = UIFont.systemFont(ofSize: 12, weight: .light)
         errorLabel.center = CGPoint(x: self.center.x, y: password2Field.center.y + password2Field.frame.height/2 + 15)

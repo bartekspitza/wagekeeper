@@ -30,14 +30,14 @@ class LoginForm: UIView {
     }
     
     func showSuccessMessage(msg: String) {
-        errorLabel.textColor = Colors.successGreen
+        errorLabel.textColor = Colors.success
         errorLabel.text = msg
         errorLabel.layer.opacity = 1
         
         UIView.animate(withDuration: 2, delay: 1, options: [], animations: {
             self.errorLabel.layer.opacity = 0
         }, completion: {(true) in
-                self.errorLabel.textColor = .red
+                self.errorLabel.textColor = Colors.error
             self.errorLabel.text = ""
         })
     }
@@ -59,7 +59,7 @@ class LoginForm: UIView {
     func configureErrorLabel() {
         errorLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 20))
         errorLabel.text = "Wrong password"
-        errorLabel.textColor = .red
+        errorLabel.textColor = Colors.error
         errorLabel.textAlignment = .center
         errorLabel.font = UIFont.systemFont(ofSize: 12, weight: .light)
         errorLabel.center = CGPoint(x: self.center.x, y: passwordField.center.y + passwordField.frame.height/2 + 15)
@@ -132,6 +132,7 @@ class LoginForm: UIView {
         passwordField.autocorrectionType = .no
         passwordField.center = self.center
         passwordField.center.y = y
+        passwordField.imageTintColor = UIColor.white.withAlphaComponent(0.7)
         passwordField.attributedPlaceholder = NSAttributedString(string: "Password",
                                                                attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.5)])
         passwordField.addBottomBorder(color: .lightGray, width: 0.5)
@@ -140,7 +141,7 @@ class LoginForm: UIView {
     }
     func addMainButton(title: String, y: CGFloat) {
         mainBtn = SpinnerButton(frame: CGRect(x: 50, y: 50, width: self.frame.width*0.75, height: 40), spinnerColor: UIColor.white)
-        mainBtn.button.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        mainBtn.button.backgroundColor = Colors.theme
         mainBtn.button.tintColor = .white
         mainBtn.button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         mainBtn.center = CGPoint(x: self.center.x, y: y)

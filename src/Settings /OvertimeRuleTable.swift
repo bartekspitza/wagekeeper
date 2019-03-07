@@ -313,6 +313,7 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
             cell.textLabel?.text = "Hourly wage"
         }
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .light)
+        print(cell.subviews.count)
         return cell
     }
     

@@ -71,7 +71,6 @@ class UpdateForm: UIView {
         field1.autocorrectionType = .no
         field1.addBottomBorderWithColor(color: .lightGray, width: 0.5)
         
-        
         if isEmailField {
             field1.placeholder = "New email"
             field1.keyboardType = .emailAddress
@@ -122,7 +121,7 @@ class UpdateForm: UIView {
         formButton.button.tintColor = .white
         formButton.button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
         formButton.button.setTitleColor(.lightGray, for: .highlighted)
-        formButton.center = CGPoint(x: self.center.x, y: passwordField.center.y + 100)
+        formButton.center = CGPoint(x: self.center.x, y: passwordField.center.y + 80)
         formButton.setTitle(title: title)
         formButton.setCornerRadius(radius: 10)
         

@@ -25,8 +25,9 @@ class Colors {
     static var navbarFG = UIColor.black
     
     
-    
+    static var authBG = UIColor(rgb: 0x1c1c1c)
     static var gray = UIColor(red: 60, green: 60, blue: 60)
-    static var successGreen = UIColor(red: 0, green: 153, blue: 94)
+    static var success = UIColor(red: 0, green: 153, blue: 94)
+    static var error = UIColor(rgb: 0xc10202)
     static var facebook = UIColor(red: 60, green: 84, blue: 155)
 }

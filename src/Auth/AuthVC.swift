@@ -26,7 +26,7 @@ class AuthVC: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         //self.hideKeyboardWhenTappedAround()
-        self.view.backgroundColor = Colors.theme
+        self.view.backgroundColor = Colors.authBG
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: self.view.window)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: self.view.window)
@@ -125,6 +125,7 @@ class AuthVC: UIViewController, UITextFieldDelegate {
         } else if password != pass2 {
             createAccountForm.showErrorMessage(message: "Passwords must match")
         } else {
+            self.dismissKeyboard()
             createAccountForm.mainBtn.startAnimating()
             CloudAuth.createUserAccount(email: email, password: password, completionHandler: self.performLogin, failureHandler: self.onCreateAccountFailure)
         }
@@ -138,11 +139,13 @@ class AuthVC: UIViewController, UITextFieldDelegate {
         if email == "" || password == "" {
             loginForm.showErrorMessage(message: "Both fields must be entered")
         } else {
+            self.dismissKeyboard()
             loginForm.mainBtn.startAnimating()
             CloudAuth.login(email: email, password: password, successHandler: self.performLogin, failureHandler: self.onLoginFailure)
         }
     }
     @objc func resetPassword() {
+        self.dismissKeyboard()
         if loginForm.emailField.text == "" {
             loginForm.showErrorMessage(message: "Field must be entered")
         } else {
@@ -152,7 +155,6 @@ class AuthVC: UIViewController, UITextFieldDelegate {
                 self.loginForm.mainBtn.stopAnimating(newTitle: nil)
                 self.hideForgotPasswordView()
                 self.loginForm.showSuccessMessage(msg: "Reset email sent")
-                
                 
             }) { (msg) in
                 self.loginForm.mainBtn.stopAnimating(newTitle: "Send reset email")
@@ -167,6 +169,7 @@ class AuthVC: UIViewController, UITextFieldDelegate {
         loginForm.hideErrorMessage()
         UIView.animate(withDuration: 0.3) {
             self.loginForm.passwordField.layer.opacity = 0
+            self.loginForm.FBButton.layer.opacity = 0
             self.loginForm.forgotPassBtn.layer.opacity = 0
         }
         
@@ -186,6 +189,7 @@ class AuthVC: UIViewController, UITextFieldDelegate {
         UIView.animate(withDuration: 0.3) {
             self.loginForm.passwordField.layer.opacity = 1
             self.loginForm.forgotPassBtn.layer.opacity = 1
+            self.loginForm.FBButton.layer.opacity = 1
         }
         
         UIView.transition(with: self.loginForm.mainBtn, duration: 0.3, options: [.transitionCrossDissolve], animations: {

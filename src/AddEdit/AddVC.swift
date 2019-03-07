@@ -120,7 +120,7 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
         table = UITableView()
         table.delegate = self
         table.dataSource = self
-        table.frame = CGRect(x: 0, y: height + titleField.frame.height + 20, width: self.view.frame.width, height: 595)
+        table.frame = CGRect(x: 0, y: height + titleField.frame.height + 20, width: self.view.frame.width, height: self.view.frame.height*0.85 - height - 20 - titleField.frame.height)
         table.tableFooterView = UIView()
         table.isScrollEnabled = true
         table.separatorColor = UIColor.black.withAlphaComponent(0.11)

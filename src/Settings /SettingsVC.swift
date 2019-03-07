@@ -15,9 +15,9 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     var navBar: UINavigationBar!
     
     // Textfields
-    var taxrateField: UITextField!
-    var wageRateField: UITextField!
-    var currencyField: UITextField!
+    var taxrateField = UITextField()
+    var wageRateField = UITextField()
+    var currencyField = UITextField()
 
     // Pickers
     let currencyPicker = UIPickerView()
@@ -26,7 +26,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     var updateForm: UpdateForm!
     let currencies = ["SEK", "EUR", "GPD", "NOR", "USD"]
-    var cellsAreRecycled = false
+    var cellsAreBuilt = [[Bool]]()
     
     var isUpdatingPassword = true
     var updateMessageLbl: UILabel!
@@ -42,17 +42,23 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     override func viewDidLoad() {
         self.title = "Account"
+        
         let textAttributes = [NSAttributedString.Key.foregroundColor: Colors.navbarFG]
         self.navigationController?.navigationBar.titleTextAttributes = textAttributes
         self.navigationController?.navigationBar.barTintColor = Colors.navbarBG
         self.hideNavBarSeparator()
         
+        loadUserDefaults()
         addAccountView()
         addAmountOfShiftsElement()
         addTable()
         configurePickers()
         addUpdatingForm()
         createUpdateMessageLabel()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.dismissKeyboard()
     }
     
     func createUpdateMessageLabel() {
@@ -67,7 +73,8 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     func addUpdatingForm() {
-        updateForm = UpdateForm(frame: CGRect(x: 0, y: self.view.frame.height/2, width: self.view.frame.width, height: self.view.frame.height/2))
+        let tabBarHeight = self.tabBarController?.tabBar.frame.height
+        updateForm = UpdateForm(frame: CGRect(x: 0, y: self.view.frame.height*0.4, width: self.view.frame.width, height: self.view.frame.height*0.6 - tabBarHeight!))
         updateForm.addField1(isEmailField: true)
         updateForm.addField2(isEmailField: true)
         updateForm.addPasswordField()
@@ -76,21 +83,18 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         updateForm.center.x += self.view.frame.width
         updateForm.backButton.addTarget(self, action: #selector(hideForm), for: .touchUpInside)
         updateForm.formButton.button.addTarget(self, action: #selector(updatePressed), for: .touchUpInside)
-        let toolbar = UIToolbar()
-        let buttons = addButtons(bar: toolbar, withUpAndDown: false, color: .black)
-        updateForm.field1.inputAccessoryView = toolbar
-        updateForm.field2.inputAccessoryView = toolbar
-        updateForm.passwordField.inputAccessoryView = toolbar
-        buttons[0].action = #selector(donePressed)
+        updateForm.field1.delegate = self
+        updateForm.field2.delegate = self
+        updateForm.passwordField.delegate = self
         view.addSubview(updateForm)
     }
-    
+
     @objc func hideForm() {
         updateForm.clear()
         updateForm.hideErrorMessage()
         UIView.animate(withDuration: 0.6, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.8, options: [], animations: {
             self.updateForm.center.x += self.view.frame.width
-            
+            self.amountShiftsView.center.x += self.view.frame.width
             self.table.center.x += self.view.frame.width
         })
     }
@@ -131,7 +135,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         
         UIView.animate(withDuration: 0.6, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.8, options: [], animations: {
             self.updateForm.center.x -= self.view.frame.width
-            
+            self.amountShiftsView.center.x -= self.view.frame.width
             self.table.center.x -= self.view.frame.width
         }) { (true) in
             self.table.deselectAllRows()
@@ -198,7 +202,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         table = UITableView(frame: CGRect(x: 0, y: self.view.frame.height*0.4 + 1, width: self.view.frame.width, height: self.view.frame.height*0.6 - tabBarHeight!))
         table.delegate = self
         table.dataSource = self
-        table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        table.register(SettingsCell.self, forCellReuseIdentifier: "cell")
         table.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         table.separatorColor = UIColor.black.withAlphaComponent(0.11)
         table.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 1))
@@ -210,7 +214,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         let height = UIApplication.shared.statusBarFrame.height +
             self.navigationController!.navigationBar.frame.height
         
-        accountView = UIView(frame: CGRect(x: 0, y: height, width: self.view.frame.width, height: 80))
+        accountView = UIView(frame: CGRect(x: 0, y: height, width: self.view.frame.width, height: 40))
         let imageView = UIImageView(image: user.profileImage)
         imageView.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
         imageView.frame.origin.x = 10
@@ -319,6 +323,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         headerLabel.text = ["App settings", "Account"][section]
         headerLabel.center.y = 15
         headerView.addSubview(headerLabel)
+        headerView.backgroundColor = .white
         
         return headerView
     }
@@ -368,51 +373,56 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         }
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! SettingsCell
+        let titles = [
+            ["Tax rate", "Hourly rate", "Currency", "Advanced tools"],
+            (user.loggedInWithFacebook) ? ["Log out"] : ["Change email", "Change password", "Log out"]
+        ]
+        let imageNames = [
+            ["government_filled", "wagerate_filled", "currency_filled", "tool_filled"],
+            (user.loggedInWithFacebook) ? ["logout_filled"] : ["email_filled", "password_filled", "logout_filled"]
+        ]
+        let image = UIImage(named: imageNames[indexPath.section][indexPath.row])
         
-        if !cellsAreRecycled {
-            let imageNames = [
-                ["government_filled", "wagerate_filled", "currency_filled", "tool_filled"],
-                (user.loggedInWithFacebook) ? ["logout_filled"] : ["email_filled", "password_filled", "logout_filled"]
-            ]
+        cell.indentationLevel = 5
+        cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
+        cell.textLabel?.text = titles[indexPath.section][indexPath.row]
+        cell.img.image = image
+        cell.field.layer.opacity = 0
+        
+        if (indexPath.section == 0 && indexPath.row < 3) {
+            cell.field.layer.opacity = 1
+            cell.selectionStyle = .none
             
-            let titles = [
-                ["Tax rate", "Hourly rate", "Currency", "Advanced tools"],
-                (user.loggedInWithFacebook) ? ["Log out"] : ["Change email", "Change password", "Log out"]
-            ]
-            cellsAreRecycled = (user.loggedInWithFacebook) ? indexPath.row == 0 && indexPath.section == 1 : indexPath.row == 2 && indexPath.section == 1
-            print(cellsAreRecycled)
-            let image = UIImage(named: imageNames[indexPath.section][indexPath.row])
-       
-            cell?.textLabel?.text = titles[indexPath.section][indexPath.row]
-            
-            let imageView = UIImageView(image: image)
-            imageView.setImageColor(color: UIColor.black.withAlphaComponent(1))
-            imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
-            imageView.center = CGPoint(x: 25, y: (cell?.frame.height)!/2)
-            cell?.contentView.addSubview(imageView)
-            cell?.indentationLevel = 5
-            cell?.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
-            
-            if (indexPath.section == 0 && indexPath.row < 3) {
-                cell?.selectionStyle = .none
-                let field = UITextField()
-                field.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
-                field.frame.origin.x = self.view.frame.width - 15 - field.frame.width
-                field.textAlignment = .right
-                if indexPath.row == 0 {
-                    taxrateField = field
-                } else if indexPath.row == 1 {
-                    wageRateField = field
-                } else {
-                    currencyField = field
-                    configureFields()
-                    loadUserDefaults()
-                }
-                cell?.contentView.addSubview(field)
+            if indexPath.row == 0 {
+                taxrateField = cell.field
+                taxrateField.tintColor = .clear
+                taxrateField.inputView = taxPicker
+                taxrateField.textColor = .black
+                taxrateField.font = UIFont.systemFont(ofSize: 14, weight: .light)
+                taxrateField.delegate = self
+                taxrateField.text = UserDefaults().string(forKey: "taxRate")! + " %"
+            } else if indexPath.row == 1 {
+                wageRateField = cell.field
+                wageRateField.clearsOnBeginEditing = true
+                wageRateField.keyboardType = .decimalPad
+                wageRateField.textColor = .black
+                wageRateField.font = UIFont.systemFont(ofSize: 14, weight: .light)
+                wageRateField.delegate = self
+                wageRateField.tag = 1
+                wageRateField.text = UserDefaults().string(forKey: "wageRate")
+            } else {
+                currencyField = cell.field
+                currencyField.tintColor = UIColor.clear
+                currencyField.inputView = currencyPicker
+                currencyField.textColor = .black
+                currencyField.font = UIFont.systemFont(ofSize: 14, weight: .light)
+                currencyField.delegate = self
+                currencyField.text = UserDefaults().string(forKey: "currency")
             }
         }
-        return cell!
+        
+        return cell
     }
     
     func configurePickers() {

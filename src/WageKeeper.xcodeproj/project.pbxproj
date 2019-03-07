@@ -13,6 +13,7 @@
 		981E7FD42209FF0E006A492C /* CloudStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981E7FD32209FF0E006A492C /* CloudStorage.swift */; };
 		981FBFC4221AC189005B8F4C /* MyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981FBFC3221AC189005B8F4C /* MyUser.swift */; };
 		9820A5551FBCBF6B00EAEE6A /* MainNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9820A5541FBCBF6B00EAEE6A /* MainNav.swift */; };
+		9829E83A2231918C008DF988 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9829E8392231918C008DF988 /* SettingsCell.swift */; };
 		982F934B22087796005D9C99 /* LocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934A22087796005D9C99 /* LocalStorage.swift */; };
 		982F934E220884DA005D9C99 /* ShiftModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934D220884DA005D9C99 /* ShiftModel.swift */; };
 		982F93502208B103005D9C99 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934F2208B103005D9C99 /* UserSettings.swift */; };
@@ -56,6 +57,7 @@
 		981E7FD32209FF0E006A492C /* CloudStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorage.swift; sourceTree = "<group>"; };
 		981FBFC3221AC189005B8F4C /* MyUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyUser.swift; sourceTree = "<group>"; };
 		9820A5541FBCBF6B00EAEE6A /* MainNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNav.swift; sourceTree = "<group>"; };
+		9829E8392231918C008DF988 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		982F934A22087796005D9C99 /* LocalStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorage.swift; sourceTree = "<group>"; };
 		982F934D220884DA005D9C99 /* ShiftModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftModel.swift; sourceTree = "<group>"; };
 		982F934F2208B103005D9C99 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 			children = (
 				98AD6DDB221C34E7009364EF /* SettingsVC.swift */,
 				9862A5701FCC33AA0047671D /* AdvancedSettingsTable.swift */,
+				9829E8392231918C008DF988 /* SettingsCell.swift */,
 				98CA61931FB0A6D900463FF7 /* OvertimeRuleTable.swift */,
 				98D6628E2216003F001B2422 /* UpdateForm.swift */,
 			);
@@ -428,6 +431,7 @@
 				982FFE9422134F59007400C6 /* CreateAccountForm.swift in Sources */,
 				981FBFC4221AC189005B8F4C /* MyUser.swift in Sources */,
 				98E2EF9A1FB4D657006C3F96 /* CountingLabel.swift in Sources */,
+				9829E83A2231918C008DF988 /* SettingsCell.swift in Sources */,
 				9864BB0C1FD4700E005DB5F2 /* Calculator.swift in Sources */,
 				9830C2012207A0EF0023B582 /* Period.swift in Sources */,
 				98A54977220E03C000CBEE5D /* AddVC.swift in Sources */,
