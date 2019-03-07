@@ -25,7 +25,7 @@ class AuthVC: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.hideKeyboardWhenTappedAround()
+        //self.hideKeyboardWhenTappedAround()
         self.view.backgroundColor = Colors.theme
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: self.view.window)
@@ -34,6 +34,10 @@ class AuthVC: UIViewController, UITextFieldDelegate {
         addLoginForm()
         addCreateAccountForm()
         addLogoImage()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.dismissKeyboard()
     }
     
     override func viewWillAppear(_ animated: Bool) {

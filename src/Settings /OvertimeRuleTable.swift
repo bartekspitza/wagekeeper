@@ -138,7 +138,7 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
             
             let endField = myTextField(frame: CGRect(x: 0, y: 0, width: self.view.frame.width/7, height: 20))
             endField.font = UIFont.systemFont(ofSize: 15, weight: .light)
-            endField.attributedPlaceholder = NSAttributedString(string:"End", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13, weight: .light)])
+            endField.attributedPlaceholder = NSAttributedString(string:" - End", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13, weight: .light)])
             endField.borderStyle = .none
             endField.textAlignment = .center
             endField.inputAccessoryView = toolbar
@@ -179,6 +179,7 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
             indexSet.add(starts.count-1)
             myTableView.insertSections(indexSet as IndexSet, with: UITableView.RowAnimation.fade)
         }
+        myTableView.reloadData()
     }
     
     func startDate() -> Date {
@@ -190,15 +191,6 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
     
     @objc func timePickerChanged(sender: UIDatePicker) {
         if startFocused {
-//            if sectionFlag > 0 {
-//                if (sender.date > (ends[sectionFlag-1][1] as! Date)) {
-//
-//                    starts[sectionFlag][1] = sender.date
-//                    (starts[sectionFlag][0] as! myTextField).text = createTime(Date: starts[sectionFlag][1] as! Date)
-//                } else {
-//                    sender.date = starts[sectionFlag][1] as! Date
-//                }
-//            }
             
             starts[sectionFlag][1] = sender.date
             (starts[sectionFlag][0] as! myTextField).text = createTime(Date: starts[sectionFlag][1] as! Date)
@@ -210,13 +202,13 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
                 ends[sectionFlag][1] = createNextTime(Date: sender.date)
             } else if !(sender.date < (ends[sectionFlag][1] as! Date)) {
                 ends[sectionFlag][1] = createNextTime(Date: sender.date)
-                (ends[sectionFlag][0] as! myTextField).text = createTime(Date: ends[sectionFlag][1] as! Date)
+                (ends[sectionFlag][0] as! myTextField).text = " - " + createTime(Date: ends[sectionFlag][1] as! Date)
             }
             
         } else {
             if (sender.date > (starts[sectionFlag][1] as! Date)) {
                 ends[sectionFlag][1] = sender.date
-                (ends[sectionFlag][0] as! myTextField).text = createTime(Date: sender.date)
+                (ends[sectionFlag][0] as! myTextField).text = " - " + createTime(Date: sender.date)
             } else {
                 sender.date = ends[sectionFlag][1] as! Date
             }
@@ -253,7 +245,7 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
         timePicker.date = ends[sectionFlag][1] as! Date
         
         if sender.text == "" {
-            sender.text = createTime(Date: ends[sectionFlag][1] as! Date)
+            sender.text = " - " + createTime(Date: ends[sectionFlag][1] as! Date)
         }
         
         if !isSectionComplete.contains(false) {
@@ -294,24 +286,22 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
         
         // Interval Cell
         if indexPath.row == 0 {
-            (ends[indexPath.section][0] as! myTextField).frame = CGRect(x: 0, y: 0, width: self.view.frame.width/7, height: cell.frame.height)
-            (ends[indexPath.section][0] as! myTextField).center.x = (self.view.frame.width*0.98) - (ends[indexPath.section][0] as! myTextField).frame.width/2
-            (ends[indexPath.section][0] as! myTextField).path = indexPath.section
+            let endRateField = (ends[indexPath.section][0] as! myTextField)
+            endRateField.path = indexPath.section
+            endRateField.textAlignment = .left
             
-            let label = UILabel()
-            label.text = "-"
-            label.font = UIFont.systemFont(ofSize: 13, weight: .light)
-            label.sizeToFit()
-            label.center.y = cell.frame.height/2
-            label.center.x = (self.view.frame.width*0.98) - (ends[indexPath.section][0] as! myTextField).frame.width - label.frame.width/2
+            let text = createTime(Date: Date()) + " - "
+            let width = text.sizeOfString(usingFont: endRateField.font!).width + 10
+            endRateField.frame = CGRect(x: self.view.frame.width - width - 5, y: 0, width: width, height: cell.frame.height)
             
-            (starts[indexPath.section][0] as! myTextField).frame = CGRect(x: 0, y: 0, width: self.view.frame.width/7, height: cell.frame.height)
-            (starts[indexPath.section][0] as! myTextField).center.x = (self.view.frame.width*0.98) - (ends[indexPath.section][0] as! myTextField).frame.width - label.frame.width - (starts[indexPath.section][0] as! myTextField).frame.width/2
-            (starts[indexPath.section][0] as! myTextField).path = indexPath.section
+            let startRateField = (starts[indexPath.section][0] as! myTextField)
+            startRateField.path = indexPath.section
+            startRateField.textAlignment = .right
+            startRateField.frame = CGRect(x: endRateField.frame.origin.x - width, y: 0, width: width, height: cell.frame.height)
             
-            cell.addSubview(label)
-            cell.addSubview((starts[indexPath.section][0] as! myTextField))
-            cell.addSubview((ends[indexPath.section][0] as! myTextField))
+            cell.addSubview(endRateField)
+            cell.addSubview(startRateField)
+            
             cell.textLabel?.text = "Interval"
             // Rate Cell
         } else {

@@ -30,7 +30,7 @@ class CreateAccountForm: LoginForm {
         addPassword2FieldToView()
         
         addMainButton(title: "Create account", y: password2Field.center.y + 70)
-        addAccessoryButton(title: "Log in")
+        addAccessoryButton(title: "Already have an account? Sign in")
         addLoadingIndicator()
     }
     
@@ -54,6 +54,7 @@ class CreateAccountForm: LoginForm {
         password2Field = PasswordTextField()
         password2Field.frame = CGRect(x: 0, y: 0, width: self.frame.width * 0.75, height: 40)
         password2Field.placeholder = "Confirm password"
+        password2Field.textColor = .white
         password2Field.font = UIFont.systemFont(ofSize: 14, weight: .light)
         password2Field.autocapitalizationType = .none
         password2Field.isSecureTextEntry = true

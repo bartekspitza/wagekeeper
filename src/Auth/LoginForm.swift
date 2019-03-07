@@ -106,6 +106,7 @@ class LoginForm: UIView {
         emailField = UITextField()
         emailField.frame = CGRect(x: 0, y: 0, width: self.frame.width * 0.75, height: 40)
         emailField.placeholder = "Email"
+        emailField.textColor = .white
         emailField.font = UIFont.systemFont(ofSize: 14, weight: .light)
         emailField.autocapitalizationType = .none
         emailField.center = CGPoint(x: self.center.x, y: emailField.frame.height/2)
@@ -123,6 +124,7 @@ class LoginForm: UIView {
         passwordField = PasswordTextField()
         passwordField.frame = CGRect(x: 0, y: 0, width: self.frame.width * 0.75, height: 40)
         passwordField.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        passwordField.textColor = .white
         passwordField.placeholder = "Password"
         passwordField.borderStyle = .roundedRect
         passwordField.autocapitalizationType = .none

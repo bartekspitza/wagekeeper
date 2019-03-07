@@ -42,6 +42,7 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         self.title = "Advanced tools"
         self.navigationController?.navigationBar.tintColor = .black
+        self.showNavBarSeparator()
         configureToolbar()
         configurePicker()
         createTimePicker()
@@ -83,8 +84,8 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
         composeVC.mailComposeDelegate = self
         // Configure the fields of the interface.
         composeVC.setToRecipients(["bartekspitza@hotmail.com"])
-        composeVC.setSubject(appName)
-        composeVC.setMessageBody("\(appName) \(appBuild) Please write under this line", isHTML: false)
+        composeVC.setSubject("\(appName) \(appBuild)")
+        composeVC.setMessageBody("Please write any suggestions, bugs etc under this line.", isHTML: false)
         // Present the view controller modally.
         self.present(composeVC, animated: true, completion: nil)
     }
@@ -378,15 +379,15 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
         } else if indexPath.section == 3 {
             minHoursField.becomeFirstResponder()
         } else if indexPath.section == 4 {
-            if indexPath.row == 0 {
-                sendEmail()
-            } else {
-                rateApp(appId: "id1312943979", completion: { success in
-                    print("RateApp \(success)")
-                })
-            }
-            tableView.deselectRow(at: indexPath, animated: true)
+            sendEmail()
+        } else {
+            rateApp(appId: "id1312943979", completion: { success in
+                print("RateApp \(success)")
+            })
         }
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
