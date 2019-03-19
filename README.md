@@ -1,8 +1,11 @@
 # WageKeeper 
+![Version](https://img.shields.io/badge/version-2.0-blue.svg)
+![Platform](https://img.shields.io/badge/platform-iOS-orange.svg)
+![Status](https://img.shields.io/badge/status-live-green.svg)
+</br>
+</br>
 
-</br>
-</br>
-![basic-controls](https://github.com/bartekspitza/wagekeeper-cloud/blob/master/demo.gif?raw=true)
+![](demo.gif?raw=true)
 
 </br>
 </br>
@@ -19,7 +22,3 @@ I built WageKeeper when I myself had a tricky job. I looked through the App Stor
 
 </br>
 </br>
-
-**App Store status**:
-
-✅ - Published on App Store _November 2017_
