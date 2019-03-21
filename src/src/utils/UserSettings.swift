@@ -25,6 +25,15 @@ class UserSettings {
         return UserDefaults().string(forKey: "email")
     }
     
+    static func getMinHours() -> Int {
+        var s = Int.max
+        
+        if UserDefaults().string(forKey: "minHours") != nil && UserDefaults().string(forKey: "minHours") != "" {
+            s = UserDefaults().integer(forKey: "minHours")
+        }
+        
+        return s
+    }
     static func OTRulesForDay(day: String) -> [Any] {
         var startsUnpacked: Any?
         var endsUnpacked: Any?
@@ -85,6 +94,14 @@ class UserSettings {
         var s = Date()
         if UserDefaults().value(forKey: "defaultST") != nil {
             s = UserDefaults().value(forKey: "defaultST") as! Date
+        }
+        return s
+    }
+    
+    static func getWage() -> Float {
+        var s: Float = 0.0
+        if UserDefaults().string(forKey: "wageRate") != nil {
+            s = UserDefaults().float(forKey: "wageRate")
         }
         return s
     }

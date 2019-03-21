@@ -53,6 +53,8 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func viewDidAppear(_ animated: Bool) {
         refreshDataAndAnimations()
+        
+        
     }
     
     override func viewDidDisappear(_ animated: Bool) {

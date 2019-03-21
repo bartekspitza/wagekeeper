@@ -19,6 +19,7 @@ class ShiftModel: CustomStringConvertible {
     var note: String
     var beginsNewPeriod: Bool
     var ID = ""
+    var duration: DateInterval
     
     public var description: String {
         return "ID: " + self.ID
@@ -33,6 +34,44 @@ class ShiftModel: CustomStringConvertible {
         self.note = note
         self.beginsNewPeriod = newPeriod
         self.ID = ID
+        self.duration = DateInterval(start: startingTime, end: endingTime)
+        
+        // if shift extends to next day we need to adjust the ending date
+        if self.startingTime > self.endingTime {
+            self.endingTime = Calendar.current.date(byAdding: .day, value: 1, to: self.endingTime)!
+        }
+    }
+    
+    private func getDurationInMinutes() -> Float {
+        var ending = self.endingTime
+        
+        // Checks for minimum hours setting
+        if self.duration.duration.isLess(than: Double(UserSettings.getMinHours()*60*60)) {
+            ending = Calendar.current.date(byAdding: .hour, value: UserSettings.getMinHours(), to: startingTime)!
+        }
+        let duration = DateInterval(start: self.startingTime, end: ending)
+        return Float(duration.duration)/60
+    }
+    
+    func totalSal() -> Int {
+        var remainingMinutes: Float = self.getDurationInMinutes()
+        var money: Float = 0.0
+        let hourlyRate = UserSettings.getWage()
+        let rules = [OvertimeRule.genRule(from: 4, to: 6, rate: 120)]
+        
+        
+        for rule in rules {
+            let minutesInRule = rule.intersectionInMinutes(shiftInterval: self.duration)
+            money += rule.rate! * minutesInRule/60
+            remainingMinutes -= minutesInRule
+        }
+        
+        money += remainingMinutes/60 * hourlyRate
+        
+        // subtracts the lunch time based on the average hourly rate in this shift
+        money -= Float(self.breakTime) * money/getDurationInMinutes()
+        
+        return Int(money)
     }
     
     func isEqual(to: ShiftModel) -> Bool{
