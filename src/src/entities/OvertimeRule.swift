@@ -10,6 +10,14 @@ import Foundation
 
 
 class OvertimeRule {
+    static var mondayRules = [OvertimeRule]()
+    static var tuesdayRules = [OvertimeRule]()
+    static var wednesdayRules = [OvertimeRule]()
+    static var thursdayRules = [OvertimeRule]()
+    static var fridayRules = [OvertimeRule]()
+    static var saturdayRules = [OvertimeRule]()
+    static var sundayRules = [OvertimeRule]()
+    
     var starting: Date!
     var ending: Date!
     var rate: Float!
@@ -44,5 +52,37 @@ class OvertimeRule {
         b = Calendar.current.date(byAdding: .hour, value: to, to: b)!
         
         return OvertimeRule(starting: a, ending: b, rate: rate)
+    }
+    
+    func json() -> [String: Any] {
+        return [
+            "starting": self.starting,
+            "ending": self.ending,
+            "rate": self.rate
+        ]
+    }
+    
+    static func allRulesToJson() -> [String: Any] {
+        let obj = [
+            "Monday": rulesInDayToJSON(day: OvertimeRule.mondayRules),
+            "Tuesday": rulesInDayToJSON(day: OvertimeRule.tuesdayRules),
+            "Wednesday": rulesInDayToJSON(day: OvertimeRule.wednesdayRules),
+            "Thursday": rulesInDayToJSON(day: OvertimeRule.thursdayRules),
+            "Friday": rulesInDayToJSON(day: OvertimeRule.fridayRules),
+            "Saturday": rulesInDayToJSON(day: OvertimeRule.saturdayRules),
+            "Sunday": rulesInDayToJSON(day: OvertimeRule.sundayRules)
+        ]
+        
+        return obj
+    }
+    
+    private static func rulesInDayToJSON(day: [OvertimeRule]) -> [[String: Any]] {
+        var obj = [[String: Any]]()
+        
+        for rule in day {
+            obj.append(rule.json())
+        }
+        
+        return obj
     }
 }

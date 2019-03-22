@@ -33,7 +33,6 @@ class EditVC: AddVC {
             newPeriod: periodSwitch.isOn,
             ID: shift.ID
         )
-        print(newShift.totalSal())
         
         if shift.isEqual(to: newShift) {
             // do nothing

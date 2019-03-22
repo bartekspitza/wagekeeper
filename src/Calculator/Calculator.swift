@@ -53,8 +53,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func viewDidAppear(_ animated: Bool) {
         refreshDataAndAnimations()
-        
-        
+        CloudStorage.addrule(toUser: user.ID, completionHandler: {})
     }
     
     override func viewDidDisappear(_ animated: Bool) {

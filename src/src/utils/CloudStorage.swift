@@ -110,7 +110,22 @@ class CloudStorage {
             }
         }
         shift.ID = document.documentID
+    }
+    
+    static func addrule(toUser: String, completionHandler: @escaping () -> () ) {
+        let db = Firestore.firestore()
+        let userDoc = db.document("users/" + toUser)
         
+        userDoc.setData([
+            "overtimeRules": OvertimeRule.allRulesToJson()
+        ]) { (er) in
+            if er == nil {
+                print("sucess")
+            } else {
+                print(er!.localizedDescription)
+            }
+        }
+        print("tried to add rule")
         
     }
     

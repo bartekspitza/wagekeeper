@@ -42,36 +42,45 @@ class ShiftModel: CustomStringConvertible {
         }
     }
     
-    private func getDurationInMinutes() -> Float {
+    private func getDuration() -> DateInterval{
         var ending = self.endingTime
         
         // Checks for minimum hours setting
         if self.duration.duration.isLess(than: Double(UserSettings.getMinHours()*60*60)) {
             ending = Calendar.current.date(byAdding: .hour, value: UserSettings.getMinHours(), to: startingTime)!
         }
-        let duration = DateInterval(start: self.startingTime, end: ending)
-        return Float(duration.duration)/60
+        return DateInterval(start: self.startingTime, end: ending)
+        
     }
     
-    func totalSal() -> Int {
-        var remainingMinutes: Float = self.getDurationInMinutes()
+    func computeStats() -> ShiftStats {
+        let shiftDuration = self.getDuration()
+        var remainingMinutes: Float = Float(shiftDuration.duration/60)
         var money: Float = 0.0
-        let hourlyRate = UserSettings.getWage()
         let rules = [OvertimeRule.genRule(from: 4, to: 6, rate: 120)]
         
-        
         for rule in rules {
-            let minutesInRule = rule.intersectionInMinutes(shiftInterval: self.duration)
+            let minutesInRule = rule.intersectionInMinutes(shiftInterval: shiftDuration)
             money += rule.rate! * minutesInRule/60
             remainingMinutes -= minutesInRule
         }
         
-        money += remainingMinutes/60 * hourlyRate
+        // Captures overtime stats before we go on and add rest of the duration
+        let duration = Float(shiftDuration.duration/60)
+        let moneyEarnedInOvertime = money
+        let durationInOvertime = duration - remainingMinutes
+        
+        money += remainingMinutes/60 * UserSettings.getWage()
         
         // subtracts the lunch time based on the average hourly rate in this shift
-        money -= Float(self.breakTime) * money/getDurationInMinutes()
+        money -= Float(self.breakTime) * money/duration
         
-        return Int(money)
+        return ShiftStats(
+            salary: money,
+            duration: duration,
+            overtimeDuration: durationInOvertime,
+            moneyEarnedInOvertime: moneyEarnedInOvertime
+        )
     }
     
     func isEqual(to: ShiftModel) -> Bool{

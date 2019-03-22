@@ -24,6 +24,7 @@
 		9830C2012207A0EF0023B582 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9830C2002207A0EF0023B582 /* Period.swift */; };
 		9830C2062207B3AD0023B582 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9830C2052207B3AD0023B582 /* Time.swift */; };
 		9831FF6622441EBD001935EC /* OvertimeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9831FF6522441EBD001935EC /* OvertimeRule.swift */; };
+		9831FF6822443732001935EC /* ShiftStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9831FF6722443732001935EC /* ShiftStats.swift */; };
 		984319182207923E00C9B6FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988FDEB91F9F7AFA0090DEF1 /* AppDelegate.swift */; };
 		9852F1071FA2309B00E7BDB5 /* MainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9852F1061FA2309B00E7BDB5 /* MainCell.swift */; };
 		98594B022220159F00EE7E62 /* SpinnerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98594B012220159F00EE7E62 /* SpinnerButton.swift */; };
@@ -69,6 +70,7 @@
 		9830C2002207A0EF0023B582 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
 		9830C2052207B3AD0023B582 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		9831FF6522441EBD001935EC /* OvertimeRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OvertimeRule.swift; sourceTree = "<group>"; };
+		9831FF6722443732001935EC /* ShiftStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftStats.swift; sourceTree = "<group>"; };
 		9843191422078EC000C9B6FF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9852F1061FA2309B00E7BDB5 /* MainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCell.swift; sourceTree = "<group>"; };
 		98594B012220159F00EE7E62 /* SpinnerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerButton.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				9830C2002207A0EF0023B582 /* Period.swift */,
 				982F934D220884DA005D9C99 /* ShiftModel.swift */,
 				9886E9BB2211C11D00A4207A /* Periods.swift */,
+				9831FF6722443732001935EC /* ShiftStats.swift */,
 				9831FF6522441EBD001935EC /* OvertimeRule.swift */,
 			);
 			path = entities;
@@ -430,6 +433,7 @@
 				98CA61941FB0A6D900463FF7 /* OvertimeRuleTable.swift in Sources */,
 				98D6628F2216003F001B2422 /* UpdateForm.swift in Sources */,
 				98594B022220159F00EE7E62 /* SpinnerButton.swift in Sources */,
+				9831FF6822443732001935EC /* ShiftStats.swift in Sources */,
 				98D40CC1220B35A9006E59E0 /* AuthVC.swift in Sources */,
 				982FFE9422134F59007400C6 /* CreateAccountForm.swift in Sources */,
 				981FBFC4221AC189005B8F4C /* MyUser.swift in Sources */,
