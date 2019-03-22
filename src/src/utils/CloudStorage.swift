@@ -56,6 +56,22 @@ class CloudStorage {
         }
     }
     
+    static func getOvertimeRules(toUser: String, completionHandler: @escaping (Overtime) -> ()) {
+        let db = Firestore.firestore()
+        let userDoc = db.document("users/" + toUser)
+        
+        userDoc.getDocument { (query, er) in
+            if er != nil {
+                print(er!.localizedDescription)
+            } else {
+                let data = query!.data()!
+                print("retrieved overtime rules")
+                let overtime = Overtime.createFromData(data: data["overtimeRules"] as! [String: Any])
+                completionHandler(overtime)
+            }
+        }
+    }
+    
     static func getAllShifts(fromUser: String, completionHandler: @escaping ([ShiftModel]) -> ()) {
         let db = Firestore.firestore()
         
@@ -112,22 +128,22 @@ class CloudStorage {
         shift.ID = document.documentID
     }
     
-    static func addrule(toUser: String, completionHandler: @escaping () -> () ) {
+    static func updateOvertimeRules(toUser: String, completionHandler: @escaping () -> () ) {
         let db = Firestore.firestore()
         let userDoc = db.document("users/" + toUser)
         
         userDoc.setData([
-            "overtimeRules": OvertimeRule.allRulesToJson()
+            "overtimeRules": user.settings!.overtime.toJSON()
         ]) { (er) in
             if er == nil {
-                print("sucess")
+                print("Updated overtime rules for user: " + toUser)
             } else {
                 print(er!.localizedDescription)
             }
         }
-        print("tried to add rule")
-        
     }
+    
+    
     
     static func deleteShift(fromUser: String, shift: ShiftModel) {
         let db = Firestore.firestore()

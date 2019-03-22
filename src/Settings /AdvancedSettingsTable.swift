@@ -211,10 +211,10 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
             daysCells[i].selectionStyle = .default
             daysCells[i].tintColor = Colors.detailColor
             
-            if UserDefaults().value(forKey: days[i]) != nil {
-                daysCells[i].accessoryType = .checkmark
-            } else {
+            if user.settings.overtime.getRules(forDay: Time.weekDays[i]).rules.isEmpty {
                 daysCells[i].accessoryType = .disclosureIndicator
+            } else {
+                daysCells[i].accessoryType = .checkmark
             }
         }
     }

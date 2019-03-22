@@ -16,19 +16,21 @@ class MyUser {
     var lastName: String
     var loggedInWithFacebook: Bool
     var profileImage: UIImage?
+    var settings: Settings!
     
-    init(ID: String, email: String, firstName: String, lastName: String, loggedInWithFacebook: Bool) {
+    init(ID: String, email: String, firstName: String, lastName: String, loggedInWithFacebook: Bool, settings: Settings) {
         self.ID = ID
         self.email = email
         self.firstName = firstName
         self.lastName = lastName
         self.loggedInWithFacebook = loggedInWithFacebook
+        self.settings = settings
     }
     
     static func createFromFirebaseUser(user: User) -> MyUser {
         let email = user.email == nil ? "" : user.email!
         
-        return MyUser(ID: user.uid, email: email, firstName: "", lastName: "", loggedInWithFacebook: false)
+        return MyUser(ID: user.uid, email: email, firstName: "", lastName: "", loggedInWithFacebook: false, settings: Settings(overtime: Overtime()))
     }
     
     func setImage(path: String) {

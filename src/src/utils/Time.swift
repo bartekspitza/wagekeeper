@@ -10,6 +10,7 @@ import Foundation
 
 class Time {
     static let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+    static let weekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     static let formatter = DateFormatter()
     static let calendar = Calendar.current
     

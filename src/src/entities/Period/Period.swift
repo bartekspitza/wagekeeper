@@ -78,20 +78,20 @@ class Period {
     }
     
     func calculateHoursMinutesWorked() -> [Int] {
-        var hoursWorked = 0
-        var minutesWorked = 0
-        
-        for day in self.shifts {
-            let tmp = day.calcHours()
-            hoursWorked += tmp[0]
-            minutesWorked += tmp[1]
-        }
-        
-        hoursWorked += Int(minutesWorked/60)
-        minutesWorked -= Int(minutesWorked/60) * 60
-        
-        
-        return [hoursWorked, minutesWorked]
+//        var hoursWorked = 0
+//        var minutesWorked: Float = 0.0
+//
+//        for day in self.shifts {
+//            let stats = day.computeStats()
+//            minutesWorked += stats.duration
+//        }
+//
+//        hoursWorked += Int(minutesWorked/60)
+//        minutesWorked -= Int(minutesWorked/60) * 60
+//
+//
+//        return [hoursWorked, minutesWorked]
+        return [0, 0]
     }
     
     func salaryInfo() -> [Int] {
@@ -110,10 +110,10 @@ class Period {
             if currentDay != prevDay {
                 daysWorked += 1
             }
-            let shiftSalaryInfo = shift.salary()
-            grossSalary += shiftSalaryInfo[0]
-            minutesInOT += shiftSalaryInfo[1]
-            moneyInOT += shiftSalaryInfo[2]
+            let shiftSalaryInfo = shift.computeStats()
+            grossSalary += Int(shiftSalaryInfo.salary)
+            minutesInOT += Int(shiftSalaryInfo.overtimeDuration)
+            moneyInOT += Int(shiftSalaryInfo.moneyEarnedInOvertime)
             let prevDayComp = calendar.dateComponents([.day], from: shift.date)
             prevDay = prevDayComp.day!
         }

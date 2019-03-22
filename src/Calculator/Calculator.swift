@@ -36,7 +36,11 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 LocalStorage.transferAllShiftsToCloud(loadingHandler: {
                     self.loadingLabel.staticText = "Syncing"
                 })
+                CloudStorage.getOvertimeRules(toUser: currentUser!.uid, completionHandler: { (result) in
+                    user.settings.overtime = result
+                })
                 CloudStorage.getAllShifts(fromUser: currentUser!.uid) { (data) in
+                    print("retrieved data")
                     self.loadingLabel.staticText = "Calculating"
                     Periods.organizeShiftsIntoPeriods(ar: data, successHandler: {
                         Periods.organizePeriodsByYear(periods: shifts, successHandler: {
@@ -53,7 +57,6 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func viewDidAppear(_ animated: Bool) {
         refreshDataAndAnimations()
-        CloudStorage.addrule(toUser: user.ID, completionHandler: {})
     }
     
     override func viewDidDisappear(_ animated: Bool) {

@@ -8,9 +8,7 @@
 
 import UIKit
 
-class myTextField:UITextField {
-    var path = Int()
-}
+
 var day = ""
 
 class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
@@ -19,79 +17,75 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
     var sectionFlag = 0
     var startFocused = Bool()
     
-    var rateFields = [myTextField]()
+    var rateFields = [UITextField]()
     var ends = [[Any]]()
     var starts = [[Any]]()
     
     @IBOutlet var myTableView: UITableView!
     var isSectionComplete = [false, false]
-    var startHasNotRecievedST = [Bool]()
     
-    var toolbar: UIToolbar!
+    var rules: [OvertimeRule]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.myTableView.delegate = self
-        self.myTableView.dataSource = self
-        self.myTableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        self.myTableView.separatorColor = UIColor.black.withAlphaComponent(0.11)
-        self.myTableView.backgroundColor = .white
         self.navigationController?.navigationBar.tintColor = .black
-        configureToolbar()
-        if UserDefaults().value(forKey: day) != nil {
-            let instanceEncoded: [NSData] = UserDefaults().object(forKey: day) as! [NSData]
-            let startsUnpacked = NSKeyedUnarchiver.unarchiveObject(with: instanceEncoded[0] as Data)
-            let endsUnpacked = NSKeyedUnarchiver.unarchiveObject(with: instanceEncoded[1] as Data)
-            let rateFieldsUnpacked = NSKeyedUnarchiver.unarchiveObject(with: instanceEncoded[2] as Data)
-            
-            starts = startsUnpacked as! [[Any]]
-            ends = endsUnpacked as! [[Any]]
-            rateFields = rateFieldsUnpacked as! [myTextField]
-            
-            for section in starts {
-                (section[0] as! myTextField).font = UIFont.systemFont(ofSize: 15, weight: .light)
-                (section[0] as! myTextField).attributedPlaceholder = NSAttributedString(string:"Start", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13, weight: .light)])
-                (section[0] as! myTextField).borderStyle = .none
-                (section[0] as! myTextField).textAlignment = .center
-                (section[0] as! myTextField).inputAccessoryView = toolbar
-                (section[0] as! myTextField).addTarget(self, action: #selector(STPressed), for: UIControl.Event.editingDidBegin)
-                (section[0] as! myTextField).inputView = timePicker
-                (section[0] as! myTextField).tintColor = UIColor.clear
-                startHasNotRecievedST.append(false)
-            }
-            for section in ends {
-                (section[0] as! myTextField).font = UIFont.systemFont(ofSize: 15, weight: .light)
-                (section[0] as! myTextField).attributedPlaceholder = NSAttributedString(string:"End", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13, weight: .light)])
-                (section[0] as! myTextField).borderStyle = .none
-                (section[0] as! myTextField).textAlignment = .center
-                (section[0] as! myTextField).inputAccessoryView = toolbar
-                (section[0] as! myTextField).addTarget(self, action: #selector(ETPressed), for: UIControl.Event.editingDidBegin)
-                (section[0] as! myTextField).inputView = timePicker
-                (section[0] as! myTextField).tintColor = UIColor.clear
-            }
-            for field in rateFields {
-                field.inputAccessoryView = toolbar
-                field.keyboardType = .numberPad
-                field.clearsOnBeginEditing = true
-                field.textAlignment = .right
-                field.borderStyle = .none
-                field.font = UIFont.systemFont(ofSize: 15, weight: .light)
-                field.attributedPlaceholder = NSAttributedString(string:"for this interval", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13, weight: .light)])
-            }
-            isSectionComplete = [true, true]
-        }
-    
         let rightBtn = UIBarButtonItem(title: "Add rule", style: .plain, target: self, action: #selector(addRulePressed))
         self.navigationItem.rightBarButtonItem = rightBtn
         self.navigationItem.title = day
-        timePicker.addTarget(self, action: #selector(timePickerChanged), for: UIControl.Event.valueChanged)
-        timePicker.datePickerMode = .time
+        self.hideKeyboardWhenTappedAround()
+        configureTable()
+        configureTimePicker()
+        rules = user.settings.overtime.getRules(forDay: day).rules
+        loadRules()
         
-        if starts.isEmpty {
+        if rules.isEmpty {
             isSectionComplete = [true, true]
             addRulePressed()
             self.navigationItem.rightBarButtonItem?.tintColor = UIColor.black.withAlphaComponent(0.3)
         }
+    }
+    
+    func loadRules() {
+        for rule in rules {
+            let startField = UITextField()
+            startField.font = UIFont.systemFont(ofSize: 15, weight: .light)
+            startField.attributedPlaceholder = NSAttributedString(string:"Start", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13, weight: .light)])
+            startField.borderStyle = .none
+            startField.textAlignment = .center
+            startField.addTarget(self, action: #selector(STPressed), for: UIControl.Event.editingDidBegin)
+            startField.inputView = timePicker
+            startField.tintColor = UIColor.clear
+            startField.text = Time.dateToTimeString(date: rule.starting)
+            starts.append([startField, rule.starting])
+            
+            let endField = UITextField()
+            endField.font = UIFont.systemFont(ofSize: 15, weight: .light)
+            endField.attributedPlaceholder = NSAttributedString(string:"End", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13, weight: .light)])
+            endField.borderStyle = .none
+            endField.textAlignment = .center
+            endField.addTarget(self, action: #selector(ETPressed), for: UIControl.Event.editingDidBegin)
+            endField.inputView = timePicker
+            endField.tintColor = UIColor.clear
+            endField.text = Time.dateToTimeString(date: rule.ending)
+            ends.append([endField, rule.ending])
+            
+            let field = UITextField()
+            field.keyboardType = .numberPad
+            field.clearsOnBeginEditing = true
+            field.textAlignment = .right
+            field.borderStyle = .none
+            field.font = UIFont.systemFont(ofSize: 15, weight: .light)
+            field.attributedPlaceholder = NSAttributedString(string:"for this interval", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13, weight: .light)])
+            field.text = Int(rule.rate).description
+            rateFields.append(field)
+            
+            isSectionComplete = [true, true]
+        }
+    }
+    
+    func configureTimePicker() {
+        timePicker.addTarget(self, action: #selector(timePickerChanged), for: UIControl.Event.valueChanged)
+        timePicker.datePickerMode = .time
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -100,7 +94,7 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
         if self.isMovingFromParent {
             var indxCount = 0
             while (indxCount != starts.count) {
-                if !(rateFields[indxCount].text != "" && (starts[indxCount][0] as! myTextField).text != "" && (ends[indxCount][0] as! myTextField).text != "") {
+                if !(rateFields[indxCount].text != "" && (starts[indxCount][0] as! UITextField).text != "" && (ends[indxCount][0] as! UITextField).text != "") {
                     rateFields.remove(at: indxCount)
                     starts.remove(at: indxCount)
                     ends.remove(at: indxCount)
@@ -109,24 +103,33 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
                 }
             }
             
-            if starts.count > 0 {
-                let encodedStarts = NSKeyedArchiver.archivedData(withRootObject: starts)
-                let encodedEnds = NSKeyedArchiver.archivedData(withRootObject: ends)
-                let encodedRateFields = NSKeyedArchiver.archivedData(withRootObject: rateFields)
-
-                let encodedArr: [NSData] = [encodedStarts as NSData, encodedEnds as NSData, encodedRateFields as NSData]
-                UserDefaults().set(encodedArr, forKey: day)
-                UserDefaults().synchronize()
-            } else {
-                UserDefaults().set(nil, forKey: day)
+            var rules = [OvertimeRule]()
+            
+            for i in 0..<starts.count {
+                let start = starts[i][1] as! Date
+                let end = ends[i][1] as! Date
+                let rate = Float(rateFields[i].text!)!
+                let rule = OvertimeRule(starting: start, ending: end, rate: rate)
+                rules.append(rule)
+            }
+            
+            if (rules.count > 0) {
+                let newDay = OvertimeDay(day: day, rules: rules)
+                let shouldUpdate = user.settings.overtime.isDayDifferent(day: newDay)
+                
+                if shouldUpdate {
+                    user.settings.overtime.update(day: newDay)
+                    CloudStorage.updateOvertimeRules(toUser: user.ID, completionHandler: {})
+                }
             }
         }
     }
-    
-    func configureToolbar() {
-        toolbar = UIToolbar()
-        let buttons = toolbar.addButtons(withUpAndDown: false, color: .black)
-        buttons[0].action = #selector(donePressed)
+    func configureTable() {
+        self.myTableView.delegate = self
+        self.myTableView.dataSource = self
+        self.myTableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        self.myTableView.separatorColor = UIColor.black.withAlphaComponent(0.11)
+        self.myTableView.backgroundColor = .white
     }
     
     @objc func addRulePressed() {
@@ -134,14 +137,12 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
         
         if !isSectionComplete.contains(false) {
             isSectionComplete = [false, false]
-            startHasNotRecievedST.append(true)
             
-            let endField = myTextField(frame: CGRect(x: 0, y: 0, width: self.view.frame.width/7, height: 20))
+            let endField = UITextField(frame: CGRect(x: 0, y: 0, width: self.view.frame.width/7, height: 20))
             endField.font = UIFont.systemFont(ofSize: 15, weight: .light)
             endField.attributedPlaceholder = NSAttributedString(string:" - End", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13, weight: .light)])
             endField.borderStyle = .none
             endField.textAlignment = .center
-            endField.inputAccessoryView = toolbar
             endField.addTarget(self, action: #selector(ETPressed), for: UIControl.Event.editingDidBegin)
             endField.inputView = timePicker
             endField.tintColor = UIColor.clear
@@ -149,12 +150,11 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
 
             
             
-            let startField = myTextField(frame: CGRect(x: 0, y: 0, width: (self.view.frame.width/7), height: 20))
+            let startField = UITextField(frame: CGRect(x: 0, y: 0, width: (self.view.frame.width/7), height: 20))
             startField.font = UIFont.systemFont(ofSize: 15, weight: .light)
             startField.attributedPlaceholder = NSAttributedString(string:"Start", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13, weight: .light)])
             startField.borderStyle = .none
             startField.textAlignment = .center
-            startField.inputAccessoryView = toolbar
             startField.addTarget(self, action: #selector(STPressed), for: UIControl.Event.editingDidBegin)
             startField.inputView = timePicker
             startField.tintColor = UIColor.clear
@@ -165,8 +165,7 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
             }
 
             
-            let rateField = myTextField(frame: CGRect(x: 0, y: 0, width: (self.view.frame.width/2), height: 20))
-            rateField.inputAccessoryView = toolbar
+            let rateField = UITextField(frame: CGRect(x: 0, y: 0, width: (self.view.frame.width/2), height: 20))
             rateField.keyboardType = .numberPad
             rateField.clearsOnBeginEditing = true
             rateField.textAlignment = .right
@@ -183,32 +182,27 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
     }
     
     func startDate() -> Date {
-        let date = Date()
-        let cal = Calendar(identifier: .gregorian)
-        let newDate = cal.startOfDay(for: date)
-        return newDate
+        return Date(timeIntervalSinceReferenceDate: 0)
     }
     
     @objc func timePickerChanged(sender: UIDatePicker) {
         if startFocused {
             
             starts[sectionFlag][1] = sender.date
-            (starts[sectionFlag][0] as! myTextField).text = createTime(Date: starts[sectionFlag][1] as! Date)
-            
-            
+            (starts[sectionFlag][0] as! UITextField).text = Time.dateToTimeString(date: starts[sectionFlag][1] as! Date)
             
             // Handling endField date
-            if (ends[sectionFlag][0] as! myTextField).text == "" {
-                ends[sectionFlag][1] = createNextTime(Date: sender.date)
+            if (ends[sectionFlag][0] as! UITextField).text == "" {
+                ends[sectionFlag][1] = createNextTime(date: sender.date)
             } else if !(sender.date < (ends[sectionFlag][1] as! Date)) {
-                ends[sectionFlag][1] = createNextTime(Date: sender.date)
-                (ends[sectionFlag][0] as! myTextField).text = " - " + createTime(Date: ends[sectionFlag][1] as! Date)
+                ends[sectionFlag][1] = createNextTime(date: sender.date)
+                (ends[sectionFlag][0] as! UITextField).text = " - " + Time.dateToTimeString(date: ends[sectionFlag][1] as! Date)
             }
             
         } else {
             if (sender.date > (starts[sectionFlag][1] as! Date)) {
                 ends[sectionFlag][1] = sender.date
-                (ends[sectionFlag][0] as! myTextField).text = " - " + createTime(Date: sender.date)
+                (ends[sectionFlag][0] as! UITextField).text = " - " + Time.dateToTimeString(date: sender.date)
             } else {
                 sender.date = ends[sectionFlag][1] as! Date
             }
@@ -236,8 +230,8 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
     
 
     
-    @objc func ETPressed(_ sender: myTextField) {
-        sectionFlag = sender.path
+    @objc func ETPressed(_ sender: UITextField) {
+        sectionFlag = sender.tag
         if ends.count-1 == sectionFlag {
             isSectionComplete[1] = true
         }
@@ -245,16 +239,16 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
         timePicker.date = ends[sectionFlag][1] as! Date
         
         if sender.text == "" {
-            sender.text = " - " + createTime(Date: ends[sectionFlag][1] as! Date)
+            sender.text = " - " + Time.dateToTimeString(date: ends[sectionFlag][1] as! Date)
         }
         
         if !isSectionComplete.contains(false) {
             self.navigationItem.rightBarButtonItem?.tintColor = .black
         }
     }
-    @objc func STPressed(_ sender: myTextField) {
+    @objc func STPressed(_ sender: UITextField) {
         // Keeping track of which section we are in
-        sectionFlag = sender.path
+        sectionFlag = sender.tag
         
         // Sets the first element of iSsectionComplete to true if we are in the last section
         if starts.count-1 == sectionFlag {
@@ -264,13 +258,13 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
         timePicker.date = starts[sectionFlag][1] as! Date
         
         if sender.text == "" {
-            sender.text = createTime(Date: starts[sectionFlag][1] as! Date)
-            if (ends[sectionFlag][0] as! myTextField).text == "" {
-                ends[sectionFlag][1] = createNextTime(Date: starts[sectionFlag][1] as! Date)
+            sender.text = Time.dateToTimeString(date: starts[sectionFlag][1] as! Date)
+            if (ends[sectionFlag][0] as! UITextField).text == "" {
+                ends[sectionFlag][1] = createNextTime(date: starts[sectionFlag][1] as! Date)
             } else {
-                if timePicker.date > createBeforeTime(Date: (ends[sectionFlag][1] as! Date)) {
-                    ends[sectionFlag][1] = createNextTime(Date: timePicker.date)
-                    (ends[sectionFlag][0] as! myTextField).text = createTime(Date: ends[sectionFlag][1] as! Date)
+                if timePicker.date > createBeforeTime(date: (ends[sectionFlag][1] as! Date)) {
+                    ends[sectionFlag][1] = createNextTime(date: timePicker.date)
+                    (ends[sectionFlag][0] as! UITextField).text = Time.dateToTimeString(date: ends[sectionFlag][1] as! Date)
                 }
             }
         }
@@ -286,16 +280,16 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
         
         // Interval Cell
         if indexPath.row == 0 {
-            let endRateField = (ends[indexPath.section][0] as! myTextField)
-            endRateField.path = indexPath.section
+            let endRateField = ends[indexPath.section][0] as! UITextField
+            endRateField.tag = indexPath.section
             endRateField.textAlignment = .left
             
-            let text = createTime(Date: Date()) + " - "
+            let text = Time.dateToTimeString(date: Date()) + " - "
             let width = text.sizeOfString(usingFont: endRateField.font!).width + 10
             endRateField.frame = CGRect(x: self.view.frame.width - width - 5, y: 0, width: width, height: cell.frame.height)
             
-            let startRateField = (starts[indexPath.section][0] as! myTextField)
-            startRateField.path = indexPath.section
+            let startRateField = starts[indexPath.section][0] as! UITextField
+            startRateField.tag = indexPath.section
             startRateField.textAlignment = .right
             startRateField.frame = CGRect(x: endRateField.frame.origin.x - width, y: 0, width: width, height: cell.frame.height)
             
@@ -307,13 +301,12 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
         } else {
             rateFields[indexPath.section].frame = CGRect(x: 0, y: 0, width: (self.view.frame.width/2), height: cell.frame.height)
             rateFields[indexPath.section].center.x = (self.view.frame.width*0.95) - rateFields[indexPath.section].frame.width/2
-            rateFields[indexPath.section].path = indexPath.section
+            rateFields[indexPath.section].tag = indexPath.section
             
             cell.addSubview(rateFields[indexPath.section])
             cell.textLabel?.text = "Hourly wage"
         }
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .light)
-        print(cell.subviews.count)
         return cell
     }
     
@@ -350,27 +343,13 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
         return view
     }
     
-    func createTime(Date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .none
-        formatter.timeStyle = .short
-        
-        let dateString = formatter.string(from: Date)
-        
-        return dateString
-    }
-    func createNextTime(Date: Date) -> Date {
-        let calendar = Calendar.current
-        let date = calendar.date(byAdding: .minute, value: 1, to: Date)!
-        
-        return date
+    
+    func createNextTime(date: Date) -> Date {
+        return Calendar.current.date(byAdding: .minute, value: 1, to: date)!
     }
     
-    func createBeforeTime(Date: Date) -> Date {
-        let calendar = Calendar.current
-        let date = calendar.date(byAdding: .minute, value: -1, to: Date)!
-        
-        return date
+    func createBeforeTime(date: Date) -> Date {
+        return Calendar.current.date(byAdding: .minute, value: -1, to: date)!
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -396,10 +375,10 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
             
             if !(indexPath.section == self.starts.count-1) { // If element is not the last one in the arrays
                 for section in self.starts[indexPath.section+1..<self.starts.count] {
-                    (section[0] as! myTextField).path -= 1
+                    (section[0] as! UITextField).tag -= 1
                 }
                 for section in self.ends[indexPath.section..<self.ends.count] {
-                    (section[0] as! myTextField).path -= 1
+                    (section[0] as! UITextField).tag -= 1
                 }
             }
             

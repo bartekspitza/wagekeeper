@@ -30,6 +30,9 @@
 		98594B022220159F00EE7E62 /* SpinnerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98594B012220159F00EE7E62 /* SpinnerButton.swift */; };
 		9862A5711FCC33AA0047671D /* AdvancedSettingsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9862A5701FCC33AA0047671D /* AdvancedSettingsTable.swift */; };
 		9864BB0C1FD4700E005DB5F2 /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9864BB0B1FD4700E005DB5F2 /* Calculator.swift */; };
+		986DC2512245720E009F1555 /* Overtime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986DC2502245720E009F1555 /* Overtime.swift */; };
+		986DC253224572BB009F1555 /* OvertimeDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986DC252224572BB009F1555 /* OvertimeDay.swift */; };
+		986DC25522457711009F1555 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986DC25422457711009F1555 /* Settings.swift */; };
 		9873A001222C514C000CCFEF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9873A000222C514C000CCFEF /* GoogleService-Info.plist */; };
 		9873A003222DEE53000CCFEF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9873A002222DEE53000CCFEF /* LaunchScreen.storyboard */; };
 		9886E9BC2211C11D00A4207A /* Periods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9886E9BB2211C11D00A4207A /* Periods.swift */; };
@@ -76,6 +79,9 @@
 		98594B012220159F00EE7E62 /* SpinnerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerButton.swift; sourceTree = "<group>"; };
 		9862A5701FCC33AA0047671D /* AdvancedSettingsTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsTable.swift; sourceTree = "<group>"; };
 		9864BB0B1FD4700E005DB5F2 /* Calculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculator.swift; sourceTree = "<group>"; };
+		986DC2502245720E009F1555 /* Overtime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overtime.swift; sourceTree = "<group>"; };
+		986DC252224572BB009F1555 /* OvertimeDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OvertimeDay.swift; sourceTree = "<group>"; };
+		986DC25422457711009F1555 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		9873A000222C514C000CCFEF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9873A002222DEE53000CCFEF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9886E9BB2211C11D00A4207A /* Periods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Periods.swift; sourceTree = "<group>"; };
@@ -141,11 +147,10 @@
 		982F934C220880D7005D9C99 /* entities */ = {
 			isa = PBXGroup;
 			children = (
-				9830C2002207A0EF0023B582 /* Period.swift */,
-				982F934D220884DA005D9C99 /* ShiftModel.swift */,
-				9886E9BB2211C11D00A4207A /* Periods.swift */,
-				9831FF6722443732001935EC /* ShiftStats.swift */,
-				9831FF6522441EBD001935EC /* OvertimeRule.swift */,
+				986DC2572245775E009F1555 /* Shift */,
+				986DC2562245774E009F1555 /* Period */,
+				986DC25422457711009F1555 /* Settings.swift */,
+				986DC24F224571FB009F1555 /* Overtime */,
 			);
 			path = entities;
 			sourceTree = "<group>";
@@ -168,6 +173,34 @@
 				98BD37F02214AF9E0047F10E /* globals.swift */,
 			);
 			path = utils;
+			sourceTree = "<group>";
+		};
+		986DC24F224571FB009F1555 /* Overtime */ = {
+			isa = PBXGroup;
+			children = (
+				9831FF6522441EBD001935EC /* OvertimeRule.swift */,
+				986DC2502245720E009F1555 /* Overtime.swift */,
+				986DC252224572BB009F1555 /* OvertimeDay.swift */,
+			);
+			path = Overtime;
+			sourceTree = "<group>";
+		};
+		986DC2562245774E009F1555 /* Period */ = {
+			isa = PBXGroup;
+			children = (
+				9830C2002207A0EF0023B582 /* Period.swift */,
+				9886E9BB2211C11D00A4207A /* Periods.swift */,
+			);
+			path = Period;
+			sourceTree = "<group>";
+		};
+		986DC2572245775E009F1555 /* Shift */ = {
+			isa = PBXGroup;
+			children = (
+				982F934D220884DA005D9C99 /* ShiftModel.swift */,
+				9831FF6722443732001935EC /* ShiftStats.swift */,
+			);
+			path = Shift;
 			sourceTree = "<group>";
 		};
 		988FDEAD1F9F7AFA0090DEF1 = {
@@ -418,6 +451,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9852F1071FA2309B00E7BDB5 /* MainCell.swift in Sources */,
+				986DC253224572BB009F1555 /* OvertimeDay.swift in Sources */,
 				988FDEC21F9F7AFA0090DEF1 /* adding_shifts.xcdatamodeld in Sources */,
 				98D40CC3220B3C6A006E59E0 /* CloudAuth.swift in Sources */,
 				9886E9BE2211DEA000A4207A /* Colors.swift in Sources */,
@@ -425,11 +459,13 @@
 				980B984F2211837800414EB9 /* EditVC.swift in Sources */,
 				982FFE9222134B27007400C6 /* LoginForm.swift in Sources */,
 				98FD4C5D1FC8390F002B91B1 /* LaunchCell.swift in Sources */,
+				986DC2512245720E009F1555 /* Overtime.swift in Sources */,
 				9862A5711FCC33AA0047671D /* AdvancedSettingsTable.swift in Sources */,
 				9830C2062207B3AD0023B582 /* Time.swift in Sources */,
 				982F934B22087796005D9C99 /* LocalStorage.swift in Sources */,
 				981E7FD42209FF0E006A492C /* CloudStorage.swift in Sources */,
 				984319182207923E00C9B6FF /* AppDelegate.swift in Sources */,
+				986DC25522457711009F1555 /* Settings.swift in Sources */,
 				98CA61941FB0A6D900463FF7 /* OvertimeRuleTable.swift in Sources */,
 				98D6628F2216003F001B2422 /* UpdateForm.swift in Sources */,
 				98594B022220159F00EE7E62 /* SpinnerButton.swift in Sources */,
