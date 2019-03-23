@@ -16,7 +16,6 @@
 		9829E83A2231918C008DF988 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9829E8392231918C008DF988 /* SettingsCell.swift */; };
 		982F934B22087796005D9C99 /* LocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934A22087796005D9C99 /* LocalStorage.swift */; };
 		982F934E220884DA005D9C99 /* ShiftModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934D220884DA005D9C99 /* ShiftModel.swift */; };
-		982F93502208B103005D9C99 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934F2208B103005D9C99 /* UserSettings.swift */; };
 		982F93542208C386005D9C99 /* StringFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F93532208C386005D9C99 /* StringFormatter.swift */; };
 		982FFE9222134B27007400C6 /* LoginForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982FFE9122134B27007400C6 /* LoginForm.swift */; };
 		982FFE9422134F59007400C6 /* CreateAccountForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982FFE9322134F59007400C6 /* CreateAccountForm.swift */; };
@@ -25,6 +24,7 @@
 		9830C2062207B3AD0023B582 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9830C2052207B3AD0023B582 /* Time.swift */; };
 		9831FF6622441EBD001935EC /* OvertimeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9831FF6522441EBD001935EC /* OvertimeRule.swift */; };
 		9831FF6822443732001935EC /* ShiftStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9831FF6722443732001935EC /* ShiftStats.swift */; };
+		983AB0E422463D1200F505C4 /* PeriodStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983AB0E322463D1200F505C4 /* PeriodStats.swift */; };
 		984319182207923E00C9B6FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988FDEB91F9F7AFA0090DEF1 /* AppDelegate.swift */; };
 		9852F1071FA2309B00E7BDB5 /* MainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9852F1061FA2309B00E7BDB5 /* MainCell.swift */; };
 		98594B022220159F00EE7E62 /* SpinnerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98594B012220159F00EE7E62 /* SpinnerButton.swift */; };
@@ -65,7 +65,6 @@
 		9829E8392231918C008DF988 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		982F934A22087796005D9C99 /* LocalStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorage.swift; sourceTree = "<group>"; };
 		982F934D220884DA005D9C99 /* ShiftModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftModel.swift; sourceTree = "<group>"; };
-		982F934F2208B103005D9C99 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		982F93532208C386005D9C99 /* StringFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringFormatter.swift; sourceTree = "<group>"; };
 		982FFE9122134B27007400C6 /* LoginForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginForm.swift; sourceTree = "<group>"; };
 		982FFE9322134F59007400C6 /* CreateAccountForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountForm.swift; sourceTree = "<group>"; };
@@ -74,6 +73,7 @@
 		9830C2052207B3AD0023B582 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		9831FF6522441EBD001935EC /* OvertimeRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OvertimeRule.swift; sourceTree = "<group>"; };
 		9831FF6722443732001935EC /* ShiftStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftStats.swift; sourceTree = "<group>"; };
+		983AB0E322463D1200F505C4 /* PeriodStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodStats.swift; sourceTree = "<group>"; };
 		9843191422078EC000C9B6FF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9852F1061FA2309B00E7BDB5 /* MainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCell.swift; sourceTree = "<group>"; };
 		98594B012220159F00EE7E62 /* SpinnerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerButton.swift; sourceTree = "<group>"; };
@@ -159,7 +159,6 @@
 			isa = PBXGroup;
 			children = (
 				98594B012220159F00EE7E62 /* SpinnerButton.swift */,
-				982F934F2208B103005D9C99 /* UserSettings.swift */,
 				989392DB1FCEF322002475EA /* Extensions.swift */,
 				9813682B2218AB3E00F04187 /* Methods.swift */,
 				98E2EF991FB4D657006C3F96 /* CountingLabel.swift */,
@@ -190,6 +189,7 @@
 			children = (
 				9830C2002207A0EF0023B582 /* Period.swift */,
 				9886E9BB2211C11D00A4207A /* Periods.swift */,
+				983AB0E322463D1200F505C4 /* PeriodStats.swift */,
 			);
 			path = Period;
 			sourceTree = "<group>";
@@ -472,6 +472,7 @@
 				9831FF6822443732001935EC /* ShiftStats.swift in Sources */,
 				98D40CC1220B35A9006E59E0 /* AuthVC.swift in Sources */,
 				982FFE9422134F59007400C6 /* CreateAccountForm.swift in Sources */,
+				983AB0E422463D1200F505C4 /* PeriodStats.swift in Sources */,
 				981FBFC4221AC189005B8F4C /* MyUser.swift in Sources */,
 				98E2EF9A1FB4D657006C3F96 /* CountingLabel.swift in Sources */,
 				9829E83A2231918C008DF988 /* SettingsCell.swift in Sources */,
@@ -488,7 +489,6 @@
 				9886E9BC2211C11D00A4207A /* Periods.swift in Sources */,
 				9831FF6622441EBD001935EC /* OvertimeRule.swift in Sources */,
 				9813682C2218AB3E00F04187 /* Methods.swift in Sources */,
-				982F93502208B103005D9C99 /* UserSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -76,7 +76,7 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
         titleField.placeholder = "Shift title"
         titleField.delegate = self
         titleField.textAlignment = .center
-        titleField.text = UserSettings.getDefaultShiftName()
+        titleField.text = user.settings.title
         titleField.font = UIFont.systemFont(ofSize: 25, weight: .light)
         titleField.adjustsFontSizeToFitWidth = true
         titleField.inputAccessoryView = toolbar
@@ -100,11 +100,11 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
         
         startingTimePicker.addTarget(self, action: #selector(startingTimePickerChanged), for: .valueChanged)
         startingTimePicker.datePickerMode = .time
-        startingTimePicker.date = UserSettings.getDefaultStartingTime()
+        startingTimePicker.date = user.settings.startingTime
         
         endingTimePicker.addTarget(self, action: #selector(endingTimePickerChanged), for: .valueChanged)
         endingTimePicker.datePickerMode = .time
-        endingTimePicker.date = UserSettings.getDefaultEndingTime()
+        endingTimePicker.date = user.settings.endingTime
     }
     
     func configureToolbar() {
@@ -228,7 +228,7 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
                 startingTimeField.inputView = startingTimePicker
                 startingTimeField.tintColor = UIColor.clear
                 startingTimeField.inputAccessoryView = toolbar
-                startingTimeField.text = Time.dateToTimeString(date: UserSettings.getDefaultStartingTime()) + "  -  "
+                startingTimeField.text = Time.dateToTimeString(date: user.settings.startingTime) + "  -  "
                 startingTimeField.tag = 2
                 startingTimeField.delegate = self
                 startingTimeField.font = UIFont.systemFont(ofSize: 17, weight: .light)
@@ -238,7 +238,7 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
                 endingTimeField.inputView = endingTimePicker
                 endingTimeField.tintColor = UIColor.clear
                 endingTimeField.inputAccessoryView = toolbar
-                endingTimeField.text = Time.dateToTimeString(date: UserSettings.getDefaultEndingTime())
+                endingTimeField.text = Time.dateToTimeString(date: user.settings.endingTime)
                 endingTimeField.tag = 3
                 endingTimeField.delegate = self
                 endingTimeField.font = UIFont.systemFont(ofSize: 17, weight: .light)
@@ -247,7 +247,7 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
                 cell.contentView.addSubview(endingTimeField)
             } else if indexPath.section == 2 {
                 breakField = UITextField(frame: CGRect(x: 10, y: 0, width: self.view.frame.width, height: 30))
-                breakField.text = UserSettings.getDefaultBreakTime()
+                breakField.text = String(user.settings.breakTime)
                 breakField.placeholder = "How much break did you take?"
                 breakField.delegate = self
                 breakField.keyboardType = .numberPad
@@ -289,7 +289,7 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
                 view.addSubview(periodSwitch)
                 cell.contentView.addSubview(view)
                 
-                if !UserSettings.newPeriodsManually() {
+                if user.settings.newPeriod != 0 {
                     cell.isHidden = true
                 }
             }

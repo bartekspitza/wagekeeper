@@ -14,6 +14,15 @@ class Time {
     static let formatter = DateFormatter()
     static let calendar = Calendar.current
     
+    static func getWeekday(fromDate: Date) -> String {
+        return Calendar.current.weekdaySymbols[Calendar.current.component(.weekday, from: fromDate)-1]
+    }
+    
+    static func weekday(afterDay: String) -> String {
+        let i = weekDays.firstIndex(of: afterDay)
+        return (i == 6) ? weekDays[0] : weekDays[i!+1]
+    }
+    
     static func calculateMinutes(from: Date, to: Date) -> Float {
         var minutesWorked = 0
         var hoursWorked = 0
@@ -44,8 +53,8 @@ class Time {
     static func minutesToHoursAndMinutes(minutes: Int) -> [Int] {
         var minutesWorked = minutes
         
-        let hoursWorked = Int(minutes/60)
-        minutesWorked -= Int(minutes/60) * 60
+        let hoursWorked = minutes/60
+        minutesWorked -= (minutes/60) * 60
         
         return [hoursWorked, minutesWorked]
     }
@@ -57,7 +66,7 @@ class Time {
         let dateString = formatter.string(from: date)
 
         if withDayName {
-            let dayName = days[calendar.component(.weekday, from: date)-1]
+            let dayName = getWeekday(fromDate: date)
             return dayName + ", " + dateString.replacingOccurrences(of: ",", with: "")
         }
         

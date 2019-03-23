@@ -10,14 +10,26 @@ import UIKit
 
 class MainCell: UITableViewCell {
 
-    @IBOutlet weak var noteLbl: UILabel!
-    @IBOutlet weak var accessoryLbl: UILabel!
     @IBOutlet weak var dateLbl: UILabel!
-    @IBOutlet weak var timeLbl: UILabel!
-    @IBOutlet weak var lunchLbl: UILabel!
+    @IBOutlet weak var duration: UILabel!
+    @IBOutlet weak var worktime: UILabel!
+    @IBOutlet weak var lunch: UILabel!
+    @IBOutlet weak var title: UILabel!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        title.font = UIFont.systemFont(ofSize: 17, weight: .light)
+        dateLbl.font = UIFont.systemFont(ofSize: 11, weight: .light)
+        worktime.font = UIFont.systemFont(ofSize: 11, weight: .light)
+        lunch.font = UIFont.systemFont(ofSize: 11, weight: .light)
+        duration.font = UIFont.systemFont(ofSize: 11, weight: .light)
+        
+        dateLbl.textColor = Colors.gray
+        worktime.textColor = Colors.gray
+        lunch.textColor = Colors.gray
+        duration.textColor = Colors.gray
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

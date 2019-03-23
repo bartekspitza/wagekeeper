@@ -56,7 +56,7 @@ class CloudStorage {
         }
     }
     
-    static func getOvertimeRules(toUser: String, completionHandler: @escaping (Overtime) -> ()) {
+    static func getSettings(toUser: String, completionHandler: @escaping (Overtime) -> ()) {
         let db = Firestore.firestore()
         let userDoc = db.document("users/" + toUser)
         
@@ -65,9 +65,49 @@ class CloudStorage {
                 print(er!.localizedDescription)
             } else {
                 let data = query!.data()!
-                print("retrieved overtime rules")
-                let overtime = Overtime.createFromData(data: data["overtimeRules"] as! [String: Any])
-                completionHandler(overtime)
+                let newSettings = Settings()
+                
+                if let overtimeData = data["overtime"] {
+                    newSettings.overtime = Overtime.createFromData(data: overtimeData as! [String: Any])
+                }
+
+                if let wage = data["wage"] {
+                    newSettings.wage = wage as! Float
+                }
+                
+                if let tax = data["tax"] {
+                    newSettings.tax = tax as! Float
+                }
+            
+                if let currency = data["currency"] {
+                    newSettings.currency = currency as! String
+                }
+                
+                if let title = data["title"] {
+                    newSettings.title = title as! String
+                }
+                
+                if let breakTime = data["break"] {
+                    newSettings.breakTime = breakTime as! Int
+                }
+                
+                if let startingTime = data["starting"] {
+                    newSettings.startingTime = (startingTime as! Timestamp).dateValue()
+                }
+                
+                if let endingTime = data["ending"] {
+                    newSettings.endingTime = (endingTime as! Timestamp).dateValue()
+                }
+                
+                if let newPeriod = data["newPeriod"] {
+                    newSettings.newPeriod = newPeriod as! Int
+                }
+                
+                if let minimumHours = data["minimumHours"] {
+                    newSettings.minimumHours = minimumHours as! Int
+                }
+                user.settings = newSettings
+                
             }
         }
     }
@@ -105,6 +145,19 @@ class CloudStorage {
         })
     }
     
+    static func updateSetting(toUser: String, obj: [String: Any]) {
+        let db = Firestore.firestore()
+        let userDoc = db.document("users/" + toUser)
+        
+        userDoc.updateData(obj) { (er) in
+            if er == nil {
+                print("Updated setting.")
+            } else {
+                print(er!.localizedDescription)
+            }
+        }
+    }
+    
     static func addShift(toUser: String, shift: ShiftModel, completionHandler: @escaping () -> () ) {
         let db = Firestore.firestore()
         let shiftsCollection = db.collection("users/" + toUser + "/shifts/")
@@ -127,23 +180,6 @@ class CloudStorage {
         }
         shift.ID = document.documentID
     }
-    
-    static func updateOvertimeRules(toUser: String, completionHandler: @escaping () -> () ) {
-        let db = Firestore.firestore()
-        let userDoc = db.document("users/" + toUser)
-        
-        userDoc.setData([
-            "overtimeRules": user.settings!.overtime.toJSON()
-        ]) { (er) in
-            if er == nil {
-                print("Updated overtime rules for user: " + toUser)
-            } else {
-                print(er!.localizedDescription)
-            }
-        }
-    }
-    
-    
     
     static func deleteShift(fromUser: String, shift: ShiftModel) {
         let db = Firestore.firestore()

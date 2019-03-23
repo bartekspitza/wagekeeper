@@ -23,7 +23,6 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     let currencyPicker = UIPickerView()
     let taxPicker = UIPickerView()
     
-    
     var updateForm: UpdateForm!
     let currencies = ["SEK", "EUR", "GPD", "NOR", "USD"]
     var cellsAreBuilt = [[Bool]]()
@@ -41,20 +40,19 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     var amountShiftsLbl: UILabel!
     
     override func viewDidLoad() {
-        self.title = "Account"
-        
-        let textAttributes = [NSAttributedString.Key.foregroundColor: Colors.navbarFG]
-        self.navigationController?.navigationBar.titleTextAttributes = textAttributes
-        self.navigationController?.navigationBar.barTintColor = Colors.navbarBG
-        self.hideNavBarSeparator()
-        
-        loadUserDefaults()
+        configureView()
+        hideNavBarSeparator()
         addAccountView()
         addAmountOfShiftsElement()
         addTable()
         configurePickers()
         addUpdatingForm()
         createUpdateMessageLabel()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        refreshAmountOfShifts()
+        populateWithSettings()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -166,9 +164,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
             self.updateMessageLbl.layer.opacity = 0
         }
     }
-    override func viewWillAppear(_ animated: Bool) {
-        refreshAmountOfShifts()
-    }
+    
     
     func refreshAmountOfShifts() {
         amountShiftsLbl.text = Periods.totalShifts().description
@@ -253,12 +249,10 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         
         
         accountView.addBottomBorderWithColor(color: UIColor.black.withAlphaComponent(0.05), width: 0.5)
-       // accountView.backgroundColor = Colors.navbarBG
         
         let gradientLayer: CAGradientLayer = CAGradientLayer()
         gradientLayer.colors = [Colors.navbarBG.cgColor, UIColor.white.cgColor]
         gradientLayer.frame = CGRect(x: 0, y: 0, width: accountView.frame.width, height: accountView.frame.height)
-        let startingLocation = NSNumber(floatLiteral: Double(Double(66)/Double(gradientLayer.frame.height)))
         gradientLayer.locations = [0, 1.0]
         
         accountView.layer.insertSublayer(gradientLayer, at: UInt32(0))
@@ -308,7 +302,8 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 textField.text = "0"
             }
             
-            UserDefaults().set(textField.text!, forKey: "wageRate")
+            user.settings.wage = Float(textField.text!)!
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["wage": user.settings.wage])
         }
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -392,7 +387,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         if (indexPath.section == 0 && indexPath.row < 3) {
             cell.field.layer.opacity = 1
             cell.selectionStyle = .none
-            
+
             if indexPath.row == 0 {
                 taxrateField = cell.field
                 taxrateField.tintColor = .clear
@@ -400,7 +395,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 taxrateField.textColor = .black
                 taxrateField.font = UIFont.systemFont(ofSize: 14, weight: .light)
                 taxrateField.delegate = self
-                taxrateField.text = UserDefaults().string(forKey: "taxRate")! + " %"
+                taxrateField.text = String(user.settings.tax.round(decimals: 1)) + " %"
             } else if indexPath.row == 1 {
                 wageRateField = cell.field
                 wageRateField.clearsOnBeginEditing = true
@@ -409,7 +404,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 wageRateField.font = UIFont.systemFont(ofSize: 14, weight: .light)
                 wageRateField.delegate = self
                 wageRateField.tag = 1
-                wageRateField.text = UserDefaults().string(forKey: "wageRate")
+                wageRateField.text = String(user.settings.wage)
             } else {
                 currencyField = cell.field
                 currencyField.tintColor = UIColor.clear
@@ -417,7 +412,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 currencyField.textColor = .black
                 currencyField.font = UIFont.systemFont(ofSize: 14, weight: .light)
                 currencyField.delegate = self
-                currencyField.text = UserDefaults().string(forKey: "currency")
+                currencyField.text = user.settings.currency
             }
         }
         
@@ -433,7 +428,12 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         currencyPicker.delegate = self
         currencyPicker.dataSource = self
     }
-    
+    func configureView() {
+        self.title = "Account"
+        let textAttributes = [NSAttributedString.Key.foregroundColor: Colors.navbarFG]
+        self.navigationController?.navigationBar.titleTextAttributes = textAttributes
+        self.navigationController?.navigationBar.barTintColor = Colors.navbarBG
+    }
     func configureFields() {
         let toolbar = UIToolbar()
         let buttons = toolbar.addButtons(withUpAndDown: false, color: .black)
@@ -522,11 +522,12 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
             
             taxrateField.text = createTaxString(part1: String(integerArray[part1Value]), part2: String(decimalArray[part2Value]))
             let taxString = String(Array(taxrateField.text!)[0..<taxrateField.text!.count-2])
-            UserDefaults().set(taxString, forKey: "taxRate")
-            
+            user.settings.tax = Float(taxString)!
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["tax": user.settings.tax])
         } else {
             currencyField.text = currencies[row]
-            UserDefaults().set(currencyField.text!, forKey: "currency")
+            user.settings.currency = currencyField.text!
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["currency": user.settings.currency])
         }
     }
     func createTaxString(part1: String, part2: String) -> String {
@@ -535,18 +536,18 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         return returnString
     }
     
-    func loadUserDefaults() {
+    func populateWithSettings() {
         // TAX
-        let taxRate = UserDefaults().string(forKey: "taxRate")!
+        let taxRate = String(user.settings.tax.round(decimals: 1))
         taxrateField.text = taxRate + " %"
         taxPicker.selectRow(Int(Float(taxRate)!), inComponent: 0, animated: true)
         taxPicker.selectRow(Int(String(Array(taxRate)[(taxRate.count)-1]))!, inComponent: 2, animated: true)
         
         // WAGE
-        wageRateField.text = UserDefaults().string(forKey: "wageRate")
-        
+        wageRateField.text = String(user.settings.wage)
+        print(user.settings.wage)
         // CURRENCY
-        currencyField.text = UserDefaults().string(forKey: "currency")
+        currencyField.text = user.settings.currency
         currencyPicker.selectRow(currencies.index(of: currencyField.text!)!, inComponent: 0, animated: true)
     }
 }

@@ -17,6 +17,21 @@ class OvertimeDay {
         self.rules = rules
     }
     
+    func adjustForNextDay() {
+        for rule in rules {
+            rule.starting = Calendar.current.date(byAdding: .day, value: 1, to: rule.starting)
+            rule.ending = Calendar.current.date(byAdding: .day, value: 1, to: rule.ending)
+        }
+    }
+    
+    func copy() -> OvertimeDay {
+        var newRules = [OvertimeRule]()
+        for rule in rules {
+            newRules.append(rule.copy())
+        }
+        return OvertimeDay(day: day, rules: newRules)
+    }
+    
     func toJSON() -> [Any] {
         var json = [Any]()
         

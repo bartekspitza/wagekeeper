@@ -45,6 +45,44 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
         }
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if self.isMovingFromParent {
+            var indxCount = 0
+            while (indxCount != starts.count) {
+                if !(rateFields[indxCount].text != "" && (starts[indxCount][0] as! UITextField).text != "" && (ends[indxCount][0] as! UITextField).text != "") {
+                    rateFields.remove(at: indxCount)
+                    starts.remove(at: indxCount)
+                    ends.remove(at: indxCount)
+                } else {
+                    indxCount += 1
+                }
+            }
+            
+            var rules = [OvertimeRule]()
+            
+            for i in 0..<starts.count {
+                let start = starts[i][1] as! Date
+                let end = ends[i][1] as! Date
+                
+                let rate = Float(rateFields[i].text!)!
+                let rule = OvertimeRule(starting: start, ending: end, rate: rate)
+                rules.append(rule)
+            }
+            
+            let newDay = OvertimeDay(day: day, rules: rules)
+            let shouldUpdate = user.settings.overtime.isDayDifferent(day: newDay)
+            
+            if shouldUpdate {
+                shiftsNeedsReOrganizing = true
+                user.settings.overtime.update(day: newDay)
+                CloudStorage.updateSetting(toUser: user.ID, obj: ["overtime": user.settings.overtime.toJSON()])
+            }
+            
+        }
+    }
+    
     func loadRules() {
         for rule in rules {
             let startField = UITextField()
@@ -88,42 +126,7 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
         timePicker.datePickerMode = .time
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        if self.isMovingFromParent {
-            var indxCount = 0
-            while (indxCount != starts.count) {
-                if !(rateFields[indxCount].text != "" && (starts[indxCount][0] as! UITextField).text != "" && (ends[indxCount][0] as! UITextField).text != "") {
-                    rateFields.remove(at: indxCount)
-                    starts.remove(at: indxCount)
-                    ends.remove(at: indxCount)
-                } else {
-                    indxCount += 1
-                }
-            }
-            
-            var rules = [OvertimeRule]()
-            
-            for i in 0..<starts.count {
-                let start = starts[i][1] as! Date
-                let end = ends[i][1] as! Date
-                let rate = Float(rateFields[i].text!)!
-                let rule = OvertimeRule(starting: start, ending: end, rate: rate)
-                rules.append(rule)
-            }
-            
-            if (rules.count > 0) {
-                let newDay = OvertimeDay(day: day, rules: rules)
-                let shouldUpdate = user.settings.overtime.isDayDifferent(day: newDay)
-                
-                if shouldUpdate {
-                    user.settings.overtime.update(day: newDay)
-                    CloudStorage.updateOvertimeRules(toUser: user.ID, completionHandler: {})
-                }
-            }
-        }
-    }
+    
     func configureTable() {
         self.myTableView.delegate = self
         self.myTableView.dataSource = self

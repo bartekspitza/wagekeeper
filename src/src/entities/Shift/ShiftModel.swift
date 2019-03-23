@@ -19,10 +19,15 @@ class ShiftModel: CustomStringConvertible {
     var note: String
     var beginsNewPeriod: Bool
     var ID = ""
-    var duration: DateInterval
     
-    public var description: String {
+    var description: String {
         return "ID: " + self.ID
+    }
+    var duration: DateInterval {
+        return self.getDuration()
+    }
+    var weekDay: String {
+        return Time.getWeekday(fromDate: self.date)
     }
     
     init(title: String, date: Date, startingTime: Date, endingTime: Date, breakTime: Int, note: String, newPeriod: Bool, ID: String) {
@@ -34,46 +39,45 @@ class ShiftModel: CustomStringConvertible {
         self.note = note
         self.beginsNewPeriod = newPeriod
         self.ID = ID
-        self.duration = DateInterval(start: startingTime, end: endingTime)
-        
-        // if shift extends to next day we need to adjust the ending date
-        if self.startingTime > self.endingTime {
-            self.endingTime = Calendar.current.date(byAdding: .day, value: 1, to: self.endingTime)!
-        }
     }
     
     private func getDuration() -> DateInterval{
-        var ending = self.endingTime
+        var ending = self.adjustedEndingTime()
+        let temp = DateInterval(start: self.startingTime, end: ending)
         
         // Checks for minimum hours setting
-        if self.duration.duration.isLess(than: Double(UserSettings.getMinHours()*60*60)) {
-            ending = Calendar.current.date(byAdding: .hour, value: UserSettings.getMinHours(), to: startingTime)!
+        if temp.duration.isLess(than: Double(user.settings.minimumHours*60*60)) {
+            ending = Calendar.current.date(byAdding: .hour, value: user.settings.minimumHours, to: startingTime)!
         }
         return DateInterval(start: self.startingTime, end: ending)
-        
     }
     
     func computeStats() -> ShiftStats {
         let shiftDuration = self.getDuration()
         var remainingMinutes: Float = Float(shiftDuration.duration/60)
         var money: Float = 0.0
-//        let rules = [OvertimeRule.genRule(from: 4, to: 6, rate: 120)]
-//        
-//        for rule in rules {
-//            let minutesInRule = rule.intersectionInMinutes(shiftInterval: shiftDuration)
-//            money += rule.rate! * minutesInRule/60
-//            remainingMinutes -= minutesInRule
-//        }
         
+        let rules = user.settings.overtime.getRules(forDay: self.weekDay)
+        let nextDayRules = user.settings.overtime.getRules(forDay: Time.weekday(afterDay: self.weekDay)).copy()
+        nextDayRules.adjustForNextDay()
+
+        for rule in rules.rules + nextDayRules.rules {
+            let tmp = rule.intersectionInMinutes(shiftInterval: self.duration)
+            remainingMinutes -= tmp
+            money += rule.rate/60 * tmp
+        }
+
         // Captures overtime stats before we go on and add rest of the duration
         let duration = Float(shiftDuration.duration/60)
         let moneyEarnedInOvertime = money
         let durationInOvertime = duration - remainingMinutes
         
-        money += remainingMinutes/60 * UserSettings.getWage()
+        money += remainingMinutes/60 * user.settings.wage
         
         // subtracts the lunch time based on the average hourly rate in this shift
-        money -= Float(self.breakTime) * money/duration
+        if money > 0 {
+            money -= Float(self.breakTime) * money/duration
+        }
         
         return ShiftStats(
             salary: money,
@@ -81,6 +85,15 @@ class ShiftModel: CustomStringConvertible {
             overtimeDuration: durationInOvertime,
             moneyEarnedInOvertime: moneyEarnedInOvertime
         )
+    }
+    
+    private func adjustedEndingTime() -> Date {
+        var ending = self.endingTime
+        
+        if self.startingTime > ending {
+            ending = Calendar.current.date(byAdding: .day, value: 1, to: ending)!
+        }
+        return ending
     }
     
     func isEqual(to: ShiftModel) -> Bool{
@@ -95,15 +108,6 @@ class ShiftModel: CustomStringConvertible {
         
         return isTitleSame && isDateSame && isSTSame && isETSame && isBreakSame && isNoteSame && isBeginsNewPeriodSame
     }
-    
-    static func createFromCoreData(s: Shift) -> ShiftModel {
-        let breakTime = (s.lunchTime == "") ? 0 : Int(s.lunchTime!)!
-        let newMonth = s.newMonth == Int16(1)
-        
-        return ShiftModel(title: s.note!, date: s.date!, startingTime: s.startingTime!, endingTime: s.endingTime!,  breakTime: breakTime, note: "", newPeriod: newMonth, ID: "")
-    }
-    
-    
     
     func toCoreData() -> Shift {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -120,39 +124,10 @@ class ShiftModel: CustomStringConvertible {
         return shift
     }
     
-    
-//    func durationToString() -> String {
-//        var totalHours = ""
-//        let tmp = self.calcHours()
-//        let hoursWorked = tmp[0]
-//        let minutesWorked = tmp[1]
-//        
-//        if hoursWorked == 0 {
-//            if minutesWorked == 1 {
-//                totalHours = "\(minutesWorked)m"
-//            } else {
-//                totalHours = "\(minutesWorked)m"
-//            }
-//            
-//        } else if minutesWorked == 0 {
-//            if hoursWorked == 1 {
-//                totalHours = "\(hoursWorked)h"
-//            } else {
-//                totalHours = "\(hoursWorked)h"
-//            }
-//            
-//        } else {
-//            if hoursWorked == 1 && minutesWorked != 1 {
-//                totalHours = "\(hoursWorked)h \(minutesWorked)m"
-//            } else if hoursWorked != 1 && minutesWorked == 1 {
-//                totalHours = "\(hoursWorked)h \(minutesWorked)m"
-//            } else if hoursWorked == 1 && minutesWorked == 1 {
-//                totalHours = "\(hoursWorked)h \(minutesWorked)m"
-//            } else {
-//                totalHours = "\(hoursWorked)h \(minutesWorked)m"
-//            }
-//        }
-//        
-//        return totalHours
-//    }
+    static func createFromCoreData(s: Shift) -> ShiftModel {
+        let breakTime = (s.lunchTime == "") ? 0 : Int(s.lunchTime!)!
+        let newMonth = s.newMonth == Int16(1)
+        
+        return ShiftModel(title: s.note!, date: s.date!, startingTime: s.startingTime!, endingTime: s.endingTime!,  breakTime: breakTime, note: "", newPeriod: newMonth, ID: "")
+    }
 }

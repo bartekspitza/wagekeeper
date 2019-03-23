@@ -29,7 +29,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // App configuration
         FirebaseConfiguration.shared.setLoggerLevel(.min)
         FirebaseApp.configure()
-        UserSettings.setupNewUser()
         
         // Authentication
         if let currentUser = Auth.auth().currentUser {

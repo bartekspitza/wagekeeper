@@ -9,34 +9,34 @@
 import Foundation
 
 class Period {
-    static var statsDescriptions = ["Total work-time", "Average shift length", "Total shifts", "Total days worked", "Overtime worked"]
+    static var statsDescriptions = ["Total work-time", "Average shift length", "Total shifts", "Total days worked", "Overtime worked", "Gross money from overtime", "Net money from overtime"]
     
     var shifts = [ShiftModel]()
     var duration = ""
-    var salary = 0
+    var netSalary = 0
     var grossSalary: Int = 0
-    var amountHoursMinutesWorked: [Int] = [0,0]
+    var workTime: Int = 0
     var shiftsWorked: Int = 0
     var daysWorked: Int = 0
-    var minutesInOvertime: Int = 0
+    var durationInOvertime: Int = 0
     var moneyFromOvertime: Int = 0
-    var avgShift: [Int] = [0,0]
+    var avgShiftLength: Int = 0
     var stats: [String] = [String]()
-    
     
     init(month: [ShiftModel]) {
         self.shifts = month
         
-        let salaryInfo = self.salaryInfo()
+        let tmp = self.salaryInfo()
         
-        self.grossSalary = salaryInfo[0]
-        self.minutesInOvertime = salaryInfo[1]
-        self.moneyFromOvertime = salaryInfo[2]
-        self.daysWorked = salaryInfo[3]
-        self.salary = self.netSalary()
+        self.grossSalary = tmp.grossSalary
+        self.durationInOvertime = tmp.durationInOvertime
+        self.moneyFromOvertime = tmp.moneyEarnedFromOvertime
+        self.daysWorked = tmp.daysWorked
+        self.workTime = tmp.duration
+        self.netSalary = self.getNetSalary()
         self.duration = StringFormatter.durationToString(month: self.shifts)
-        self.amountHoursMinutesWorked = self.calculateHoursMinutesWorked()
-        self.avgShift = self.calculateAvgShiftLength()
+        
+        self.avgShiftLength = self.calculateAvgShiftLength()
         self.shiftsWorked = self.shifts.count
         self.stats = self.makeStats()
     }
@@ -45,62 +45,36 @@ class Period {
         var ar = [String]()
         
         // Total work-time
-        ar.append(StringFormatter.stringFromHoursAndMinutes(a: self.amountHoursMinutesWorked))
+        ar.append(StringFormatter.stringFromHoursAndMinutes(a: Time.minutesToHoursAndMinutes(minutes: self.workTime)))
         // Avg Shift length
-        ar.append(StringFormatter.stringFromHoursAndMinutes(a: self.avgShift))
+        ar.append(StringFormatter.stringFromHoursAndMinutes(a: Time.minutesToHoursAndMinutes(minutes: self.avgShiftLength)))
         // Total shifts worked
         ar.append(String(self.shiftsWorked))
         // Total days worked
         ar.append(String(self.daysWorked))
         // Overtime worked
-        ar.append(StringFormatter.stringFromHoursAndMinutes(a: Time.minutesToHoursAndMinutes(minutes: self.minutesInOvertime)))
+        ar.append(StringFormatter.stringFromHoursAndMinutes(a: Time.minutesToHoursAndMinutes(minutes: self.durationInOvertime)))
         // Money from overtime
         ar.append(StringFormatter.addCurrencyToNumber(amount: self.moneyFromOvertime))
+        ar.append(StringFormatter.addCurrencyToNumber(amount: Int(Float(self.moneyFromOvertime) * user.settings.taxRate)))
         return ar
     }
     
-    func netSalary() -> Int {
-        return Int(Float(self.grossSalary) * UserSettings.taxRate())
+    func getNetSalary() -> Int {
+        return Int(Float(self.grossSalary) * user.settings.taxRate)
     }
     
-    func calculateAvgShiftLength() -> [Int] {
-        var hoursWorked = self.amountHoursMinutesWorked[0]
-        var minutesWorked = self.amountHoursMinutesWorked[1]
-        
-        minutesWorked += hoursWorked * 60
-        
-        minutesWorked /= self.shifts.count
-        
-        hoursWorked = Int(minutesWorked/60)
-        minutesWorked -= Int(minutesWorked/60) * 60
-        
-        return [hoursWorked, minutesWorked]
+    func calculateAvgShiftLength() -> Int {
+        return self.workTime/self.shifts.count
     }
     
-    func calculateHoursMinutesWorked() -> [Int] {
-//        var hoursWorked = 0
-//        var minutesWorked: Float = 0.0
-//
-//        for day in self.shifts {
-//            let stats = day.computeStats()
-//            minutesWorked += stats.duration
-//        }
-//
-//        hoursWorked += Int(minutesWorked/60)
-//        minutesWorked -= Int(minutesWorked/60) * 60
-//
-//
-//        return [hoursWorked, minutesWorked]
-        return [0, 0]
-    }
-    
-    func salaryInfo() -> [Int] {
+    func salaryInfo() -> PeriodStats {
         var grossSalary = 0
+        var duration = 0
         var minutesInOT = 0
         var moneyInOT = 0
         var daysWorked = 0
         
-        // Computes month gross salary
         var prevDay = 100
         for shift in self.shifts {
             let calendar = Calendar.current
@@ -114,10 +88,12 @@ class Period {
             grossSalary += Int(shiftSalaryInfo.salary)
             minutesInOT += Int(shiftSalaryInfo.overtimeDuration)
             moneyInOT += Int(shiftSalaryInfo.moneyEarnedInOvertime)
+            duration += Int(shiftSalaryInfo.duration)
+            
             let prevDayComp = calendar.dateComponents([.day], from: shift.date)
             prevDay = prevDayComp.day!
         }
         
-        return [grossSalary, minutesInOT, moneyInOT, daysWorked]
+        return PeriodStats(salary: grossSalary, duration: duration, OTTime: minutesInOT, moneyFromOT: moneyInOT, daysWorked: daysWorked)
     }
 }

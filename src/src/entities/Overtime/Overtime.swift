@@ -16,7 +16,9 @@ class Overtime {
         var obj = [String: Any]()
         
         for day in days {
-            obj[day.day] = day.toJSON()
+            if day.rules.count > 0 {
+                obj[day.day] = day.toJSON()
+            }
         }
         
         return obj

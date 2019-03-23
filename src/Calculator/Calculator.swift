@@ -19,7 +19,6 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var salaryLbl: CountingLabel!
     var statsTable = UITableView()
     var menuTable = UITableView()
-    var loadingIndicator: UIActivityIndicatorView!
     
     var pulldownMenuIsShowing = false
     var loadingLabel: KTLoadingLabel!
@@ -28,7 +27,6 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         super.viewDidLoad()
         createLayout()
         loadingAnimation(withTitle: "Retrieving shifts")
-        
         // Adds a listener that gets called each time users state changes
         loginListener = Auth.auth().addStateDidChangeListener { (auth, currentUser) in
             if currentUser != nil {
@@ -36,11 +34,10 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 LocalStorage.transferAllShiftsToCloud(loadingHandler: {
                     self.loadingLabel.staticText = "Syncing"
                 })
-                CloudStorage.getOvertimeRules(toUser: currentUser!.uid, completionHandler: { (result) in
-                    user.settings.overtime = result
+                CloudStorage.getSettings(toUser: currentUser!.uid, completionHandler: { (result) in
+                    
                 })
                 CloudStorage.getAllShifts(fromUser: currentUser!.uid) { (data) in
-                    print("retrieved data")
                     self.loadingLabel.staticText = "Calculating"
                     Periods.organizeShiftsIntoPeriods(ar: data, successHandler: {
                         Periods.organizePeriodsByYear(periods: shifts, successHandler: {
@@ -194,7 +191,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         statsTable.separatorColor = UIColor.black.withAlphaComponent(0.2)
         statsTable.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         statsTable.register(LaunchCell.self, forCellReuseIdentifier: "cell")
-        statsTable.isScrollEnabled = false
+        statsTable.isScrollEnabled = true
         self.view.addSubview(statsTable)
     }
     func createLoadingLabel() {
@@ -250,8 +247,8 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func startCountingLabels() {
         if period != nil {
             if Int(period!.grossSalary) > 0 {
-                grossLbl.count(fromValue: 0, to: Float(period!.grossSalary), withDuration: 1.5, andAnimationtype: .EaseOut, andCounterType: .Int, currency: UserSettings.getCurrencySymbol(), preString: "Gross: ", afterString: "")
-                salaryLbl.count(fromValue: 0, to: Float(period!.salary), withDuration: TimeInterval(1.5 * (Float(period!.salary)/Float(period!.grossSalary))), andAnimationtype: .EaseOut, andCounterType: .Int, currency: UserSettings.getCurrencySymbol(), preString: "", afterString: "")
+                grossLbl.count(fromValue: 0, to: Float(period!.grossSalary), withDuration: 1.5, andAnimationtype: .EaseOut, andCounterType: .Int, currency: user.settings.currencySymbol, preString: "Gross: ", afterString: "")
+                salaryLbl.count(fromValue: 0, to: Float(period!.netSalary), withDuration: TimeInterval(1.5 * (Float(period!.netSalary)/Float(period!.grossSalary))), andAnimationtype: .EaseOut, andCounterType: .Int, currency: user.settings.currencySymbol, preString: "", afterString: "")
             }
         }
     }

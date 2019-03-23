@@ -170,27 +170,16 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MainCell") as! MainCell
         let shiftForRow = shifts[indexPath.section][indexPath.row]
-        let shiftStat = shiftForRow.computeStats()
-        cell.noteLbl.text = shiftForRow.title
-        cell.dateLbl.text = Time.dateToCellString(date: shiftForRow.date)
-        cell.accessoryLbl.text = String(shiftForRow.breakTime) + "m break"
-        cell.timeLbl.text = Time.dateToTimeString(date: shiftForRow.startingTime) + " - " + Time.dateToTimeString(date: shiftForRow.endingTime)
-        cell.lunchLbl.text = shiftForRow.breakTime.description
         
-        cell.noteLbl.font = UIFont.systemFont(ofSize: 17, weight: .light)
-        cell.dateLbl.font = UIFont.systemFont(ofSize: 11, weight: .light)
-        cell.timeLbl.font = UIFont.systemFont(ofSize: 11, weight: .light)
-        cell.lunchLbl.font = UIFont.systemFont(ofSize: 11, weight: .light)
-        cell.accessoryLbl.font = UIFont.systemFont(ofSize: 11, weight: .light)
+        cell.title.text = shiftForRow.title
+        cell.dateLbl.text = shiftForRow.weekDay + ", " + Time.dateToCellString(date: shiftForRow.date)
+        cell.duration.text = Time.dateToTimeString(date: shiftForRow.startingTime) + " - " + Time.dateToTimeString(date: shiftForRow.endingTime)
+        cell.worktime.text = StringFormatter.stringFromHoursAndMinutes(a: Time.minutesToHoursAndMinutes(minutes: Int(shiftForRow.duration.duration/60.0)))
+        cell.lunch.text = String(shiftForRow.breakTime) + "m break"
         
-        cell.dateLbl.textColor = Colors.gray
-        cell.timeLbl.textColor = Colors.gray
-        cell.lunchLbl.textColor = Colors.gray
-        cell.accessoryLbl.textColor = Colors.gray
-        
-        cell.timeLbl.sizeToFit()
-        cell.accessoryLbl.sizeToFit()
-        cell.noteLbl.center.x = self.view.center.x
+        cell.duration.sizeToFit()
+        cell.worktime.sizeToFit()
+        cell.title.center.x = self.view.center.x
     
         return cell
     }

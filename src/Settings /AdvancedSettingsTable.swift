@@ -25,10 +25,8 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
     // Other
     let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     let sectionTitles = ["Overtime rules", "Default shift information", "When does a new period begin?"]
-    let timePicker = UIDatePicker()
-    var startFieldIsFocused = false
-    var STDate = Date()
-    var ETDate = Date()
+    let startingTimePicker = UIDatePicker()
+    let endingTimePicker = UIDatePicker()
     let picker = UIPickerView()
     let range = Array(1..<28)
     
@@ -37,12 +35,11 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.tintColor = Colors.detailColor
-        tableView.tableFooterView = UIView()
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         self.title = "Advanced tools"
         self.navigationController?.navigationBar.tintColor = .black
         self.showNavBarSeparator()
+        
+        configureTable()
         configureToolbar()
         configurePicker()
         createTimePicker()
@@ -50,8 +47,9 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
         configureNoteLunchField()
     }
     
+    
     override func viewWillAppear(_ animated: Bool) {
-        loadUserDefaults()
+        populateWithSettings()
         configureDaysCells()
         mySwitch.onTintColor = Colors.theme
     }
@@ -70,12 +68,12 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
         }
         
         if self.isMovingFromParent {
-            if autoTextField.text == "" && mySwitch.isOn == false || mySwitch.isOn {
-                UserDefaults().set(true, forKey: "manuallyNewMonth")
-                UserDefaults().set("1", forKey: "newMonth")
+            if (mySwitch.isOn) {
+                user.settings.newPeriod = 0
             } else {
-                UserDefaults().set(false, forKey: "manuallyNewMonth")
+                user.settings.newPeriod = picker.selectedRow(inComponent: 0) + 1
             }
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["newPeriod": user.settings.newPeriod])
         }
     }
     
@@ -107,73 +105,41 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
         }
         UIApplication.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: completion)
     }
-    
-    func configureToolbar() {
-        toolbar = UIToolbar()
-        let buttons = toolbar.addButtons(withUpAndDown: false, color: .black)
-        buttons[0].action = #selector(donePressed)
-    }
-    
-    func configurePicker() {
-        self.picker.delegate = self
-        self.picker.dataSource = self
-        autoTextField.inputAccessoryView = toolbar
-        autoTextField.tintColor = UIColor.clear
-        autoTextField.inputView = picker
-    }
-    
-    func configureNoteLunchField() {
-        noteField.delegate = self
-        noteField.inputAccessoryView = toolbar
-        lunchField.inputAccessoryView = toolbar
-        noteField.autocapitalizationType = .sentences
-        lunchField.keyboardType = .numberPad
-        lunchField.clearsOnBeginEditing = true
-    }
-    
-    
-    @objc func timePickerChanged(sender: UIDatePicker) {
-        if startFieldIsFocused {
-            STDate = timePicker.date
-            STField.text = createTime(Date: STDate)
-            UserDefaults().set(STDate, forKey: "defaultST")
+
+    @objc func datePickerDidChangeValue(sender: UIDatePicker) {
+        if sender.tag == 1 {
+            STField.text = Time.dateToTimeString(date: sender.date)
         } else {
-            ETDate = timePicker.date
-            ETField.text = createTime(Date: ETDate)
-            UserDefaults().set(ETDate, forKey: "defaultET")
+            ETField.text = Time.dateToTimeString(date: sender.date)
         }
     }
     
-    @IBAction func noteSet(_ sender: UITextField) {
-        UserDefaults().setValue(noteField.text!, forKey: "defaultNote")
-    }
-    
-    @IBAction func lunchSet(_ sender: UITextField) {
-        if lunchField.text == "" {
-            lunchField.text = "0"
-            UserDefaults().setValue(lunchField.text, forKey: "defaultLunch")
-        } else {
-            UserDefaults().setValue(lunchField.text, forKey: "defaultLunch")
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
+        if textField.tag == 1 {
+            user.settings.title = noteField.text!
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["title": user.settings.title])
+        } else if textField.tag == 2 {
+            if lunchField.text == "" {
+                lunchField.text = "0"
+            }
+            user.settings.breakTime = Int(lunchField.text!)!
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["break": user.settings.breakTime])
+        } else if textField.tag == 3 {
+            user.settings.startingTime = startingTimePicker.date
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["starting": startingTimePicker.date])
+        } else if textField.tag == 4 {
+            user.settings.endingTime = endingTimePicker.date
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["ending": endingTimePicker.date])
+        } else if textField.tag == 5 {
+            if textField.text == "" {
+                textField.text = "0"
+            } else {
+                if Int(textField.text!)! > 24 {
+                    textField.text = String(24)
+                }
+            }
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["minimumHours": Int(textField.text!)!])
         }
-    }
-    
-    @IBAction func STPressed(_ sender: UITextField) {
-        startFieldIsFocused = true
-        STField.text = createTime(Date: STDate)
-        timePicker.date = STDate
-        
-        if UserDefaults().value(forKey: "defaultET") == nil {
-            ETDate = STDate
-        }
-        UserDefaults().set(STDate, forKey: "defaultST")
-    }
-    
-    @IBAction func ETPressed(_ sender: Any) {
-        startFieldIsFocused = false
-        ETField.text = createTime(Date: ETDate)
-        timePicker.date = ETDate
-        
-        UserDefaults().set(ETDate, forKey: "defaultET")
     }
     
     @IBAction func switchPressed(_ sender: UISwitch) {
@@ -182,7 +148,6 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
         if mySwitch.isOn {
             autoTextField.isEnabled = false
 
-            
             UIView.transition(with: automaticallyLbl, duration: duration, options: .transitionCrossDissolve, animations: ({
                 self.automaticallyLbl.textColor = UIColor.lightGray
             }), completion: nil)
@@ -202,10 +167,34 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
                 self.autoTextField.textColor = UIColor.black
                 self.autoTextField.attributedPlaceholder = NSAttributedString(string:"Tap to enter..", attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
             }), completion: nil)
-            
         }
     }
     
+    func configureToolbar() {
+        toolbar = UIToolbar()
+        let buttons = toolbar.addButtons(withUpAndDown: false, color: .black)
+        buttons[0].action = #selector(donePressed)
+    }
+    
+    func configurePicker() {
+        self.picker.delegate = self
+        self.picker.dataSource = self
+        autoTextField.inputAccessoryView = toolbar
+        autoTextField.tintColor = UIColor.clear
+        autoTextField.inputView = picker
+    }
+    
+    func configureNoteLunchField() {
+        noteField.delegate = self
+        noteField.inputAccessoryView = toolbar
+        lunchField.inputAccessoryView = toolbar
+        lunchField.delegate = self
+        noteField.autocapitalizationType = .sentences
+        lunchField.keyboardType = .numberPad
+        lunchField.clearsOnBeginEditing = true
+        noteField.tag = 1
+        lunchField.tag = 2
+    }
     func configureDaysCells() {
         for i in 0..<daysCells.count {
             daysCells[i].selectionStyle = .default
@@ -218,52 +207,57 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
             }
         }
     }
+    func configureMinHoursField() {
+        minHoursField.keyboardType = .decimalPad
+        minHoursField.clearsOnBeginEditing = true
+        minHoursField.inputAccessoryView = toolbar
+        minHoursField.delegate = self
+        minHoursField.tag = 5
+        mySwitch.onTintColor = navColor
+    }
+    func configureTable() {
+        tableView.tintColor = Colors.detailColor
+        tableView.tableFooterView = UIView()
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
     
-    func loadUserDefaults() {
+    func populateWithSettings() {
         // Mininum hours
-        minHoursField.text = UserDefaults().string(forKey: "minHours")
+        minHoursField.text = String(user.settings.minimumHours)
         // Starting time
-        STDate = UserDefaults().value(forKey: "defaultST") as! Date
-        STField.text = createTime(Date: STDate)
+        startingTimePicker.date = user.settings.startingTime
+        STField.text = Time.dateToTimeString(date: startingTimePicker.date)
         // Ending time
-        ETDate = UserDefaults().value(forKey: "defaultET") as! Date
-        ETField.text = createTime(Date: ETDate)
+        endingTimePicker.date = user.settings.endingTime
+        ETField.text = Time.dateToTimeString(date: endingTimePicker.date)
         // Note
-        noteField.text = UserDefaults().string(forKey: "defaultNote")
+        noteField.text = user.settings.title
         // Lunch
-        lunchField.text = UserDefaults().string(forKey: "defaultLunch")
+        lunchField.text = String(user.settings.breakTime)
         // Closing date
-        if UserDefaults().bool(forKey: "manuallyNewMonth") {
-            autoTextField.text = "1st"
+        if user.settings.newPeriod == 0 {
+            autoTextField.text = "25th"
             autoTextField.textColor = .lightGray
             automaticallyLbl.textColor = .lightGray
             mySwitch.isOn = true
         } else {
             automaticallyLbl.textColor = .black
             mySwitch.isOn = false
-            if [1, 21].contains(Int(UserDefaults().string(forKey: "newMonth")!)!) {
-                autoTextField.text = UserDefaults().string(forKey: "newMonth")! + "st"
-            } else if [2, 22].contains(Int(UserDefaults().string(forKey: "newMonth")!)!) {
-                autoTextField.text = UserDefaults().string(forKey: "newMonth")! + "nd"
-            } else if [3, 23].contains(Int(UserDefaults().string(forKey: "newMonth")!)!) {
-                autoTextField.text = UserDefaults().string(forKey: "newMonth")! + "rd"
+            autoTextField.text = String(user.settings.newPeriod)
+            if [1, 21].contains(user.settings.newPeriod) {
+                autoTextField.text! += "st"
+            } else if [2, 22].contains(user.settings.newPeriod) {
+                autoTextField.text! += "nd"
+            } else if [3, 23].contains(user.settings.newPeriod) {
+                autoTextField.text! += "rd"
             } else {
-                autoTextField.text = UserDefaults().string(forKey: "newMonth")! + "th"
+                autoTextField.text! += "th"
             }
-            picker.selectRow(Int(UserDefaults().string(forKey: "newMonth")!)!-1, inComponent: 0, animated: true)
+            picker.selectRow(user.settings.newPeriod-1, inComponent: 0, animated: true)
         }
         autoTextField.text! += " day of month"
     }
-    
-    
-    
-    func configureMinHoursField() {
-        minHoursField.keyboardType = .decimalPad
-        minHoursField.clearsOnBeginEditing = true
-        minHoursField.inputAccessoryView = toolbar
-        mySwitch.onTintColor = navColor
-    }
-    
+
     @objc func donePressed() {
         self.view.endEditing(true)
     }
@@ -359,7 +353,7 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.section == 0 {
-            day = days[indexPath.row]
+            day = Time.weekDays[indexPath.row]
             performSegue(withIdentifier: "OTRuleSegue", sender: self)
             tableView.deselectRow(at: indexPath, animated: true)
             
@@ -400,8 +394,6 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
         return String(range[row])
     }
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        UserDefaults().set(String(row + 1), forKey: "newMonth")
-
         if [1, 21].contains((row + 1)) {
             autoTextField.text = String(row + 1) + "st"
         } else if [2, 22].contains((row + 1)) {
@@ -414,38 +406,36 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
         autoTextField.text! += " day of month"
     }
     
-    @IBAction func minHoursSet(_ sender: UITextField) {
-        if minHoursField.text == "" {
-            minHoursField.text = "0"
-            UserDefaults().set(minHoursField.text!.floatValue, forKey: "minHours")
-        } else {
-            UserDefaults().set(minHoursField.text!.floatValue, forKey: "minHours")
+    @objc func datePickerDidEndEditing(sender: UIDatePicker) {
+        if sender.tag == 1 {
+            user.settings.startingTime = sender.date
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["starting": sender.date])
+        } else if sender.tag == 2{
+            user.settings.endingTime = sender.date
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["ending": sender.date])
         }
     }
     
-    
     func createTimePicker() {
-        timePicker.addTarget(self, action: #selector(timePickerChanged), for: UIControl.Event.valueChanged)
-        timePicker.datePickerMode = .time
+        startingTimePicker.datePickerMode = .time
+        endingTimePicker.datePickerMode = .time
+        startingTimePicker.addTarget(self, action: #selector(datePickerDidEndEditing(sender:)), for: .editingDidEnd)
+        endingTimePicker.addTarget(self, action: #selector(datePickerDidEndEditing(sender:)), for: .editingDidEnd)
+        startingTimePicker.addTarget(self, action: #selector(datePickerDidChangeValue(sender:)), for: .valueChanged)
+        endingTimePicker.addTarget(self, action: #selector(datePickerDidChangeValue(sender:)), for: .valueChanged)
+        startingTimePicker.tag = 1
+        endingTimePicker.tag = 2
         
         ETField.inputAccessoryView = toolbar
         STField.inputAccessoryView = toolbar
         ETField.tintColor = UIColor.clear
         STField.tintColor = UIColor.clear
-        ETField.inputView = timePicker
-        STField.inputView = timePicker
-        ETField.addTarget(self, action: #selector(ETPressed(_:)), for: UIControl.Event.editingDidBegin)
-        STField.addTarget(self, action: #selector(STPressed(_:)), for: UIControl.Event.editingDidBegin)
-    }
-    
-    func createTime(Date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .none
-        formatter.timeStyle = .short
-        
-        let dateString = formatter.string(from: Date)
-        
-        return dateString
+        ETField.inputView = endingTimePicker
+        STField.inputView = startingTimePicker
+        STField.delegate = self
+        ETField.delegate = self
+        STField.tag = 3
+        ETField.tag = 4
     }
     
     // Enables deletion of all rules in given OT Day

@@ -30,7 +30,7 @@ class MyUser {
     static func createFromFirebaseUser(user: User) -> MyUser {
         let email = user.email == nil ? "" : user.email!
         
-        return MyUser(ID: user.uid, email: email, firstName: "", lastName: "", loggedInWithFacebook: false, settings: Settings(overtime: Overtime()))
+        return MyUser(ID: user.uid, email: email, firstName: "", lastName: "", loggedInWithFacebook: false, settings: Settings())
     }
     
     func setImage(path: String) {

@@ -13,13 +13,20 @@ class OvertimeRule {
     var starting: Date!
     var ending: Date!
     var rate: Float!
-    var duration: DateInterval!
+    
+    var duration: DateInterval {
+        return self.getDateInterval()
+    }
     
     init(starting: Date, ending: Date, rate: Float) {
         self.starting = starting
         self.ending = ending
         self.rate = rate
-        self.duration = getDateInterval()
+    }
+    
+    
+    func copy() -> OvertimeRule {
+        return OvertimeRule(starting: starting, ending: ending, rate: rate)
     }
     
     func getDateInterval() -> DateInterval {

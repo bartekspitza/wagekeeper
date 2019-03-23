@@ -179,6 +179,13 @@ extension String {
     }
 }
 
+extension Float {
+    func round(decimals: Int) -> Float{
+        let divisor = powf(10, 3)
+        return Float(Darwin.round(divisor * self)/divisor)
+    }
+}
+
 // Image resizing
 extension UIImage {
     
