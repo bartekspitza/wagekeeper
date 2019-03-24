@@ -145,15 +145,15 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
             }
             
             // Reorganized the periods and makes the new period
-            Periods.organizePeriodsByYear(periods: shifts, successHandler: {
-                Periods.makePeriod(yearIndex: 0, monthIndex: 0, successHandler: {})
+            Periods.reOrganize(successHandler: {
+                Periods.organizePeriodsByYear(periods: shifts, successHandler: {
+                    Periods.makePeriod(yearIndex: 0, monthIndex: 0, successHandler: {
+                        shiftsNeedsReOrganizing = false
+                    })
+                })
             })
-            
-            if self.myTableView.numberOfRows(inSection: indexPath.section) > 1 {
-                self.myTableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
-            } else {
-                self.myTableView.deleteSections([indexPath.section], with: UITableView.RowAnimation.automatic)
-            }
+
+            self.myTableView.reloadData()
             self.showInstructions()
         }
         deleteAction.backgroundColor = UIColor.gray
@@ -172,7 +172,7 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let shiftForRow = shifts[indexPath.section][indexPath.row]
         
         cell.title.text = shiftForRow.title
-        cell.dateLbl.text = shiftForRow.weekDay + ", " + Time.dateToCellString(date: shiftForRow.date)
+        cell.dateLbl.text = shiftForRow.date.shortWeekday() + ", " + Time.dateToCellString(date: shiftForRow.date)
         cell.duration.text = Time.dateToTimeString(date: shiftForRow.startingTime) + " - " + Time.dateToTimeString(date: shiftForRow.endingTime)
         cell.worktime.text = StringFormatter.stringFromHoursAndMinutes(a: Time.minutesToHoursAndMinutes(minutes: Int(shiftForRow.duration.duration/60.0)))
         cell.lunch.text = String(shiftForRow.breakTime) + "m break"

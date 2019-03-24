@@ -105,23 +105,18 @@ class Time {
     }
     
     static func createDefaultST() -> Date {
-        let calendar = Calendar.current
-        
-        var date = Date(timeIntervalSinceReferenceDate: 0)
-        date = calendar.date(byAdding: .hour, value: 7, to: date)!
-        
-        return date
+        let date = Date(timeIntervalSinceReferenceDate: 0)
+        return Calendar.current.date(byAdding: .hour, value: 7, to: date)!
     }
-    
     static func createDefaultET() -> Date {
-        let calendar = Calendar.current
-        
-        var date = Date(timeIntervalSinceReferenceDate: 0)
-        date = calendar.date(byAdding: .hour, value: 15, to: date)!
-        
-        return date
+        let date = Date(timeIntervalSinceReferenceDate: 0)
+        return Calendar.current.date(byAdding: .hour, value: 15, to: date)!
     }
-    
+    static func beginningOfDay() -> Date {
+        let date = Date()
+        let cal = Calendar(identifier: .gregorian)
+        return cal.startOfDay(for: date)
+    }
     static func stringToDate(date: String) -> Date {
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         return formatter.date(from: date)!

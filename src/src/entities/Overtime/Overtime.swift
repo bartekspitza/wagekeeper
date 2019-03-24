@@ -46,7 +46,6 @@ class Overtime {
         return rules
     }
     
-    /* Returns true if the day changed actually differed from the previous one */
     func update(day: OvertimeDay) {
         if replaceDay(with: day) == false {
             days.append(day)

@@ -38,7 +38,9 @@ class EditVC: AddVC {
             // do nothing
         } else {
             shifts[shiftToEdit[0]][shiftToEdit[1]] = newShift
-            CloudStorage.updateShift(from: shift, with: newShift, user: user.ID, completionHandler: {})
+            CloudStorage.updateShift(from: shift, with: newShift, user: user.ID, completionHandler: {
+                CloudStorage.updateSetting(toUser: user.ID, obj: ["lastAddedShift": Date()])
+            })
             shiftsNeedsReOrganizing = true
         }
     }
@@ -62,7 +64,7 @@ class EditVC: AddVC {
         // Fills all fields, pickers and the switch according to the information from the chosen shift
         titleField.text = shift.title
         dateField.text = Time.dateToString(date: shift.date, withDayName: true)
-        startingTimeField.text = Time.dateToTimeString(date: shift.startingTime)
+        startingTimeField.text = Time.dateToTimeString(date: shift.startingTime) + "  -  "
         endingTimeField.text = Time.dateToTimeString(date: shift.endingTime)
         breakField.text = shift.breakTime.description
         noteField.text = shift.note

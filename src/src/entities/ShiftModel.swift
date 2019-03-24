@@ -23,11 +23,9 @@ class ShiftModel: CustomStringConvertible {
     var description: String {
         return "ID: " + self.ID
     }
-    var duration: DateInterval {
-        return self.getDuration()
-    }
+
     var weekDay: String {
-        return Time.getWeekday(fromDate: self.date)
+        return self.date.weekday()
     }
     
     init(title: String, date: Date, startingTime: Date, endingTime: Date, breakTime: Int, note: String, newPeriod: Bool, ID: String) {
@@ -41,19 +39,8 @@ class ShiftModel: CustomStringConvertible {
         self.ID = ID
     }
     
-    private func getDuration() -> DateInterval{
-        var ending = self.adjustedEndingTime()
-        let temp = DateInterval(start: self.startingTime, end: ending)
-        
-        // Checks for minimum hours setting
-        if temp.duration.isLess(than: Double(user.settings.minimumHours*60*60)) {
-            ending = Calendar.current.date(byAdding: .hour, value: user.settings.minimumHours, to: startingTime)!
-        }
-        return DateInterval(start: self.startingTime, end: ending)
-    }
-    
-    func computeStats() -> ShiftStats {
-        let shiftDuration = self.getDuration()
+    func computeStats() -> [String: Any] {
+        let shiftDuration = self.duration
         var remainingMinutes: Float = Float(shiftDuration.duration/60)
         var money: Float = 0.0
         
@@ -62,7 +49,7 @@ class ShiftModel: CustomStringConvertible {
         nextDayRules.adjustForNextDay()
 
         for rule in rules.rules + nextDayRules.rules {
-            let tmp = rule.intersectionInMinutes(shiftInterval: self.duration)
+            let tmp = rule.intersectionInMinutes(shiftInterval: shiftDuration)
             remainingMinutes -= tmp
             money += rule.rate/60 * tmp
         }
@@ -79,12 +66,23 @@ class ShiftModel: CustomStringConvertible {
             money -= Float(self.breakTime) * money/duration
         }
         
-        return ShiftStats(
-            salary: money,
-            duration: duration,
-            overtimeDuration: durationInOvertime,
-            moneyEarnedInOvertime: moneyEarnedInOvertime
-        )
+        return [
+            "salary": money,
+            "duration": duration,
+            "overtimeDuration": durationInOvertime,
+            "moneyEarnedInOvertime": moneyEarnedInOvertime
+        ]
+    }
+    
+    var duration: DateInterval {
+        var ending = self.adjustedEndingTime()
+        let temp = DateInterval(start: self.startingTime, end: ending)
+        
+        // Checks for minimum hours setting
+        if temp.duration.isLess(than: Double(user.settings.minimumHours*60*60)) {
+            ending = Calendar.current.date(byAdding: .hour, value: user.settings.minimumHours, to: startingTime)!
+        }
+        return DateInterval(start: self.startingTime, end: ending)
     }
     
     private func adjustedEndingTime() -> Date {

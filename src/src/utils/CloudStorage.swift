@@ -56,62 +56,6 @@ class CloudStorage {
         }
     }
     
-    static func getSettings(toUser: String, completionHandler: @escaping (Overtime) -> ()) {
-        let db = Firestore.firestore()
-        let userDoc = db.document("users/" + toUser)
-        
-        userDoc.getDocument { (query, er) in
-            if er != nil {
-                print(er!.localizedDescription)
-            } else {
-                let data = query!.data()!
-                let newSettings = Settings()
-                
-                if let overtimeData = data["overtime"] {
-                    newSettings.overtime = Overtime.createFromData(data: overtimeData as! [String: Any])
-                }
-
-                if let wage = data["wage"] {
-                    newSettings.wage = wage as! Float
-                }
-                
-                if let tax = data["tax"] {
-                    newSettings.tax = tax as! Float
-                }
-            
-                if let currency = data["currency"] {
-                    newSettings.currency = currency as! String
-                }
-                
-                if let title = data["title"] {
-                    newSettings.title = title as! String
-                }
-                
-                if let breakTime = data["break"] {
-                    newSettings.breakTime = breakTime as! Int
-                }
-                
-                if let startingTime = data["starting"] {
-                    newSettings.startingTime = (startingTime as! Timestamp).dateValue()
-                }
-                
-                if let endingTime = data["ending"] {
-                    newSettings.endingTime = (endingTime as! Timestamp).dateValue()
-                }
-                
-                if let newPeriod = data["newPeriod"] {
-                    newSettings.newPeriod = newPeriod as! Int
-                }
-                
-                if let minimumHours = data["minimumHours"] {
-                    newSettings.minimumHours = minimumHours as! Int
-                }
-                user.settings = newSettings
-                
-            }
-        }
-    }
-    
     static func getAllShifts(fromUser: String, completionHandler: @escaping ([ShiftModel]) -> ()) {
         let db = Firestore.firestore()
         
@@ -143,6 +87,59 @@ class CloudStorage {
                 print("Couldn't fetch data from the cloud\nError message: " + er!.localizedDescription)
             }
         })
+    }
+    
+    static func migrateUserDefaultsToCloud(toUser: String) {
+        if UserDefaults().bool(forKey: "hasUpdatedTo2.1") == false {
+            var obj = [String: Any]()
+            if let tax = UserDefaults().string(forKey: "taxRate") {
+                obj["tax"] = Float(tax)!
+                user.settings.tax = Float(tax)!
+            }
+            if let wage = UserDefaults().string(forKey: "wageRate") {
+                obj["wage"] = Int(wage)!
+                user.settings.wage = Float(wage)!
+            }
+            if let currency = UserDefaults().string(forKey: "currency") {
+                if currency != "" {
+                    obj["currency"] = currency
+                    user.settings.currency = currency
+                }
+            }
+            if let title = UserDefaults().string(forKey: "defaultNote") {
+                obj["title"] = title
+                user.settings.title = title
+            }
+            if let breakTime = UserDefaults().string(forKey: "defaultLunch") {
+                obj["break"] = Int(breakTime)!
+                user.settings.breakTime = Int(breakTime)!
+            }
+            if let ST = UserDefaults().value(forKey: "defaultST") {
+                obj["starting"] = ST as! Date
+                user.settings.startingTime = ST as! Date
+            }
+            if let ET = UserDefaults().value(forKey: "defaultET") {
+                obj["ending"] = ET as! Date
+                user.settings.endingTime = ET as! Date
+            }
+            
+            CloudStorage.updateSetting(toUser: toUser, obj: ["settings": obj])
+            UserDefaults().set(true, forKey: "hasUpdatedTo2.1")
+        }
+    }
+    
+    static func getSettings(toUser: String, completionHandler: @escaping () -> ()) {
+        let db = Firestore.firestore()
+        let userDoc = db.document("users/" + toUser)
+        
+        userDoc.getDocument { (query, er) in
+            if er != nil {
+                print(er!.localizedDescription)
+            } else {
+                user.settings = Settings.createFromDocumentSnapshot(data: query!.data()!)
+            }
+            completionHandler()
+        }
     }
     
     static func updateSetting(toUser: String, obj: [String: Any]) {

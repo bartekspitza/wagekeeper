@@ -11,6 +11,7 @@ import FirebaseAuth
 import KTLoadingLabel
 
 class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    var statsDescriptions = ["Total work-time", "Average shift length", "Total shifts", "Total days worked", "Overtime worked", "Money from overtime (gross)", "Money from overtime (net)"]
     
     var periodLbl = UILabel()
     var btn: UIButton!
@@ -26,7 +27,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         createLayout()
-        loadingAnimation(withTitle: "Retrieving shifts")
+        loadingAnimation(withTitle: "Retrieving settings")
         // Adds a listener that gets called each time users state changes
         loginListener = Auth.auth().addStateDidChangeListener { (auth, currentUser) in
             if currentUser != nil {
@@ -34,20 +35,24 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 LocalStorage.transferAllShiftsToCloud(loadingHandler: {
                     self.loadingLabel.staticText = "Syncing"
                 })
-                CloudStorage.getSettings(toUser: currentUser!.uid, completionHandler: { (result) in
-                    
-                })
-                CloudStorage.getAllShifts(fromUser: currentUser!.uid) { (data) in
-                    self.loadingLabel.staticText = "Calculating"
-                    Periods.organizeShiftsIntoPeriods(ar: data, successHandler: {
-                        Periods.organizePeriodsByYear(periods: shifts, successHandler: {
-                            Periods.makePeriod(yearIndex: 0, monthIndex: 0, successHandler: {
-                                self.stopLoadingAnimation()
-                                self.refreshDataAndAnimations()
+                CloudStorage.migrateUserDefaultsToCloud(toUser: currentUser!.uid)
+                
+                CloudStorage.getSettings(toUser: currentUser!.uid, completionHandler: { () in
+                    print("Retrieved user settings")
+                    self.loadingLabel.staticText = "Retrieving shifts"
+                    CloudStorage.getAllShifts(fromUser: currentUser!.uid) { (data) in
+                        self.loadingLabel.staticText = "Calculating"
+                        Periods.organizeShiftsIntoPeriods(ar: data, successHandler: {
+                            Periods.organizePeriodsByYear(periods: shifts, successHandler: {
+                                Periods.makePeriod(yearIndex: 0, monthIndex: 0, successHandler: {
+                                    self.stopLoadingAnimation()
+                                    self.refreshDataAndAnimations()
+                                })
                             })
                         })
-                    })
-                }
+                    }
+                })
+                
             }
         }
     }
@@ -158,7 +163,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func resetLabels() {
-        let currency = UserDefaults().string(forKey: "currency")!
+        let currency = user.settings.currency
         let symbol = currencies[currency]!
         
             if symbol == "kr" {
@@ -323,9 +328,9 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if tableView.tag == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! LaunchCell
             
-            cell.insertStatsDesc(width: (self.view.frame.width), text: Period.statsDescriptions[indexPath.row])
+            cell.insertStatsDesc(width: (self.view.frame.width), text: statsDescriptions[indexPath.row])
             if period != nil {
-                cell.insertStatsInfo(width: self.view.frame.width, text: period!.stats[indexPath.row])
+                cell.insertStatsInfo(width: self.view.frame.width, text: period!.statsForDisplay[indexPath.row])
             } else {
                 cell.insertStatsInfo(width: self.view.frame.width, text: "0")
             }
@@ -360,7 +365,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView.tag == 1 {
-            return Period.statsDescriptions.count
+            return statsDescriptions.count
         } else {
             return periodsSeperatedByYear[section].count
         }

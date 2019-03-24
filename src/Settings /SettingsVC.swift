@@ -210,11 +210,10 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         let height = UIApplication.shared.statusBarFrame.height +
             self.navigationController!.navigationBar.frame.height
         
-        accountView = UIView(frame: CGRect(x: 0, y: height, width: self.view.frame.width, height: 40))
+        accountView = UIView(frame: CGRect(x: 0, y: height, width: self.view.frame.width, height: 66))
         let imageView = UIImageView(image: user.profileImage)
-        imageView.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
+        imageView.frame = CGRect(x: 0, y: 3, width: 60, height: 60)
         imageView.frame.origin.x = 10
-        imageView.center.y = 40
         imageView.layer.cornerRadius = 30
         imageView.layer.masksToBounds = true
         
@@ -303,7 +302,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
             }
             
             user.settings.wage = Float(textField.text!)!
-            CloudStorage.updateSetting(toUser: user.ID, obj: ["wage": user.settings.wage])
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings.wage": user.settings.wage])
         }
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -523,11 +522,11 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
             taxrateField.text = createTaxString(part1: String(integerArray[part1Value]), part2: String(decimalArray[part2Value]))
             let taxString = String(Array(taxrateField.text!)[0..<taxrateField.text!.count-2])
             user.settings.tax = Float(taxString)!
-            CloudStorage.updateSetting(toUser: user.ID, obj: ["tax": user.settings.tax])
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings.tax": user.settings.tax])
         } else {
             currencyField.text = currencies[row]
             user.settings.currency = currencyField.text!
-            CloudStorage.updateSetting(toUser: user.ID, obj: ["currency": user.settings.currency])
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings.currency": user.settings.currency])
         }
     }
     func createTaxString(part1: String, part2: String) -> String {
@@ -544,8 +543,8 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         taxPicker.selectRow(Int(String(Array(taxRate)[(taxRate.count)-1]))!, inComponent: 2, animated: true)
         
         // WAGE
-        wageRateField.text = String(user.settings.wage)
-        print(user.settings.wage)
+        wageRateField.text = String(Int(user.settings.wage))
+        
         // CURRENCY
         currencyField.text = user.settings.currency
         currencyPicker.selectRow(currencies.index(of: currencyField.text!)!, inComponent: 0, animated: true)

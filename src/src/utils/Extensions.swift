@@ -163,7 +163,15 @@ extension UIView {
         self.layer.addSublayer(border)
     }
 }
-
+extension Date {
+    func weekday() -> String {
+        return Calendar.current.weekdaySymbols[Calendar.current.component(.weekday, from: self) - 1]
+    }
+    
+    func shortWeekday() -> String {
+        return Calendar.current.shortWeekdaySymbols[Calendar.current.component(.weekday, from: self) - 1]
+    }
+}
 extension String {
     func sizeOfString(usingFont font: UIFont) -> CGSize {
         let fontAttributes = [NSAttributedString.Key.font: font]

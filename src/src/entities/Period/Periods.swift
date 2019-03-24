@@ -15,6 +15,8 @@ class Periods {
         DispatchQueue.global().async {
             if periodsSeperatedByYear.count > 0 {
                 period = Period(month: periodsSeperatedByYear[yearIndex][monthIndex])
+            } else {
+                period = nil
             }
             DispatchQueue.main.async {
                 successHandler()
@@ -98,7 +100,7 @@ class Periods {
         var tempPeriod = [Shift]()
         var organizedPeriods = [[Shift]]()
         
-        if UserDefaults().bool(forKey: "manuallyNewMonth") {
+        if user.settings.newPeriod == 0 {
             for i in 0..<ar.count {
                 
                 if i == (ar.count-1) {
@@ -118,7 +120,7 @@ class Periods {
         } else {
             if ar.count > 0 {
                 var compare = [4000, 12, 12]
-                let seperator = Int(UserDefaults().string(forKey: "newMonth")!)!
+                let seperator = user.settings.newPeriod
                 
                 for shift in ar {
                     let year = Int(String((Array(shift.date!.description))[0..<4]))!
@@ -156,7 +158,7 @@ class Periods {
             var tempPeriod = [ShiftModel]()
             var organizedPeriods = [[ShiftModel]]()
             
-            if UserDefaults().bool(forKey: "manuallyNewMonth") {
+            if user.settings.newPeriod == 0 {
                 for i in 0..<new.count {
                     
                     if i == (new.count-1) {
@@ -176,7 +178,7 @@ class Periods {
             } else {
                 if new.count > 0 {
                     var compare = [4000, 12, 12]
-                    let seperator = Int(UserDefaults().string(forKey: "newMonth")!)!
+                    let seperator = user.settings.newPeriod
                     
                     for shift in new {
                         let year = Int(String((Array(shift.date.description))[0..<4]))!
