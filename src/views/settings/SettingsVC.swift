@@ -302,7 +302,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
             }
             
             user.settings.wage = Float(textField.text!)!
-            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings.wage": user.settings.wage])
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings": ["wage": user.settings.wage]])
         }
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -432,6 +432,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         let textAttributes = [NSAttributedString.Key.foregroundColor: Colors.navbarFG]
         self.navigationController?.navigationBar.titleTextAttributes = textAttributes
         self.navigationController?.navigationBar.barTintColor = Colors.navbarBG
+        self.hideNavBarSeparator()
     }
     func configureFields() {
         let toolbar = UIToolbar()
@@ -522,11 +523,11 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
             taxrateField.text = createTaxString(part1: String(integerArray[part1Value]), part2: String(decimalArray[part2Value]))
             let taxString = String(Array(taxrateField.text!)[0..<taxrateField.text!.count-2])
             user.settings.tax = Float(taxString)!
-            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings.tax": user.settings.tax])
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings": ["tax": user.settings.tax]])
         } else {
             currencyField.text = currencies[row]
             user.settings.currency = currencyField.text!
-            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings.currency": user.settings.currency])
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings": ["currency": user.settings.currency]])
         }
     }
     func createTaxString(part1: String, part2: String) -> String {

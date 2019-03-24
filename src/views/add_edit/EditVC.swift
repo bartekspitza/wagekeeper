@@ -16,10 +16,13 @@ class EditVC: AddVC {
     override func viewDidLoad() {
         self.navigationController?.navigationBar.tintColor = UIColor.black
         self.title = "Edit shift"
+        
         createTitleField()
         configureTable()
         configureToolbar()
         configurePickers()
+        makeTableTaller()
+        fillWithShiftInfo()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -45,33 +48,25 @@ class EditVC: AddVC {
         }
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.section == 4 {
-            fillWithShiftInfo()
-            configureNoteField()
-        }
-    }
-    
-    func configureNoteField() {
-        if noteField.text == "" {
-            noteField.text = "Additional notes.."
-        } else if noteField.text != "Additional notes.." {
-            noteField.textColor = .black
-        }
-    }
-    
     func fillWithShiftInfo() {
-        // Fills all fields, pickers and the switch according to the information from the chosen shift
         titleField.text = shift.title
         dateField.text = Time.dateToString(date: shift.date, withDayName: true)
         startingTimeField.text = Time.dateToTimeString(date: shift.startingTime) + "  -  "
         endingTimeField.text = Time.dateToTimeString(date: shift.endingTime)
         breakField.text = shift.breakTime.description
-        noteField.text = shift.note
+        noteField.text = shift.note == "" ? "Additional notes.." : shift.note
+        noteField.textColor = shift.note == "" ? UIColor.lightGray : UIColor.black
         
         datePicker.date = shift.date
         startingTimePicker.date = shift.startingTime
         endingTimePicker.date = shift.endingTime
         periodSwitch.isOn = shift.beginsNewPeriod
+    }
+    
+    func makeTableTaller() {
+        let height = UIApplication.shared.statusBarFrame.height +
+            self.navigationController!.navigationBar.frame.height
+        
+        table.frame = CGRect(x: 0, y: height + titleField.frame.height + 20, width: self.view.frame.width, height: self.view.frame.height - height - 20 - titleField.frame.height)
     }
 }

@@ -149,12 +149,13 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 Periods.organizePeriodsByYear(periods: shifts, successHandler: {
                     Periods.makePeriod(yearIndex: 0, monthIndex: 0, successHandler: {
                         shiftsNeedsReOrganizing = false
+                        self.myTableView.reloadData()
+                        self.showInstructions()
                     })
                 })
             })
 
-            self.myTableView.reloadData()
-            self.showInstructions()
+            
         }
         deleteAction.backgroundColor = UIColor.gray
         return [deleteAction]
@@ -192,6 +193,8 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        print(section)
+        print(shifts.count)
         var startDate = Time.dateToString(date: shifts[section][shifts[section].count-1].date, withDayName: false)
         startDate = String(startDate.prefix(startDate.count - 5))
         var endDate = Time.dateToString(date: shifts[section][0].date, withDayName: false)
@@ -200,7 +203,7 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
         var year = Time.dateToString(date: shifts[section][shifts[section].count-1].date, withDayName: false)
         year = String(year.suffix(4))
         let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 40))
-        view.backgroundColor = Colors.theme //.gray
+        view.backgroundColor = Colors.theme
         
         let periodLabel = UILabel(frame: CGRect(x: 15, y: 10, width:
             tableView.bounds.size.width, height: 30))

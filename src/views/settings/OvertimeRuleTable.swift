@@ -77,7 +77,7 @@ class OvertimeRuleTable: UITableViewController, UITextFieldDelegate {
             if shouldUpdate {
                 shiftsNeedsReOrganizing = true
                 user.settings.overtime.update(day: newDay)
-                CloudStorage.updateSetting(toUser: user.ID, obj: ["settings.overtime": user.settings.overtime.toJSON()])
+                CloudStorage.updateSetting(toUser: user.ID, obj: ["settings": ["overtime": user.settings.overtime.toJSON()]])
             }
             
         }

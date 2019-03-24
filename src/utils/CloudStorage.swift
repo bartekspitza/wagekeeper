@@ -60,7 +60,7 @@ class CloudStorage {
         let db = Firestore.firestore()
         
         let shiftsCollection = db.collection("users").document(fromUser).collection("shifts")
-
+        print(shiftsCollection.path)
         shiftsCollection.getDocuments(completion: { (query, er) in
             if er == nil {
                 var arr = [ShiftModel]()
@@ -136,7 +136,10 @@ class CloudStorage {
             if er != nil {
                 print(er!.localizedDescription)
             } else {
-                user.settings = Settings.createFromDocumentSnapshot(data: query!.data()!)
+                if let data = query!.data() {
+                    user.settings = Settings.createFromDocumentSnapshot(data: data)
+                }
+                
             }
             completionHandler()
         }
@@ -146,7 +149,14 @@ class CloudStorage {
         let db = Firestore.firestore()
         let userDoc = db.document("users/" + toUser)
         
-        userDoc.updateData(obj) { (er) in
+//        userDoc.updateData(obj) { (er) in
+//            if er == nil {
+//                print("Updated setting.")
+//            } else {
+//                print(er!.localizedDescription)
+//            }
+//        }
+        userDoc.setData(obj, merge: true) { (er) in
             if er == nil {
                 print("Updated setting.")
             } else {
@@ -171,6 +181,7 @@ class CloudStorage {
             if er == nil {
                 print("Added shift to cloud")
                 completionHandler()
+                print(shiftsCollection.path)
             } else {
                 print("Couldn't add shift to the cloud\nError message: " + er!.localizedDescription)
             }

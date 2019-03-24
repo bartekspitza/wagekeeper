@@ -14,13 +14,13 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
     
     var table: UITableView!
     
-    var titleField: UITextField!
-    var dateField: UITextField!
-    var startingTimeField: UITextField!
-    var endingTimeField: UITextField!
-    var breakField: UITextField!
-    var noteField: UITextView!
-    var periodSwitch: UISwitch!
+    var titleField = UITextField()
+    var dateField = UITextField()
+    var startingTimeField = UITextField()
+    var endingTimeField = UITextField()
+    var breakField = UITextField()
+    var noteField = UITextView()
+    var periodSwitch = UISwitch()
     
     let datePicker = UIDatePicker()
     let startingTimePicker = UIDatePicker()
@@ -36,12 +36,22 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
         self.title = "Add shift"
         self.hideKeyboardWhenTappedAround()
 
+        
+        configureFields()
         configureToolbar()
         createTitleField()
         configureTable()
         configurePickers()
         createAddShiftButton()
-        print("asdf")
+    }
+    
+    func configureFields() {
+        dateField.text = Time.dateToString(date: Date(), withDayName: true)
+        startingTimeField.text = Time.dateToTimeString(date: user.settings.startingTime) + "  -  "
+        endingTimeField.text = Time.dateToTimeString(date: user.settings.endingTime)
+        breakField.text = user.settings.breakTime.description
+        noteField.text = "Additional notes.."
+        noteField.textColor = .lightGray
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -127,7 +137,7 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
         table.isScrollEnabled = true
         table.separatorColor = UIColor.black.withAlphaComponent(0.11)
         table.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        table.register(UITableViewCell.self, forCellReuseIdentifier: "MyCell")
+        table.register(InputCell.self, forCellReuseIdentifier: "MyCell")
         
         self.view.addSubview(table)
     }
@@ -149,13 +159,13 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
     @objc func prevField() {
         let fields = [titleField, dateField, startingTimeField, endingTimeField, breakField]
         if currentField > 0 {
-            fields[currentField-1]?.becomeFirstResponder()
+            fields[currentField-1].becomeFirstResponder()
         }
     }
     @objc func nextField() {
         let fields = [dateField, startingTimeField, endingTimeField, breakField, noteField]
         if currentField < 5 {
-            fields[currentField]?.becomeFirstResponder()
+            fields[currentField].becomeFirstResponder()
         }
     }
     
@@ -209,93 +219,92 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = table.dequeueReusableCell(withIdentifier: "MyCell")!
+        let cell = table.dequeueReusableCell(withIdentifier: "MyCell")! as! InputCell
         cell.selectionStyle = .none
         
-        if periodSwitch == nil { //ensures that we dont add more to the cell after reusing it
-            if indexPath.section == 0 {
+        if indexPath.section == 0 {
 
-                dateField = UITextField(frame: CGRect(x: 10, y: 0, width: self.view.frame.width, height: 30))
-                dateField.inputAccessoryView = toolbar
-                dateField.inputView = datePicker
-                dateField.tintColor = UIColor.clear
-                dateField.text = Time.dateToString(date: Date(), withDayName: true)
-                dateField.delegate = self
-                dateField.tag = 1
-                dateField.font = UIFont.systemFont(ofSize: 17, weight: .light)
-                
-                cell.contentView.addSubview(dateField)
-            } else if indexPath.section == 1 {
-                startingTimeField = UITextField(frame: CGRect(x: 10, y: 0, width: 100, height: 30))
-                startingTimeField.inputView = startingTimePicker
-                startingTimeField.tintColor = UIColor.clear
-                startingTimeField.inputAccessoryView = toolbar
-                startingTimeField.text = Time.dateToTimeString(date: user.settings.startingTime) + "  -  "
-                startingTimeField.tag = 2
-                startingTimeField.delegate = self
-                startingTimeField.font = UIFont.systemFont(ofSize: 17, weight: .light)
-                
-                let textSize = startingTimeField.text!.sizeOfString(usingFont: startingTimeField.font!)
-                endingTimeField = UITextField(frame: CGRect(x: textSize.width + 10, y: 0, width: 100, height: 30))
-                endingTimeField.inputView = endingTimePicker
-                endingTimeField.tintColor = UIColor.clear
-                endingTimeField.inputAccessoryView = toolbar
-                endingTimeField.text = Time.dateToTimeString(date: user.settings.endingTime)
-                endingTimeField.tag = 3
-                endingTimeField.delegate = self
-                endingTimeField.font = UIFont.systemFont(ofSize: 17, weight: .light)
-                
-                cell.contentView.addSubview(startingTimeField)
-                cell.contentView.addSubview(endingTimeField)
-            } else if indexPath.section == 2 {
-                breakField = UITextField(frame: CGRect(x: 10, y: 0, width: self.view.frame.width, height: 30))
-                breakField.text = String(user.settings.breakTime)
-                breakField.placeholder = "How much break did you take?"
-                breakField.delegate = self
-                breakField.keyboardType = .numberPad
-                breakField.tag = 4
-                breakField.inputAccessoryView = toolbar
-                breakField.font = UIFont.systemFont(ofSize: 17, weight: .light)
-                
-                cell.contentView.addSubview(breakField)
-            } else if indexPath.section == 3 {
-                noteField = UITextView(frame: CGRect(x: 5, y: 0, width: self.view.frame.width, height: 70))
-                noteField.textAlignment = .left
-                noteField.autocapitalizationType = .sentences
-                noteField.text = "Additional notes.."
-                noteField.textColor = .lightGray
-                noteField.delegate = self
-                noteField.inputAccessoryView = toolbar
-                noteField.tag = 5
-                noteField.font = UIFont.systemFont(ofSize: 15, weight: .light)
-                
-                cell.contentView.addSubview(noteField)
-            } else if indexPath.section == 4 {
-                let view = UIView()
-                
-                let lbl = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30))
-                lbl.text = "This shift marks a new period"
-                lbl.font = UIFont.systemFont(ofSize: 17, weight: .light)
-                lbl.center.y = 20
-                lbl.sizeToFit()
-                
-                
-                periodSwitch = UISwitch()
-                periodSwitch.isOn = false
-                periodSwitch.onTintColor = Colors.theme
-                periodSwitch.frame.origin.x = lbl.frame.width + 20
-                
-                view.frame = CGRect(x: 0, y: 0, width: lbl.frame.width + 20 + periodSwitch.frame.width, height: 40)
-                view.center = CGPoint(x: self.view.center.x, y: 20)
-                view.addSubview(lbl)
-                view.addSubview(periodSwitch)
-                cell.contentView.addSubview(view)
-                
-                if user.settings.newPeriod != 0 {
-                    cell.isHidden = true
-                }
-            }
+            let tmp = dateField.text
+            dateField = cell.field1
+            dateField.frame = CGRect(x: 10, y: 0, width: self.view.frame.width, height: 30)
+            dateField.inputAccessoryView = toolbar
+            dateField.inputView = datePicker
+            dateField.tintColor = UIColor.clear
+            dateField.text = tmp //Time.dateToString(date: Date(), withDayName: true)
+            dateField.delegate = self
+            dateField.tag = 1
+            dateField.font = UIFont.systemFont(ofSize: 17, weight: .light)
+            
+        } else if indexPath.section == 1 {
+            var tmp = startingTimeField.text
+            startingTimeField = cell.field1
+            startingTimeField.frame = CGRect(x: 10, y: 0, width: 100, height: 30)
+            startingTimeField.inputView = startingTimePicker
+            startingTimeField.tintColor = UIColor.clear
+            startingTimeField.inputAccessoryView = toolbar
+            startingTimeField.text = tmp //Time.dateToTimeString(date: user.settings.startingTime) + "  -  "
+            startingTimeField.tag = 2
+            startingTimeField.delegate = self
+            startingTimeField.font = UIFont.systemFont(ofSize: 17, weight: .light)
+            
+            tmp = endingTimeField.text
+            let textSize = startingTimeField.text!.sizeOfString(usingFont: startingTimeField.font!)
+            endingTimeField = cell.field2
+            endingTimeField.frame = CGRect(x: textSize.width + 10, y: 0, width: 100, height: 30)
+            endingTimeField.inputView = endingTimePicker
+            endingTimeField.tintColor = UIColor.clear
+            endingTimeField.inputAccessoryView = toolbar
+            endingTimeField.text = tmp //Time.dateToTimeString(date: user.settings.endingTime)
+            endingTimeField.tag = 3
+            endingTimeField.delegate = self
+            endingTimeField.font = UIFont.systemFont(ofSize: 17, weight: .light)
+            
+        } else if indexPath.section == 2 {
+            let tmp = breakField.text
+            breakField = cell.field1
+            breakField.frame = CGRect(x: 10, y: 0, width: self.view.frame.width, height: 30)
+            breakField.text = tmp
+            breakField.placeholder = "How much break did you take?"
+            breakField.delegate = self
+            breakField.keyboardType = .numberPad
+            breakField.tag = 4
+            breakField.inputAccessoryView = toolbar
+            breakField.font = UIFont.systemFont(ofSize: 17, weight: .light)
+            
+            cell.contentView.addSubview(breakField)
+        } else if indexPath.section == 3 {
+            let tmp = noteField.text
+            let tmp1 = noteField.textColor
+            noteField = cell.textView
+            noteField.frame = CGRect(x: 5, y: 0, width: self.view.frame.width, height: 70)
+            noteField.textAlignment = .left
+            noteField.autocapitalizationType = .sentences
+            noteField.text = tmp //"Additional notes.."
+            noteField.textColor = tmp1
+            noteField.delegate = self
+            noteField.inputAccessoryView = toolbar
+            noteField.tag = 5
+            noteField.font = UIFont.systemFont(ofSize: 15, weight: .light)
+            
+            cell.contentView.addSubview(noteField)
+        } else if indexPath.section == 4 {
+
+            cell.lbl.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 30)
+            cell.lbl.text = "This shift marks a new period"
+            cell.lbl.font = UIFont.systemFont(ofSize: 17, weight: .light)
+            cell.lbl.center.y = 20
+            cell.lbl.sizeToFit()
+            
+            let tmp = periodSwitch.isOn
+            periodSwitch = cell.cellSwitch
+            cell.cellSwitch.isOn = tmp
+            cell.cellSwitch.onTintColor = Colors.theme
+            cell.cellSwitch.frame.origin.x = cell.lbl.frame.width + 20
+            cell.cellSwitch.isHidden = false
+            cell.view.frame = CGRect(x: 0, y: 0, width: cell.lbl.frame.width + 20 + periodSwitch.frame.width, height: 40)
+            cell.view.center = CGPoint(x: self.view.center.x, y: 20)
         }
+        
         
         return cell
     }
@@ -318,6 +327,6 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
         return 1
     }
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 5
+        return (user.settings.newPeriod == 0) ? 5 : 4
     }
 }

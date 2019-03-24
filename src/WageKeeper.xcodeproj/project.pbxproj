@@ -47,6 +47,7 @@
 		98E284E31FC70CC1004FD2D2 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E284E21FC70CC1004FD2D2 /* TabBarController.swift */; };
 		98E2EF9A1FB4D657006C3F96 /* CountingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E2EF991FB4D657006C3F96 /* CountingLabel.swift */; };
 		98E33A8D2247F3A5003CD3F2 /* ShiftModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E33A8C2247F3A4003CD3F2 /* ShiftModel.swift */; };
+		98E35DAA22481E44003CD3F2 /* InputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E35DA922481E44003CD3F2 /* InputCell.swift */; };
 		98FD4C5D1FC8390F002B91B1 /* LaunchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98FD4C5C1FC8390F002B91B1 /* LaunchCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -95,6 +96,7 @@
 		98E284E21FC70CC1004FD2D2 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		98E2EF991FB4D657006C3F96 /* CountingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountingLabel.swift; sourceTree = "<group>"; };
 		98E33A8C2247F3A4003CD3F2 /* ShiftModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShiftModel.swift; sourceTree = "<group>"; };
+		98E35DA922481E44003CD3F2 /* InputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputCell.swift; sourceTree = "<group>"; };
 		98FD4C5C1FC8390F002B91B1 /* LaunchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -134,6 +136,7 @@
 			children = (
 				98A54976220E03C000CBEE5D /* AddVC.swift */,
 				980B984E2211837800414EB9 /* EditVC.swift */,
+				98E35DA922481E44003CD3F2 /* InputCell.swift */,
 			);
 			path = add_edit;
 			sourceTree = "<group>";
@@ -428,6 +431,7 @@
 				986DC253224572BB009F1555 /* OvertimeDay.swift in Sources */,
 				988FDEC21F9F7AFA0090DEF1 /* adding_shifts.xcdatamodeld in Sources */,
 				98D40CC3220B3C6A006E59E0 /* CloudAuth.swift in Sources */,
+				98E35DAA22481E44003CD3F2 /* InputCell.swift in Sources */,
 				9886E9BE2211DEA000A4207A /* Colors.swift in Sources */,
 				988FDEBC1F9F7AFA0090DEF1 /* Logger.swift in Sources */,
 				980B984F2211837800414EB9 /* EditVC.swift in Sources */,

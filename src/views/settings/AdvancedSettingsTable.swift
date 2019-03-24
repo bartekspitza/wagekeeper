@@ -37,7 +37,6 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
         super.viewDidLoad()
         self.title = "Advanced tools"
         self.navigationController?.navigationBar.tintColor = .black
-        self.showNavBarSeparator()
         
         configureTable()
         configureToolbar()
@@ -62,7 +61,7 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
         } else {
             user.settings.newPeriod = picker.selectedRow(inComponent: 0) + 1
         }
-        CloudStorage.updateSetting(toUser: user.ID, obj: ["settings.newPeriod": user.settings.newPeriod])
+        CloudStorage.updateSetting(toUser: user.ID, obj: ["settings": ["newPeriod": user.settings.newPeriod]])
         
         if shiftsNeedsReOrganizing {
             Periods.reOrganize(successHandler: {
@@ -115,19 +114,19 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
         if textField.tag == 1 {
             user.settings.title = noteField.text!
-            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings.title": user.settings.title])
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings": ["title": user.settings.title]])
         } else if textField.tag == 2 {
             if lunchField.text == "" {
                 lunchField.text = "0"
             }
             user.settings.breakTime = Int(lunchField.text!)!
-            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings.break": user.settings.breakTime])
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings": ["break": user.settings.breakTime]])
         } else if textField.tag == 3 {
             user.settings.startingTime = startingTimePicker.date
-            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings.starting": startingTimePicker.date])
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings": ["starting": startingTimePicker.date]])
         } else if textField.tag == 4 {
             user.settings.endingTime = endingTimePicker.date
-            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings.ending": endingTimePicker.date])
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings": ["ending": endingTimePicker.date]])
         } else if textField.tag == 5 {
             if textField.text == "" {
                 textField.text = "0"
@@ -137,7 +136,7 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
                 }
             }
             user.settings.minimumHours = Int(textField.text!)!
-            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings.minimumHours": Int(textField.text!)!])
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings": ["minimumHours": Int(textField.text!)!]])
             shiftsNeedsReOrganizing = true
         }
     }
@@ -412,10 +411,10 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
     @objc func datePickerDidEndEditing(sender: UIDatePicker) {
         if sender.tag == 1 {
             user.settings.startingTime = sender.date
-            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings.starting": sender.date])
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings": ["starting": sender.date]])
         } else if sender.tag == 2{
             user.settings.endingTime = sender.date
-            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings.ending": sender.date])
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings": ["ending": sender.date]])
         }
     }
     
