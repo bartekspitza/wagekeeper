@@ -9,25 +9,26 @@
 /* Begin PBXBuildFile section */
 		488118C6201405880C9FB4B6 /* Pods_WageKeeper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A2FEDCE8102FEBDF20CDA71 /* Pods_WageKeeper.framework */; };
 		980B984F2211837800414EB9 /* EditVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980B984E2211837800414EB9 /* EditVC.swift */; };
-		9813682C2218AB3E00F04187 /* Methods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9813682B2218AB3E00F04187 /* Methods.swift */; };
 		981E7FD42209FF0E006A492C /* CloudStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981E7FD32209FF0E006A492C /* CloudStorage.swift */; };
 		981FBFC4221AC189005B8F4C /* MyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981FBFC3221AC189005B8F4C /* MyUser.swift */; };
 		9820A5551FBCBF6B00EAEE6A /* MainNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9820A5541FBCBF6B00EAEE6A /* MainNav.swift */; };
 		9829E83A2231918C008DF988 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9829E8392231918C008DF988 /* SettingsCell.swift */; };
 		982F934B22087796005D9C99 /* LocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934A22087796005D9C99 /* LocalStorage.swift */; };
-		982F934E220884DA005D9C99 /* ShiftModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934D220884DA005D9C99 /* ShiftModel.swift */; };
-		982F93502208B103005D9C99 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934F2208B103005D9C99 /* UserSettings.swift */; };
 		982F93542208C386005D9C99 /* StringFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F93532208C386005D9C99 /* StringFormatter.swift */; };
 		982FFE9222134B27007400C6 /* LoginForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982FFE9122134B27007400C6 /* LoginForm.swift */; };
 		982FFE9422134F59007400C6 /* CreateAccountForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982FFE9322134F59007400C6 /* CreateAccountForm.swift */; };
 		9830C1FE220793CB0023B582 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9830C1FC220793CB0023B582 /* Main.storyboard */; };
 		9830C2012207A0EF0023B582 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9830C2002207A0EF0023B582 /* Period.swift */; };
 		9830C2062207B3AD0023B582 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9830C2052207B3AD0023B582 /* Time.swift */; };
+		9831FF6622441EBD001935EC /* OvertimeRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9831FF6522441EBD001935EC /* OvertimeRule.swift */; };
 		984319182207923E00C9B6FF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988FDEB91F9F7AFA0090DEF1 /* AppDelegate.swift */; };
 		9852F1071FA2309B00E7BDB5 /* MainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9852F1061FA2309B00E7BDB5 /* MainCell.swift */; };
 		98594B022220159F00EE7E62 /* SpinnerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98594B012220159F00EE7E62 /* SpinnerButton.swift */; };
 		9862A5711FCC33AA0047671D /* AdvancedSettingsTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9862A5701FCC33AA0047671D /* AdvancedSettingsTable.swift */; };
 		9864BB0C1FD4700E005DB5F2 /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9864BB0B1FD4700E005DB5F2 /* Calculator.swift */; };
+		986DC2512245720E009F1555 /* Overtime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986DC2502245720E009F1555 /* Overtime.swift */; };
+		986DC253224572BB009F1555 /* OvertimeDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986DC252224572BB009F1555 /* OvertimeDay.swift */; };
+		986DC25522457711009F1555 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986DC25422457711009F1555 /* Settings.swift */; };
 		9873A001222C514C000CCFEF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9873A000222C514C000CCFEF /* GoogleService-Info.plist */; };
 		9873A003222DEE53000CCFEF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9873A002222DEE53000CCFEF /* LaunchScreen.storyboard */; };
 		9886E9BC2211C11D00A4207A /* Periods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9886E9BB2211C11D00A4207A /* Periods.swift */; };
@@ -45,6 +46,8 @@
 		98D6628F2216003F001B2422 /* UpdateForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D6628E2216003F001B2422 /* UpdateForm.swift */; };
 		98E284E31FC70CC1004FD2D2 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E284E21FC70CC1004FD2D2 /* TabBarController.swift */; };
 		98E2EF9A1FB4D657006C3F96 /* CountingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E2EF991FB4D657006C3F96 /* CountingLabel.swift */; };
+		98E33A8D2247F3A5003CD3F2 /* ShiftModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E33A8C2247F3A4003CD3F2 /* ShiftModel.swift */; };
+		98E35DAA22481E44003CD3F2 /* InputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E35DA922481E44003CD3F2 /* InputCell.swift */; };
 		98FD4C5D1FC8390F002B91B1 /* LaunchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98FD4C5C1FC8390F002B91B1 /* LaunchCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,25 +56,26 @@
 		6106A203491D43CA4ED87591 /* Pods-WageKeeper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WageKeeper.release.xcconfig"; path = "Pods/Target Support Files/Pods-WageKeeper/Pods-WageKeeper.release.xcconfig"; sourceTree = "<group>"; };
 		6A2FEDCE8102FEBDF20CDA71 /* Pods_WageKeeper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WageKeeper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		980B984E2211837800414EB9 /* EditVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVC.swift; sourceTree = "<group>"; };
-		9813682B2218AB3E00F04187 /* Methods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Methods.swift; sourceTree = "<group>"; };
 		981E7FD32209FF0E006A492C /* CloudStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudStorage.swift; sourceTree = "<group>"; };
 		981FBFC3221AC189005B8F4C /* MyUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyUser.swift; sourceTree = "<group>"; };
 		9820A5541FBCBF6B00EAEE6A /* MainNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNav.swift; sourceTree = "<group>"; };
 		9829E8392231918C008DF988 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		982F934A22087796005D9C99 /* LocalStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorage.swift; sourceTree = "<group>"; };
-		982F934D220884DA005D9C99 /* ShiftModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftModel.swift; sourceTree = "<group>"; };
-		982F934F2208B103005D9C99 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		982F93532208C386005D9C99 /* StringFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringFormatter.swift; sourceTree = "<group>"; };
 		982FFE9122134B27007400C6 /* LoginForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginForm.swift; sourceTree = "<group>"; };
 		982FFE9322134F59007400C6 /* CreateAccountForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountForm.swift; sourceTree = "<group>"; };
 		9830C1FC220793CB0023B582 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		9830C2002207A0EF0023B582 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
 		9830C2052207B3AD0023B582 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
+		9831FF6522441EBD001935EC /* OvertimeRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OvertimeRule.swift; sourceTree = "<group>"; };
 		9843191422078EC000C9B6FF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9852F1061FA2309B00E7BDB5 /* MainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCell.swift; sourceTree = "<group>"; };
 		98594B012220159F00EE7E62 /* SpinnerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerButton.swift; sourceTree = "<group>"; };
 		9862A5701FCC33AA0047671D /* AdvancedSettingsTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsTable.swift; sourceTree = "<group>"; };
 		9864BB0B1FD4700E005DB5F2 /* Calculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculator.swift; sourceTree = "<group>"; };
+		986DC2502245720E009F1555 /* Overtime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overtime.swift; sourceTree = "<group>"; };
+		986DC252224572BB009F1555 /* OvertimeDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OvertimeDay.swift; sourceTree = "<group>"; };
+		986DC25422457711009F1555 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		9873A000222C514C000CCFEF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9873A002222DEE53000CCFEF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9886E9BB2211C11D00A4207A /* Periods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Periods.swift; sourceTree = "<group>"; };
@@ -91,6 +95,8 @@
 		98D6628E2216003F001B2422 /* UpdateForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateForm.swift; sourceTree = "<group>"; };
 		98E284E21FC70CC1004FD2D2 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		98E2EF991FB4D657006C3F96 /* CountingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountingLabel.swift; sourceTree = "<group>"; };
+		98E33A8C2247F3A4003CD3F2 /* ShiftModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShiftModel.swift; sourceTree = "<group>"; };
+		98E35DA922481E44003CD3F2 /* InputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputCell.swift; sourceTree = "<group>"; };
 		98FD4C5C1FC8390F002B91B1 /* LaunchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -115,31 +121,34 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		980600FF1FC5A7680067F0B4 /* Calculator */ = {
+		980600FF1FC5A7680067F0B4 /* calculator */ = {
 			isa = PBXGroup;
 			children = (
 				98E284E21FC70CC1004FD2D2 /* TabBarController.swift */,
 				9864BB0B1FD4700E005DB5F2 /* Calculator.swift */,
 				98FD4C5C1FC8390F002B91B1 /* LaunchCell.swift */,
 			);
-			path = Calculator;
+			path = calculator;
 			sourceTree = "<group>";
 		};
-		982548242210952700BA182D /* AddEdit */ = {
+		982548242210952700BA182D /* add_edit */ = {
 			isa = PBXGroup;
 			children = (
 				98A54976220E03C000CBEE5D /* AddVC.swift */,
 				980B984E2211837800414EB9 /* EditVC.swift */,
+				98E35DA922481E44003CD3F2 /* InputCell.swift */,
 			);
-			path = AddEdit;
+			path = add_edit;
 			sourceTree = "<group>";
 		};
 		982F934C220880D7005D9C99 /* entities */ = {
 			isa = PBXGroup;
 			children = (
-				9830C2002207A0EF0023B582 /* Period.swift */,
-				982F934D220884DA005D9C99 /* ShiftModel.swift */,
-				9886E9BB2211C11D00A4207A /* Periods.swift */,
+				98E33A8C2247F3A4003CD3F2 /* ShiftModel.swift */,
+				986DC25422457711009F1555 /* Settings.swift */,
+				981FBFC3221AC189005B8F4C /* MyUser.swift */,
+				986DC2562245774E009F1555 /* Period */,
+				986DC24F224571FB009F1555 /* Overtime */,
 			);
 			path = entities;
 			sourceTree = "<group>";
@@ -148,15 +157,12 @@
 			isa = PBXGroup;
 			children = (
 				98594B012220159F00EE7E62 /* SpinnerButton.swift */,
-				982F934F2208B103005D9C99 /* UserSettings.swift */,
 				989392DB1FCEF322002475EA /* Extensions.swift */,
-				9813682B2218AB3E00F04187 /* Methods.swift */,
 				98E2EF991FB4D657006C3F96 /* CountingLabel.swift */,
 				9830C2052207B3AD0023B582 /* Time.swift */,
 				982F934A22087796005D9C99 /* LocalStorage.swift */,
 				981E7FD32209FF0E006A492C /* CloudStorage.swift */,
 				98D40CC2220B3C6A006E59E0 /* CloudAuth.swift */,
-				981FBFC3221AC189005B8F4C /* MyUser.swift */,
 				982F93532208C386005D9C99 /* StringFormatter.swift */,
 				9886E9BD2211DEA000A4207A /* Colors.swift */,
 				98BD37F02214AF9E0047F10E /* globals.swift */,
@@ -164,10 +170,35 @@
 			path = utils;
 			sourceTree = "<group>";
 		};
+		986DC24F224571FB009F1555 /* Overtime */ = {
+			isa = PBXGroup;
+			children = (
+				9831FF6522441EBD001935EC /* OvertimeRule.swift */,
+				986DC2502245720E009F1555 /* Overtime.swift */,
+				986DC252224572BB009F1555 /* OvertimeDay.swift */,
+			);
+			path = Overtime;
+			sourceTree = "<group>";
+		};
+		986DC2562245774E009F1555 /* Period */ = {
+			isa = PBXGroup;
+			children = (
+				9830C2002207A0EF0023B582 /* Period.swift */,
+				9886E9BB2211C11D00A4207A /* Periods.swift */,
+			);
+			path = Period;
+			sourceTree = "<group>";
+		};
 		988FDEAD1F9F7AFA0090DEF1 = {
 			isa = PBXGroup;
 			children = (
-				988FDEB81F9F7AFA0090DEF1 /* src */,
+				98D40CBE220B3548006E59E0 /* views */,
+				982F934C220880D7005D9C99 /* entities */,
+				9830C1FF220794CE0023B582 /* utils */,
+				9873A002222DEE53000CCFEF /* LaunchScreen.storyboard */,
+				9830C1FC220793CB0023B582 /* Main.storyboard */,
+				988FDEC31F9F7AFA0090DEF1 /* Assets.xcassets */,
+				98ACD1891FA39EA100B78C7D /* supporting_files */,
 				988FDEB71F9F7AFA0090DEF1 /* Products */,
 				1F9ACF658B38C6DB8A853818 /* Pods */,
 				DDF3811D744F0B753A21B7F7 /* Frameworks */,
@@ -182,32 +213,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		988FDEB81F9F7AFA0090DEF1 /* src */ = {
+		98ACD1891FA39EA100B78C7D /* supporting_files */ = {
 			isa = PBXGroup;
 			children = (
-				98D40CBE220B3548006E59E0 /* Views */,
-				982F934C220880D7005D9C99 /* entities */,
-				9830C1FF220794CE0023B582 /* utils */,
 				9873A000222C514C000CCFEF /* GoogleService-Info.plist */,
-				9873A002222DEE53000CCFEF /* LaunchScreen.storyboard */,
-				9830C1FC220793CB0023B582 /* Main.storyboard */,
-				988FDEC31F9F7AFA0090DEF1 /* Assets.xcassets */,
-				98ACD1891FA39EA100B78C7D /* Supporting files */,
-			);
-			path = src;
-			sourceTree = "<group>";
-		};
-		98ACD1891FA39EA100B78C7D /* Supporting files */ = {
-			isa = PBXGroup;
-			children = (
 				988FDEB91F9F7AFA0090DEF1 /* AppDelegate.swift */,
 				9843191422078EC000C9B6FF /* Info.plist */,
 				988FDEC01F9F7AFA0090DEF1 /* adding_shifts.xcdatamodeld */,
 			);
-			path = "Supporting files";
+			path = supporting_files;
 			sourceTree = "<group>";
 		};
-		98ACD18A1FA39EC700B78C7D /* Settings  */ = {
+		98ACD18A1FA39EC700B78C7D /* settings */ = {
 			isa = PBXGroup;
 			children = (
 				98AD6DDB221C34E7009364EF /* SettingsVC.swift */,
@@ -216,40 +233,39 @@
 				98CA61931FB0A6D900463FF7 /* OvertimeRuleTable.swift */,
 				98D6628E2216003F001B2422 /* UpdateForm.swift */,
 			);
-			path = "Settings ";
+			path = settings;
 			sourceTree = "<group>";
 		};
-		98ACD18B1FA39EE100B78C7D /* Logger */ = {
+		98ACD18B1FA39EE100B78C7D /* logger */ = {
 			isa = PBXGroup;
 			children = (
 				9852F1061FA2309B00E7BDB5 /* MainCell.swift */,
 				988FDEBB1F9F7AFA0090DEF1 /* Logger.swift */,
 				9820A5541FBCBF6B00EAEE6A /* MainNav.swift */,
 			);
-			path = Logger;
+			path = logger;
 			sourceTree = "<group>";
 		};
-		98D40CBE220B3548006E59E0 /* Views */ = {
+		98D40CBE220B3548006E59E0 /* views */ = {
 			isa = PBXGroup;
 			children = (
-				980600FF1FC5A7680067F0B4 /* Calculator */,
-				982548242210952700BA182D /* AddEdit */,
-				98D40CBF220B3594006E59E0 /* Auth */,
-				98ACD18A1FA39EC700B78C7D /* Settings  */,
-				98ACD18B1FA39EE100B78C7D /* Logger */,
+				980600FF1FC5A7680067F0B4 /* calculator */,
+				982548242210952700BA182D /* add_edit */,
+				98D40CBF220B3594006E59E0 /* auth */,
+				98ACD18A1FA39EC700B78C7D /* settings */,
+				98ACD18B1FA39EE100B78C7D /* logger */,
 			);
-			name = Views;
-			path = ..;
+			path = views;
 			sourceTree = "<group>";
 		};
-		98D40CBF220B3594006E59E0 /* Auth */ = {
+		98D40CBF220B3594006E59E0 /* auth */ = {
 			isa = PBXGroup;
 			children = (
 				98D40CC0220B35A9006E59E0 /* AuthVC.swift */,
 				982FFE9122134B27007400C6 /* LoginForm.swift */,
 				982FFE9322134F59007400C6 /* CreateAccountForm.swift */,
 			);
-			path = Auth;
+			path = auth;
 			sourceTree = "<group>";
 		};
 		DDF3811D744F0B753A21B7F7 /* Frameworks */ = {
@@ -412,21 +428,26 @@
 			buildActionMask = 2147483647;
 			files = (
 				9852F1071FA2309B00E7BDB5 /* MainCell.swift in Sources */,
+				986DC253224572BB009F1555 /* OvertimeDay.swift in Sources */,
 				988FDEC21F9F7AFA0090DEF1 /* adding_shifts.xcdatamodeld in Sources */,
 				98D40CC3220B3C6A006E59E0 /* CloudAuth.swift in Sources */,
+				98E35DAA22481E44003CD3F2 /* InputCell.swift in Sources */,
 				9886E9BE2211DEA000A4207A /* Colors.swift in Sources */,
 				988FDEBC1F9F7AFA0090DEF1 /* Logger.swift in Sources */,
 				980B984F2211837800414EB9 /* EditVC.swift in Sources */,
 				982FFE9222134B27007400C6 /* LoginForm.swift in Sources */,
 				98FD4C5D1FC8390F002B91B1 /* LaunchCell.swift in Sources */,
+				986DC2512245720E009F1555 /* Overtime.swift in Sources */,
 				9862A5711FCC33AA0047671D /* AdvancedSettingsTable.swift in Sources */,
 				9830C2062207B3AD0023B582 /* Time.swift in Sources */,
 				982F934B22087796005D9C99 /* LocalStorage.swift in Sources */,
 				981E7FD42209FF0E006A492C /* CloudStorage.swift in Sources */,
 				984319182207923E00C9B6FF /* AppDelegate.swift in Sources */,
+				986DC25522457711009F1555 /* Settings.swift in Sources */,
 				98CA61941FB0A6D900463FF7 /* OvertimeRuleTable.swift in Sources */,
 				98D6628F2216003F001B2422 /* UpdateForm.swift in Sources */,
 				98594B022220159F00EE7E62 /* SpinnerButton.swift in Sources */,
+				98E33A8D2247F3A5003CD3F2 /* ShiftModel.swift in Sources */,
 				98D40CC1220B35A9006E59E0 /* AuthVC.swift in Sources */,
 				982FFE9422134F59007400C6 /* CreateAccountForm.swift in Sources */,
 				981FBFC4221AC189005B8F4C /* MyUser.swift in Sources */,
@@ -436,15 +457,13 @@
 				9830C2012207A0EF0023B582 /* Period.swift in Sources */,
 				98A54977220E03C000CBEE5D /* AddVC.swift in Sources */,
 				98AD6DDC221C34E7009364EF /* SettingsVC.swift in Sources */,
-				982F934E220884DA005D9C99 /* ShiftModel.swift in Sources */,
 				9820A5551FBCBF6B00EAEE6A /* MainNav.swift in Sources */,
 				98E284E31FC70CC1004FD2D2 /* TabBarController.swift in Sources */,
 				98BD37F12214AF9E0047F10E /* globals.swift in Sources */,
 				982F93542208C386005D9C99 /* StringFormatter.swift in Sources */,
 				989392DC1FCEF322002475EA /* Extensions.swift in Sources */,
 				9886E9BC2211C11D00A4207A /* Periods.swift in Sources */,
-				9813682C2218AB3E00F04187 /* Methods.swift in Sources */,
-				982F93502208B103005D9C99 /* UserSettings.swift in Sources */,
+				9831FF6622441EBD001935EC /* OvertimeRule.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -569,7 +588,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Z4CUEH82JK;
-				INFOPLIST_FILE = "src/Supporting files/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/supporting_files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Bartek.SalaryCalc;
@@ -587,7 +606,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Z4CUEH82JK;
-				INFOPLIST_FILE = "src/Supporting files/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/supporting_files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Bartek.SalaryCalc;
