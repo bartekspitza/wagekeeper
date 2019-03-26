@@ -12,12 +12,11 @@ import UIKit
 class Colors {
     static public var loggerSectionBG = UIColor(red: 0, green: 164, blue: 0)
     
-    
-    
     // One shade of green
     static public var theme = UIColor(rgb: 0x363a3d) //UIColor(rgb: 0x004052)
     
     static var detailColor = UIColor(rgb: 0x00d9dc)
+    static var darkerDetail = UIColor(rgb: 0x049696)
     static var calculatorGradientTop = UIColor(rgb: 0x363a3d)
     static var calculatorGradientBottom = UIColor(rgb: 0x292c2e)
     

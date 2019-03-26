@@ -303,6 +303,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
             
             user.settings.wage = Float(textField.text!)!
             CloudStorage.updateSetting(toUser: user.ID, obj: ["settings": ["wage": user.settings.wage]])
+            wageRateField.text = user.settings.wage.round(decimals: 2).description
         }
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -403,7 +404,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 wageRateField.font = UIFont.systemFont(ofSize: 14, weight: .light)
                 wageRateField.delegate = self
                 wageRateField.tag = 1
-                wageRateField.text = String(user.settings.wage)
+                wageRateField.text = user.settings.wage.round(decimals: 2).description
             } else {
                 currencyField = cell.field
                 currencyField.tintColor = UIColor.clear
@@ -538,13 +539,13 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     func populateWithSettings() {
         // TAX
-        let taxRate = String(user.settings.tax.round(decimals: 1))
+        let taxRate = user.settings.tax.round(decimals: 1).description
         taxrateField.text = taxRate + " %"
         taxPicker.selectRow(Int(Float(taxRate)!), inComponent: 0, animated: true)
         taxPicker.selectRow(Int(String(Array(taxRate)[(taxRate.count)-1]))!, inComponent: 2, animated: true)
         
         // WAGE
-        wageRateField.text = String(Int(user.settings.wage))
+        wageRateField.text = user.settings.wage.round(decimals: 2).description
         
         // CURRENCY
         currencyField.text = user.settings.currency

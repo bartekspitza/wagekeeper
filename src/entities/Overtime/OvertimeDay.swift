@@ -32,7 +32,7 @@ class OvertimeDay {
         return OvertimeDay(day: day, rules: newRules)
     }
     
-    func toJSON() -> [Any] {
+    func json() -> [Any] {
         var json = [Any]()
         
         for rule in rules {

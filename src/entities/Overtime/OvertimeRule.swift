@@ -15,22 +15,13 @@ class OvertimeRule {
     var rate: Float!
     
     var duration: DateInterval {
-        return self.getDateInterval()
+        return DateInterval(start: starting, end: ending)
     }
     
     init(starting: Date, ending: Date, rate: Float) {
         self.starting = starting
         self.ending = ending
         self.rate = rate
-    }
-    
-    
-    func copy() -> OvertimeRule {
-        return OvertimeRule(starting: starting, ending: ending, rate: rate)
-    }
-    
-    func getDateInterval() -> DateInterval {
-        return DateInterval(start: starting, end: ending)
     }
     
     func intersectionInMinutes(shiftInterval: DateInterval) -> Float {
@@ -49,6 +40,10 @@ class OvertimeRule {
             "ending": self.ending,
             "rate": self.rate
         ]
+    }
+    
+    func copy() -> OvertimeRule {
+        return OvertimeRule(starting: starting, ending: ending, rate: rate)
     }
     
     func equals(another: OvertimeRule) -> Bool {

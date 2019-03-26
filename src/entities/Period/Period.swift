@@ -41,9 +41,9 @@ class Period {
     
     func salaryInfo() -> [String: Int] {
         var grossSalary: Float = 0.0
-        var duration = 0
-        var minutesInOT = 0
-        var moneyInOT = 0
+        var duration: Float = 0.0
+        var minutesInOT: Float = 0.0
+        var moneyInOT: Float = 0.0
         var daysWorked = 0
         
         var prevDay = 100
@@ -57,9 +57,9 @@ class Period {
             }
             let shiftSalaryInfo = shift.computeStats()
             grossSalary += shiftSalaryInfo["salary"] as! Float
-            minutesInOT += Int(shiftSalaryInfo["overtimeDuration"] as! Float)
-            moneyInOT += Int(shiftSalaryInfo["moneyEarnedInOvertime"] as! Float)
-            duration += Int(shiftSalaryInfo["duration"] as! Float)
+            minutesInOT += shiftSalaryInfo["overtimeDuration"] as! Float
+            moneyInOT += shiftSalaryInfo["moneyEarnedInOvertime"] as! Float
+            duration += shiftSalaryInfo["duration"] as! Float
             
             let prevDayComp = calendar.dateComponents([.day], from: shift.date)
             prevDay = prevDayComp.day!
@@ -67,9 +67,9 @@ class Period {
 
         return [
             "salary": Int(grossSalary),
-            "duration": duration,
-            "overtimeDuration": minutesInOT,
-            "moneyEarnedInOvertime": moneyInOT,
+            "duration": Int(duration),
+            "overtimeDuration": Int(minutesInOT),
+            "moneyEarnedInOvertime": Int(moneyInOT),
             "daysWorked": daysWorked
         ]
     }

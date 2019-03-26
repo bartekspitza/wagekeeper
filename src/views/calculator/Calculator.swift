@@ -9,6 +9,7 @@ import UIKit
 import Foundation
 import FirebaseAuth
 import KTLoadingLabel
+import StoreKit
 
 class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var statsDescriptions = ["Total work-time", "Average shift length", "Total shifts", "Total days worked", "Overtime worked", "Money from overtime (gross)", "Money from overtime (net)"]
@@ -27,21 +28,16 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         createLayout()
-        loadingAnimation(withTitle: "Retrieving settings")
+        loadingAnimation(withTitle: "Syncing")
         // Adds a listener that gets called each time users state changes
         loginListener = Auth.auth().addStateDidChangeListener { (auth, currentUser) in
             if currentUser != nil {
                 
-                LocalStorage.transferAllShiftsToCloud(loadingHandler: {
-                    self.loadingLabel.staticText = "Syncing"
-                })
+                LocalStorage.transferAllShiftsToCloud(loadingHandler: {})
                 CloudStorage.migrateUserDefaultsToCloud(toUser: currentUser!.uid)
                 
                 CloudStorage.getSettings(toUser: currentUser!.uid, completionHandler: { () in
-                    print("Retrieved user settings")
-                    self.loadingLabel.staticText = "Retrieving shifts"
                     CloudStorage.getAllShifts(fromUser: currentUser!.uid) { (data) in
-                        self.loadingLabel.staticText = "Calculating"
                         Periods.organizeShiftsIntoPeriods(ar: data, successHandler: {
                             Periods.organizePeriodsByYear(periods: shifts, successHandler: {
                                 Periods.makePeriod(yearIndex: 0, monthIndex: 0, successHandler: {
@@ -59,6 +55,12 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func viewDidAppear(_ animated: Bool) {
         refreshDataAndAnimations()
+        
+        if Periods.totalShifts() > 10 {
+            if #available(iOS 10.3, *) {
+                SKStoreReviewController.requestReview()
+            }
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {

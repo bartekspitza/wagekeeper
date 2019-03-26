@@ -90,41 +90,55 @@ class CloudStorage {
     }
     
     static func migrateUserDefaultsToCloud(toUser: String) {
-        if UserDefaults().bool(forKey: "hasUpdatedTo2.1") == false {
-            var obj = [String: Any]()
-            if let tax = UserDefaults().string(forKey: "taxRate") {
-                obj["tax"] = Float(tax)!
-                user.settings.tax = Float(tax)!
+        var obj = [String: Any]()
+        
+        if let tax = UserDefaults().string(forKey: "taxRate") {
+            obj["tax"] = Float(tax)!
+            user.settings.tax = Float(tax)!
+            UserDefaults().removeObject(forKey: "taxRate")
+        }
+        if let wage = UserDefaults().string(forKey: "wageRate") {
+            obj["wage"] = Int(wage)!
+            user.settings.wage = Float(wage)!
+            UserDefaults().removeObject(forKey: "wageRate")
+        }
+        if let currency = UserDefaults().string(forKey: "currency") {
+            if currency != "" {
+                obj["currency"] = currency
+                user.settings.currency = currency
+                UserDefaults().removeObject(forKey: "currency")
             }
-            if let wage = UserDefaults().string(forKey: "wageRate") {
-                obj["wage"] = Int(wage)!
-                user.settings.wage = Float(wage)!
-            }
-            if let currency = UserDefaults().string(forKey: "currency") {
-                if currency != "" {
-                    obj["currency"] = currency
-                    user.settings.currency = currency
-                }
-            }
-            if let title = UserDefaults().string(forKey: "defaultNote") {
-                obj["title"] = title
-                user.settings.title = title
-            }
-            if let breakTime = UserDefaults().string(forKey: "defaultLunch") {
-                obj["break"] = Int(breakTime)!
-                user.settings.breakTime = Int(breakTime)!
-            }
-            if let ST = UserDefaults().value(forKey: "defaultST") {
-                obj["starting"] = ST as! Date
-                user.settings.startingTime = ST as! Date
-            }
-            if let ET = UserDefaults().value(forKey: "defaultET") {
-                obj["ending"] = ET as! Date
-                user.settings.endingTime = ET as! Date
-            }
-            
-            CloudStorage.updateSetting(toUser: toUser, obj: ["settings": obj])
-            UserDefaults().set(true, forKey: "hasUpdatedTo2.1")
+        }
+        if let title = UserDefaults().string(forKey: "defaultNote") {
+            obj["title"] = title
+            user.settings.title = title
+            UserDefaults().removeObject(forKey: "defaultNote")
+        }
+        if let breakTime = UserDefaults().string(forKey: "defaultLunch") {
+            obj["break"] = Int(breakTime)!
+            user.settings.breakTime = Int(breakTime)!
+            UserDefaults().removeObject(forKey: "defaultLunch")
+        }
+        if let ST = UserDefaults().value(forKey: "defaultST") {
+            obj["starting"] = ST as! Date
+            user.settings.startingTime = ST as! Date
+            UserDefaults().removeObject(forKey: "defaultST")
+        }
+        if let ET = UserDefaults().value(forKey: "defaultET") {
+            obj["settings.ending"] = ET as! Date
+            user.settings.endingTime = ET as! Date
+            UserDefaults().removeObject(forKey: "defaultET")
+        }
+
+        let db = Firestore.firestore()
+        let userDoc = db.document("users/" + toUser)
+        
+        var fields = [String]()
+        for key in obj.keys {
+            fields.append("settings." + key)
+        }
+        if fields.count > 0 {
+            userDoc.setData(["settings": obj], mergeFields: fields)
         }
     }
     
@@ -149,14 +163,20 @@ class CloudStorage {
         let db = Firestore.firestore()
         let userDoc = db.document("users/" + toUser)
         
-//        userDoc.updateData(obj) { (er) in
-//            if er == nil {
-//                print("Updated setting.")
-//            } else {
-//                print(er!.localizedDescription)
-//            }
-//        }
         userDoc.setData(obj, merge: true) { (er) in
+            if er == nil {
+                print("Updated setting.")
+            } else {
+                print(er!.localizedDescription)
+            }
+        }
+    }
+    
+    static func updateOvertime(toUser: String, obj: [String: Any]) {
+        let db = Firestore.firestore()
+        let userDoc = db.document("users/" + toUser)
+        
+        userDoc.setData(obj, mergeFields: ["settings.overtime"]) { (er) in
             if er == nil {
                 print("Updated setting.")
             } else {

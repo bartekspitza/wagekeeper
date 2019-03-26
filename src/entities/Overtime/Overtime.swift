@@ -12,12 +12,12 @@ import FirebaseFirestore
 class Overtime {
     var days = [OvertimeDay]()
     
-    func toJSON() -> [String: Any] {
+    func json() -> [String: Any] {
         var obj = [String: Any]()
         
         for day in days {
             if day.rules.count > 0 {
-                obj[day.day] = day.toJSON()
+                obj[day.day] = day.json()
             }
         }
         
@@ -30,7 +30,6 @@ class Overtime {
                 return false
             }
         }
-        
         return true
     }
     

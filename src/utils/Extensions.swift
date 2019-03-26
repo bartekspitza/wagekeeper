@@ -188,8 +188,8 @@ extension String {
 }
 
 extension Float {
-    func round(decimals: Int) -> Float{
-        let divisor = powf(10, 3)
+    func round(decimals: Float) -> Float{
+        let divisor = powf(10, decimals)
         return Float(Darwin.round(divisor * self)/divisor)
     }
 }

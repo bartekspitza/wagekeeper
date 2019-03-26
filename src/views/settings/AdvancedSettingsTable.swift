@@ -55,13 +55,13 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
+        let newPeriod = mySwitch.isOn ? 0 : picker.selectedRow(inComponent: 0) + 1
         
-        if (mySwitch.isOn) {
-            user.settings.newPeriod = 0
-        } else {
-            user.settings.newPeriod = picker.selectedRow(inComponent: 0) + 1
+        if newPeriod != user.settings.newPeriod {
+            user.settings.newPeriod = newPeriod
+            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings": ["newPeriod": user.settings.newPeriod]])
         }
-        CloudStorage.updateSetting(toUser: user.ID, obj: ["settings": ["newPeriod": user.settings.newPeriod]])
         
         if shiftsNeedsReOrganizing {
             Periods.reOrganize(successHandler: {
@@ -197,7 +197,7 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
     func configureDaysCells() {
         for i in 0..<daysCells.count {
             daysCells[i].selectionStyle = .default
-            daysCells[i].tintColor = Colors.detailColor
+            daysCells[i].tintColor = Colors.darkerDetail
             
             if user.settings.overtime.getRules(forDay: Time.weekDays[i]).rules.isEmpty {
                 daysCells[i].accessoryType = .disclosureIndicator
@@ -215,7 +215,7 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
         mySwitch.onTintColor = navColor
     }
     func configureTable() {
-        tableView.tintColor = Colors.detailColor
+        tableView.tintColor = Colors.darkerDetail
         tableView.tableFooterView = UIView()
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
@@ -223,7 +223,6 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
     func populateWithSettings() {
         // Mininum hours
         minHoursField.text = String(user.settings.minimumHours)
-        print(user.settings.minimumHours)
         // Starting time
         startingTimePicker.date = user.settings.startingTime
         STField.text = Time.dateToTimeString(date: startingTimePicker.date)
