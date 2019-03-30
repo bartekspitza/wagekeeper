@@ -165,16 +165,8 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func resetLabels() {
-        let currency = user.settings.currency
-        let symbol = currencies[currency]!
-        
-            if symbol == "kr" {
-                salaryLbl.text = "0kr"
-                grossLbl.text = "Gross: 0kr"
-            } else {
-                salaryLbl.text = symbol + "0"
-                grossLbl.text = "Gross: " + symbol + "0"
-            }
+        salaryLbl.text = 0.currencyString()
+        grossLbl.text = "Gross: " + 0.currencyString()
         periodLbl.text = ""
     }
     func configureMenuTable() {
@@ -254,8 +246,8 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
     func startCountingLabels() {
         if period != nil {
             if Int(period!.grossSalary) > 0 {
-                grossLbl.count(fromValue: 0, to: Float(period!.grossSalary), withDuration: 1.5, andAnimationtype: .EaseOut, andCounterType: .Int, currency: user.settings.currencySymbol, preString: "Gross: ", afterString: "")
-                salaryLbl.count(fromValue: 0, to: Float(period!.netSalary), withDuration: TimeInterval(1.5 * (Float(period!.netSalary)/Float(period!.grossSalary))), andAnimationtype: .EaseOut, andCounterType: .Int, currency: user.settings.currencySymbol, preString: "", afterString: "")
+                grossLbl.count(fromValue: 0, to: Float(period!.grossSalary), withDuration: 1.5, andAnimationtype: .EaseOut, andCounterType: .Int, preString: "Gross: ", afterString: "")
+                salaryLbl.count(fromValue: 0, to: Float(period!.netSalary), withDuration: TimeInterval(1.5 * (Float(period!.netSalary)/Float(period!.grossSalary))), andAnimationtype: .EaseOut, andCounterType: .Int, preString: "", afterString: "")
             }
         }
     }

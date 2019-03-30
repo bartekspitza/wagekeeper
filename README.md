@@ -1,5 +1,5 @@
 # WageKeeper 
-![Version](https://img.shields.io/badge/version-2.1-blue.svg)
+![Version](https://img.shields.io/badge/version-2.2-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-iOS-orange.svg)
 ![Status](https://img.shields.io/badge/status-live-green.svg)
 </br>

@@ -28,6 +28,10 @@ class ShiftModel: CustomStringConvertible {
         return self.date.weekday()
     }
     
+    var starting: Date {
+        return self.startingTime.dateToReferenceButPreserveTime()
+    }
+    
     init(title: String, date: Date, startingTime: Date, endingTime: Date, breakTime: Int, note: String, newPeriod: Bool, ID: String) {
         self.title = title
         self.date = date
@@ -76,19 +80,19 @@ class ShiftModel: CustomStringConvertible {
     
     var duration: DateInterval {
         var ending = self.adjustedEndingTime()
-        let temp = DateInterval(start: self.startingTime, end: ending)
+        let temp = DateInterval(start: self.starting, end: ending)
         
         // Checks for minimum hours setting
         if temp.duration.isLess(than: Double(user.settings.minimumHours*60*60)) {
-            ending = Calendar.current.date(byAdding: .hour, value: user.settings.minimumHours, to: startingTime)!
+            ending = Calendar.current.date(byAdding: .hour, value: user.settings.minimumHours, to: self.starting)!
         }
-        return DateInterval(start: self.startingTime, end: ending)
+        return DateInterval(start: self.starting, end: ending)
     }
     
-    private func adjustedEndingTime() -> Date {
-        var ending = self.endingTime
+    func adjustedEndingTime() -> Date {
+        var ending = self.endingTime.dateToReferenceButPreserveTime()
         
-        if self.startingTime > ending {
+        if self.starting > ending {
             ending = Calendar.current.date(byAdding: .day, value: 1, to: ending)!
         }
         return ending

@@ -17,15 +17,11 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     // Textfields
     var taxrateField = UITextField()
     var wageRateField = UITextField()
-    var currencyField = UITextField()
 
     // Pickers
-    let currencyPicker = UIPickerView()
     let taxPicker = UIPickerView()
     
     var updateForm: UpdateForm!
-    let currencies = ["SEK", "EUR", "GPD", "NOR", "USD"]
-    var cellsAreBuilt = [[Bool]]()
     
     var isUpdatingPassword = true
     var updateMessageLbl: UILabel!
@@ -53,6 +49,10 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     override func viewWillAppear(_ animated: Bool) {
         refreshAmountOfShifts()
         populateWithSettings()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        table.deselectAllRows()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -173,10 +173,6 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         
         let spaceBetweenAccountViewAndMenu = table.frame.origin.y - accountView.endY()
         amountShiftsView.center.y = accountView.endY() + spaceBetweenAccountViewAndMenu/2
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        table.deselectAllRows()
     }
     
     func logOut() {
@@ -324,7 +320,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return 4
+            return 3
         } else {
             if user.loggedInWithFacebook {
                 return 1
@@ -342,8 +338,6 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 taxrateField.becomeFirstResponder()
             } else if indexPath.row == 1 {
                 wageRateField.becomeFirstResponder()
-            } else if indexPath.row == 2 {
-                currencyField.becomeFirstResponder()
             } else {
                 performSegue(withIdentifier: "advancedtools", sender: self)
             }
@@ -370,11 +364,11 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! SettingsCell
         let titles = [
-            ["Tax rate", "Hourly rate", "Currency", "Advanced tools"],
+            ["Tax rate", "Hourly rate", "Advanced tools"],
             (user.loggedInWithFacebook) ? ["Log out"] : ["Change email", "Change password", "Log out"]
         ]
         let imageNames = [
-            ["government_filled", "wagerate_filled", "currency_filled", "tool_filled"],
+            ["government_filled", "wagerate_filled", "tool_filled"],
             (user.loggedInWithFacebook) ? ["logout_filled"] : ["email_filled", "password_filled", "logout_filled"]
         ]
         let image = UIImage(named: imageNames[indexPath.section][indexPath.row])
@@ -384,7 +378,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         cell.field.layer.opacity = 0
         cell.field.frame.origin.x = self.view.frame.width - 15 - cell.field.frame.width
         
-        if (indexPath.section == 0 && indexPath.row < 3) {
+        if (indexPath.section == 0 && indexPath.row < 2) {
             cell.field.layer.opacity = 1
             cell.selectionStyle = .none
 
@@ -405,14 +399,6 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 wageRateField.delegate = self
                 wageRateField.tag = 1
                 wageRateField.text = user.settings.wage.round(decimals: 2).description
-            } else {
-                currencyField = cell.field
-                currencyField.tintColor = UIColor.clear
-                currencyField.inputView = currencyPicker
-                currencyField.textColor = .black
-                currencyField.font = UIFont.systemFont(ofSize: 14, weight: .light)
-                currencyField.delegate = self
-                currencyField.text = user.settings.currency
             }
         }
         
@@ -420,13 +406,8 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     func configurePickers() {
-        taxPicker.tag = 1
         taxPicker.delegate = self
         taxPicker.dataSource = self
-        
-        currencyPicker.tag = 2
-        currencyPicker.delegate = self
-        currencyPicker.dataSource = self
     }
     func configureView() {
         self.title = "Account"
@@ -453,83 +434,57 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         wageRateField.font = UIFont.systemFont(ofSize: 14, weight: .light)
         wageRateField.delegate = self
         wageRateField.tag = 1
-        
-        currencyField.tintColor = UIColor.clear
-        currencyField.inputAccessoryView = toolbar
-        currencyField.inputView = currencyPicker
-        currencyField.textColor = .black
-        currencyField.font = UIFont.systemFont(ofSize: 14, weight: .light)
-        currencyField.delegate = self
     }
     @objc func donePressed() {
         self.view.endEditing(true)
     }
     
     func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
-        if pickerView.tag == 1 {
-            if component == 1 {
-                return 15
-            } else {
-                return 50
-            }
+        if component == 1 {
+            return 15
         } else {
-            return 60
+            return 50
         }
     }
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        if pickerView.tag == 1 {
-            return 3
-        }
-        return 1
+        return 3
     }
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if pickerView.tag == 1 {
-            if component == 0 {
-                return String([Int](0...100)[row])
-            } else if component == 2{
-                return String([Int](0...9)[row])
-            } else {
-                return "."
-            }
+        if component == 0 {
+            return String([Int](0...100)[row])
+        } else if component == 2{
+            return String([Int](0...9)[row])
         } else {
-            return currencies[row]
+            return "."
         }
     }
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if pickerView.tag == 1 {
-            if component == 0 {
-                return 101
-            } else if component == 2 {
-                return 10
-            } else {
-                return 1
-            }
+        if component == 0 {
+            return 101
+        } else if component == 2 {
+            return 10
+        } else {
+            return 1
         }
-        return currencies.count
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if pickerView.tag == 1 {
-            // Disables values like 100.1, 100.2 etc..
-            if pickerView.selectedRow(inComponent: 0) == 100 && pickerView.selectedRow(inComponent: 2) != 0 {
-                pickerView.selectRow(0, inComponent: 2, animated: true)
-            }
-            
-            let part1Value = pickerView.selectedRow(inComponent: 0)
-            let part2Value = pickerView.selectedRow(inComponent: 2)
-            
-            let integerArray = [Int](0...100)
-            let decimalArray = [Int](0...10)
-            
-            taxrateField.text = createTaxString(part1: String(integerArray[part1Value]), part2: String(decimalArray[part2Value]))
-            let taxString = String(Array(taxrateField.text!)[0..<taxrateField.text!.count-2])
-            user.settings.tax = Float(taxString)!
-            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings": ["tax": user.settings.tax]])
-        } else {
-            currencyField.text = currencies[row]
-            user.settings.currency = currencyField.text!
-            CloudStorage.updateSetting(toUser: user.ID, obj: ["settings": ["currency": user.settings.currency]])
+        // Disables values like 100.1, 100.2 etc..
+        if pickerView.selectedRow(inComponent: 0) == 100 && pickerView.selectedRow(inComponent: 2) != 0 {
+            pickerView.selectRow(0, inComponent: 2, animated: true)
         }
+        
+        let part1Value = pickerView.selectedRow(inComponent: 0)
+        let part2Value = pickerView.selectedRow(inComponent: 2)
+        
+        let integerArray = [Int](0...100)
+        let decimalArray = [Int](0...10)
+        
+        taxrateField.text = createTaxString(part1: String(integerArray[part1Value]), part2: String(decimalArray[part2Value]))
+        let taxString = String(Array(taxrateField.text!)[0..<taxrateField.text!.count-2])
+        user.settings.tax = Float(taxString)!
+        CloudStorage.updateSetting(toUser: user.ID, obj: ["settings": ["tax": user.settings.tax]])
+        
     }
     func createTaxString(part1: String, part2: String) -> String {
         var returnString = ""
@@ -546,9 +501,5 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         
         // WAGE
         wageRateField.text = user.settings.wage.round(decimals: 2).description
-        
-        // CURRENCY
-        currencyField.text = user.settings.currency
-        currencyPicker.selectRow(currencies.index(of: currencyField.text!)!, inComponent: 0, animated: true)
     }
 }

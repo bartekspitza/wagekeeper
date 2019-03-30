@@ -171,6 +171,16 @@ extension Date {
     func shortWeekday() -> String {
         return Calendar.current.shortWeekdaySymbols[Calendar.current.component(.weekday, from: self) - 1]
     }
+    
+    func dateToReferenceButPreserveTime() -> Date {
+        var newDate = Date(timeIntervalSinceReferenceDate: 0)
+        let components = Calendar.current.dateComponents([.hour, .minute], from: self)
+        
+        newDate = Calendar.current.date(bySetting: .hour, value: components.hour!, of: newDate)!
+        newDate = Calendar.current.date(bySetting: .minute, value: components.minute!, of: newDate)!
+        
+        return newDate
+    }
 }
 extension String {
     func sizeOfString(usingFont font: UIFont) -> CGSize {
@@ -225,6 +235,30 @@ extension String {
             }
         }
         return 0
+    }
+}
+
+extension Int {
+    func currencyString() -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.maximumFractionDigits = 0
+        let a = NSNumber(value: self)
+        
+        if let number = formatter.string(from: a) {
+            return number
+        }
+        return ""
+    }
+}
+
+extension TimeInterval {
+    func timeString() -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.hour, .minute]
+        formatter.unitsStyle = .abbreviated
+        
+        return formatter.string(from: self)!
     }
 }
 

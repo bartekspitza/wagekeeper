@@ -102,13 +102,6 @@ class CloudStorage {
             user.settings.wage = Float(wage)!
             UserDefaults().removeObject(forKey: "wageRate")
         }
-        if let currency = UserDefaults().string(forKey: "currency") {
-            if currency != "" {
-                obj["currency"] = currency
-                user.settings.currency = currency
-                UserDefaults().removeObject(forKey: "currency")
-            }
-        }
         if let title = UserDefaults().string(forKey: "defaultNote") {
             obj["title"] = title
             user.settings.title = title

@@ -175,7 +175,7 @@ class Logger: UIViewController, UITableViewDelegate, UITableViewDataSource {
         cell.title.text = shiftForRow.title
         cell.dateLbl.text = shiftForRow.date.shortWeekday() + ", " + Time.dateToCellString(date: shiftForRow.date)
         cell.duration.text = Time.dateToTimeString(date: shiftForRow.startingTime) + " - " + Time.dateToTimeString(date: shiftForRow.endingTime)
-        cell.worktime.text = StringFormatter.stringFromHoursAndMinutes(a: Time.minutesToHoursAndMinutes(minutes: Int(shiftForRow.duration.duration/60.0)))
+        cell.worktime.text = shiftForRow.duration.duration.timeString()
         cell.lunch.text = String(shiftForRow.breakTime) + "m break"
         
         cell.duration.sizeToFit()

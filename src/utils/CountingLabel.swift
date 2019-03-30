@@ -28,7 +28,6 @@ class CountingLabel: UILabel {
     var progress: TimeInterval!
     var duration:TimeInterval!
     var lastUpdate: TimeInterval!
-    var currency: String!
     var preString: String!
     var afterString: String!
     
@@ -48,7 +47,7 @@ class CountingLabel: UILabel {
         return startNumber + (update * (endNumber - startNumber))
     }
     
-    func count(fromValue: Float, to toValue: Float, withDuration duration: TimeInterval, andAnimationtype animationType: CounterAnimationType, andCounterType counterType: CounterType, currency: String, preString: String, afterString: String) {
+    func count(fromValue: Float, to toValue: Float, withDuration duration: TimeInterval, andAnimationtype animationType: CounterAnimationType, andCounterType counterType: CounterType, preString: String, afterString: String) {
         
         self.startNumber = fromValue
         self.endNumber = toValue
@@ -57,7 +56,6 @@ class CountingLabel: UILabel {
         self.counterAnimationType = animationType
         self.progress = 0
         self.lastUpdate = Date.timeIntervalSinceReferenceDate
-        self.currency = currency
         self.preString = preString
         self.afterString = afterString
         
@@ -87,18 +85,9 @@ class CountingLabel: UILabel {
     func updateText(value:Float) {
         switch counterType! {
         case .Int:
-            if currency == "kr" {
-                self.text = preString + "\(Int(value))kr" + afterString
-            } else {
-                self.text = preString + "\(currency.description)\(Int(value))" + afterString
-            }
+            self.text = preString + Int(value).currencyString() + afterString
         case .Float:
-            if currency == "kr" {
-                self.text = preString + String(format: "%2f", value) + currency.description + afterString
-            } else {
-                self.text = preString + currency.description + String(format: "%2f", value) + afterString
-            }
-            
+            self.text = preString + String(format: "%2f", value) + afterString
         }
     }
     

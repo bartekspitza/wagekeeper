@@ -13,7 +13,6 @@ class Settings {
     var overtime = Overtime()
     var wage: Float = 15.0
     var tax: Float = 20.0
-    var currency: String = "USD"
     var title: String = "My job"
     var breakTime: Int = 60
     var startingTime: Date = Time.createDefaultST()
@@ -22,7 +21,6 @@ class Settings {
     var minimumHours: Int = 0
 
     var taxRate: Float { return (100 - tax)/100 }
-    var currencySymbol: String { return currencies[currency]! }
 
     static func createFromDocumentSnapshot(data: [String: Any]) -> Settings {
         let newSettings = Settings()
@@ -40,10 +38,6 @@ class Settings {
             
             if let tax = tmp["tax"] {
                 newSettings.tax = tax as! Float
-            }
-            
-            if let currency = tmp["currency"] {
-                newSettings.currency = currency as! String
             }
             
             if let title = tmp["title"] {

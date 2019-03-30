@@ -80,7 +80,7 @@ class AdvancedSettingsTable: UITableViewController, UITextFieldDelegate, UIPicke
         // Configure the fields of the interface.
         composeVC.setToRecipients(["bartekspitza@hotmail.com"])
         composeVC.setSubject("\(appName) \(appBuild)")
-        composeVC.setMessageBody("Please write any suggestions, bugs etc under this line.", isHTML: false)
+        composeVC.setMessageBody("Account: " + user.email + "\n\nPlease don't remove above information. Write any suggestions, bugs etc, under this line.", isHTML: false)
         // Present the view controller modally.
         self.present(composeVC, animated: true, completion: nil)
     }

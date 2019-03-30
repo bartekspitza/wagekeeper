@@ -73,7 +73,12 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
         )
         
         CloudStorage.addShift(toUser: user.ID, shift: shift, completionHandler: {
-            CloudStorage.updateSetting(toUser: user.ID, obj: ["lastAddedShift": Date(), "iosVersion": "2.1"])
+            CloudStorage.updateSetting(toUser: user.ID, obj: [
+                "lastAddedShift": Date(),
+                "iosVersion": appBuild,
+                "locale": Calendar.current.locale?.identifier ?? "missing",
+                "timeZone": TimeZone.current.identifier
+            ])
         })
         
         Periods.insert(shift: shift)
