@@ -238,6 +238,20 @@ extension String {
     }
 }
 
+extension Int {
+    func currencyString() -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.maximumFractionDigits = 0
+        let a = NSNumber(value: self)
+        
+        if let number = formatter.string(from: a) {
+            return number
+        }
+        return ""
+    }
+}
+
 // Button animation
 
 extension UIImageView {

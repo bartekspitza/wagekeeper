@@ -81,8 +81,8 @@ class Period {
             String(shiftsWorked),
             String(daysWorked),
             StringFormatter.stringFromHoursAndMinutes(a: Time.minutesToHoursAndMinutes(minutes: self.durationInOvertime)),
-            StringFormatter.addCurrencyToNumber(amount: self.moneyFromOvertime),
-            StringFormatter.addCurrencyToNumber(amount: Int(Float(self.moneyFromOvertime) * user.settings.taxRate))
+            self.moneyFromOvertime.currencyString(),
+            Int(Float(self.moneyFromOvertime) * user.settings.taxRate).currencyString()
         ]
     }
 }

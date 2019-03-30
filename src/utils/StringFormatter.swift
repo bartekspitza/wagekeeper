@@ -10,15 +10,6 @@ import Foundation
 
 class StringFormatter {
     
-    static func addCurrencyToNumber(amount: Int) -> String {
-        let symbol = user.settings.currencySymbol
-        if symbol == "kr" {
-            return amount.description + "kr"
-        } else {
-            return symbol + amount.description
-        }
-    }
-    
     static func stringFromHoursAndMinutes(a: [Int]) -> String {
         var str = ""
         let hours = (a[0])
