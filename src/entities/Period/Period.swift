@@ -12,14 +12,16 @@ class Period {
     var shifts = [ShiftModel]()
     var duration = ""
     var grossSalary: Int = 0
-    var workTime: Int = 0
     var shiftsWorked: Int = 0
     var daysWorked: Int = 0
-    var durationInOvertime: Int = 0
     var moneyFromOvertime: Int = 0
     
-    var avgShiftLength: Int {
-        return self.workTime/self.shifts.count
+    var workTime: TimeInterval = 0.0
+    var durationInOvertime: TimeInterval = 0.0
+    
+    
+    var avgShiftLength: TimeInterval {
+        return TimeInterval(self.workTime/Double(self.shifts.count))
     }
     
     var netSalary: Int {
@@ -30,16 +32,16 @@ class Period {
         self.shifts = month
         
         let tmp = self.salaryInfo()
-        self.grossSalary = tmp["salary"]!
-        self.durationInOvertime = tmp["overtimeDuration"]!
-        self.moneyFromOvertime = tmp["moneyEarnedInOvertime"]!
-        self.daysWorked = tmp["daysWorked"]!
-        self.workTime = tmp["duration"]!
+        self.grossSalary = tmp["salary"] as! Int
+        self.durationInOvertime = tmp["overtimeDuration"] as! TimeInterval
+        self.moneyFromOvertime = tmp["moneyEarnedInOvertime"] as! Int
+        self.daysWorked = tmp["daysWorked"] as! Int
+        self.workTime = tmp["duration"] as! TimeInterval
         self.duration = StringFormatter.durationToString(month: self.shifts)
         self.shiftsWorked = self.shifts.count
     }
     
-    func salaryInfo() -> [String: Int] {
+    func salaryInfo() -> [String: Any] {
         var grossSalary: Float = 0.0
         var duration: Float = 0.0
         var minutesInOT: Float = 0.0
@@ -67,8 +69,8 @@ class Period {
 
         return [
             "salary": Int(grossSalary),
-            "duration": Int(duration),
-            "overtimeDuration": Int(minutesInOT),
+            "duration": TimeInterval(duration * 60),
+            "overtimeDuration": TimeInterval(minutesInOT * 60),
             "moneyEarnedInOvertime": Int(moneyInOT),
             "daysWorked": daysWorked
         ]
@@ -76,11 +78,11 @@ class Period {
     
     var statsForDisplay: [String] {
         return [
-            StringFormatter.stringFromHoursAndMinutes(a: Time.minutesToHoursAndMinutes(minutes: self.workTime)),
-            StringFormatter.stringFromHoursAndMinutes(a: Time.minutesToHoursAndMinutes(minutes: self.avgShiftLength)),
+            self.workTime.timeString(),
+            self.avgShiftLength.timeString(),
             String(shiftsWorked),
             String(daysWorked),
-            StringFormatter.stringFromHoursAndMinutes(a: Time.minutesToHoursAndMinutes(minutes: self.durationInOvertime)),
+            self.durationInOvertime.timeString(),
             self.moneyFromOvertime.currencyString(),
             Int(Float(self.moneyFromOvertime) * user.settings.taxRate).currencyString()
         ]

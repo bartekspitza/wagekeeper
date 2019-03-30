@@ -252,6 +252,16 @@ extension Int {
     }
 }
 
+extension TimeInterval {
+    func timeString() -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.hour, .minute]
+        formatter.unitsStyle = .abbreviated
+        
+        return formatter.string(from: self)!
+    }
+}
+
 // Button animation
 
 extension UIImageView {

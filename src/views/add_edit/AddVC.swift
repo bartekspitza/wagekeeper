@@ -78,7 +78,7 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
                 "iosVersion": appBuild,
                 "locale": Calendar.current.locale?.identifier ?? "missing",
                 "timeZone": TimeZone.current.identifier
-                ])
+            ])
         })
         
         Periods.insert(shift: shift)
