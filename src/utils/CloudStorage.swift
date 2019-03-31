@@ -45,52 +45,6 @@ class CloudStorage {
         })
     }
     
-    static func migrateUserDefaultsToCloud(toUser: String) {
-        var obj = [String: Any]()
-        
-        if let tax = UserDefaults().string(forKey: "taxRate") {
-            obj["tax"] = Float(tax)!
-            user.settings.tax = Float(tax)!
-            UserDefaults().removeObject(forKey: "taxRate")
-        }
-        if let wage = UserDefaults().string(forKey: "wageRate") {
-            obj["wage"] = Int(wage)!
-            user.settings.wage = Float(wage)!
-            UserDefaults().removeObject(forKey: "wageRate")
-        }
-        if let title = UserDefaults().string(forKey: "defaultNote") {
-            obj["title"] = title
-            user.settings.title = title
-            UserDefaults().removeObject(forKey: "defaultNote")
-        }
-        if let breakTime = UserDefaults().string(forKey: "defaultLunch") {
-            obj["break"] = Int(breakTime)!
-            user.settings.breakTime = Int(breakTime)!
-            UserDefaults().removeObject(forKey: "defaultLunch")
-        }
-        if let ST = UserDefaults().value(forKey: "defaultST") {
-            obj["starting"] = ST as! Date
-            user.settings.startingTime = ST as! Date
-            UserDefaults().removeObject(forKey: "defaultST")
-        }
-        if let ET = UserDefaults().value(forKey: "defaultET") {
-            obj["settings.ending"] = ET as! Date
-            user.settings.endingTime = ET as! Date
-            UserDefaults().removeObject(forKey: "defaultET")
-        }
-
-        let db = Firestore.firestore()
-        let userDoc = db.document("users/" + toUser)
-        
-        var fields = [String]()
-        for key in obj.keys {
-            fields.append("settings." + key)
-        }
-        if fields.count > 0 {
-            userDoc.setData(["settings": obj], mergeFields: fields)
-        }
-    }
-    
     static func getSettings(toUser: String, completionHandler: @escaping () -> ()) {
         let db = Firestore.firestore()
         let userDoc = db.document("users/" + toUser)
