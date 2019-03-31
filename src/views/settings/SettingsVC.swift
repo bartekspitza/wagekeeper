@@ -181,9 +181,9 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         performSegue(withIdentifier: "goToAuth", sender: self)
         user = nil
         shiftToEdit = [0, 0]
-        shifts = [[ShiftModel]]()
+        shifts = [[Shift]]()
         shiftsNeedsReOrganizing = false
-        periodsSeperatedByYear = [[[ShiftModel]]]()
+        periodsSeperatedByYear = [[[Shift]]]()
         period = nil
         indexForChosenPeriod = [0, 0]
         loginViewShouldAnimate = true

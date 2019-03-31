@@ -13,7 +13,6 @@
 		981FBFC4221AC189005B8F4C /* MyUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981FBFC3221AC189005B8F4C /* MyUser.swift */; };
 		9820A5551FBCBF6B00EAEE6A /* MainNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9820A5541FBCBF6B00EAEE6A /* MainNav.swift */; };
 		9829E83A2231918C008DF988 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9829E8392231918C008DF988 /* SettingsCell.swift */; };
-		982F934B22087796005D9C99 /* LocalStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F934A22087796005D9C99 /* LocalStorage.swift */; };
 		982F93542208C386005D9C99 /* StringFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982F93532208C386005D9C99 /* StringFormatter.swift */; };
 		982FFE9222134B27007400C6 /* LoginForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982FFE9122134B27007400C6 /* LoginForm.swift */; };
 		982FFE9422134F59007400C6 /* CreateAccountForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982FFE9322134F59007400C6 /* CreateAccountForm.swift */; };
@@ -34,7 +33,6 @@
 		9886E9BC2211C11D00A4207A /* Periods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9886E9BB2211C11D00A4207A /* Periods.swift */; };
 		9886E9BE2211DEA000A4207A /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9886E9BD2211DEA000A4207A /* Colors.swift */; };
 		988FDEBC1F9F7AFA0090DEF1 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988FDEBB1F9F7AFA0090DEF1 /* Logger.swift */; };
-		988FDEC21F9F7AFA0090DEF1 /* adding_shifts.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 988FDEC01F9F7AFA0090DEF1 /* adding_shifts.xcdatamodeld */; };
 		988FDEC41F9F7AFA0090DEF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 988FDEC31F9F7AFA0090DEF1 /* Assets.xcassets */; };
 		989392DC1FCEF322002475EA /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989392DB1FCEF322002475EA /* Extensions.swift */; };
 		98A54977220E03C000CBEE5D /* AddVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A54976220E03C000CBEE5D /* AddVC.swift */; };
@@ -60,7 +58,6 @@
 		981FBFC3221AC189005B8F4C /* MyUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyUser.swift; sourceTree = "<group>"; };
 		9820A5541FBCBF6B00EAEE6A /* MainNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNav.swift; sourceTree = "<group>"; };
 		9829E8392231918C008DF988 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
-		982F934A22087796005D9C99 /* LocalStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorage.swift; sourceTree = "<group>"; };
 		982F93532208C386005D9C99 /* StringFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringFormatter.swift; sourceTree = "<group>"; };
 		982FFE9122134B27007400C6 /* LoginForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginForm.swift; sourceTree = "<group>"; };
 		982FFE9322134F59007400C6 /* CreateAccountForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountForm.swift; sourceTree = "<group>"; };
@@ -83,7 +80,6 @@
 		988FDEB61F9F7AFA0090DEF1 /* WageKeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WageKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		988FDEB91F9F7AFA0090DEF1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		988FDEBB1F9F7AFA0090DEF1 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
-		988FDEC11F9F7AFA0090DEF1 /* adding_shifts.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = adding_shifts.xcdatamodel; sourceTree = "<group>"; };
 		988FDEC31F9F7AFA0090DEF1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		989392DB1FCEF322002475EA /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		98A54976220E03C000CBEE5D /* AddVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddVC.swift; sourceTree = "<group>"; };
@@ -160,7 +156,6 @@
 				989392DB1FCEF322002475EA /* Extensions.swift */,
 				98E2EF991FB4D657006C3F96 /* CountingLabel.swift */,
 				9830C2052207B3AD0023B582 /* Time.swift */,
-				982F934A22087796005D9C99 /* LocalStorage.swift */,
 				981E7FD32209FF0E006A492C /* CloudStorage.swift */,
 				98D40CC2220B3C6A006E59E0 /* CloudAuth.swift */,
 				982F93532208C386005D9C99 /* StringFormatter.swift */,
@@ -219,7 +214,6 @@
 				9873A000222C514C000CCFEF /* GoogleService-Info.plist */,
 				988FDEB91F9F7AFA0090DEF1 /* AppDelegate.swift */,
 				9843191422078EC000C9B6FF /* Info.plist */,
-				988FDEC01F9F7AFA0090DEF1 /* adding_shifts.xcdatamodeld */,
 			);
 			path = supporting_files;
 			sourceTree = "<group>";
@@ -429,7 +423,6 @@
 			files = (
 				9852F1071FA2309B00E7BDB5 /* MainCell.swift in Sources */,
 				986DC253224572BB009F1555 /* OvertimeDay.swift in Sources */,
-				988FDEC21F9F7AFA0090DEF1 /* adding_shifts.xcdatamodeld in Sources */,
 				98D40CC3220B3C6A006E59E0 /* CloudAuth.swift in Sources */,
 				98E35DAA22481E44003CD3F2 /* InputCell.swift in Sources */,
 				9886E9BE2211DEA000A4207A /* Colors.swift in Sources */,
@@ -440,7 +433,6 @@
 				986DC2512245720E009F1555 /* Overtime.swift in Sources */,
 				9862A5711FCC33AA0047671D /* AdvancedSettingsTable.swift in Sources */,
 				9830C2062207B3AD0023B582 /* Time.swift in Sources */,
-				982F934B22087796005D9C99 /* LocalStorage.swift in Sources */,
 				981E7FD42209FF0E006A492C /* CloudStorage.swift in Sources */,
 				984319182207923E00C9B6FF /* AppDelegate.swift in Sources */,
 				986DC25522457711009F1555 /* Settings.swift in Sources */,
@@ -639,19 +631,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		988FDEC01F9F7AFA0090DEF1 /* adding_shifts.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				988FDEC11F9F7AFA0090DEF1 /* adding_shifts.xcdatamodel */,
-			);
-			currentVersion = 988FDEC11F9F7AFA0090DEF1 /* adding_shifts.xcdatamodel */;
-			path = adding_shifts.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 988FDEAE1F9F7AFA0090DEF1 /* Project object */;
 }

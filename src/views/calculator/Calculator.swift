@@ -32,10 +32,7 @@ class Calculator: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Adds a listener that gets called each time users state changes
         loginListener = Auth.auth().addStateDidChangeListener { (auth, currentUser) in
             if currentUser != nil {
-                
-                LocalStorage.transferAllShiftsToCloud(loadingHandler: {})
-                CloudStorage.migrateUserDefaultsToCloud(toUser: currentUser!.uid)
-                
+
                 CloudStorage.getSettings(toUser: currentUser!.uid, completionHandler: { () in
                     CloudStorage.getAllShifts(fromUser: currentUser!.uid) { (data) in
                         Periods.organizeShiftsIntoPeriods(ar: data, successHandler: {

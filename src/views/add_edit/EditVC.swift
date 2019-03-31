@@ -26,7 +26,7 @@ class EditVC: AddVC {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        let newShift = ShiftModel(
+        let newShift = Shift(
             title: titleField.text!,
             date: datePicker.date,
             startingTime: startingTimePicker.date,

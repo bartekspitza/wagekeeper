@@ -9,7 +9,7 @@
 import Foundation
 
 class Period {
-    var shifts = [ShiftModel]()
+    var shifts = [Shift]()
     var duration = ""
     var grossSalary: Int = 0
     var shiftsWorked: Int = 0
@@ -28,7 +28,7 @@ class Period {
         return Int(Float(self.grossSalary) * user.settings.taxRate)
     }
     
-    init(month: [ShiftModel]) {
+    init(month: [Shift]) {
         self.shifts = month
         
         let tmp = self.salaryInfo()
