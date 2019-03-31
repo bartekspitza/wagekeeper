@@ -10,7 +10,7 @@ import Foundation
 
 class StringFormatter {
     
-    static func durationToString(month: [ShiftModel]) -> String {
+    static func durationToString(month: [Shift]) -> String {
         var date = ""
         
         let firstDate = String(Array(Time.dateToString(date: month[0].date, withDayName: false))[0..<Time.dateToString(date: month[0].date, withDayName: false).count-5])

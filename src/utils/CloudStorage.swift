@@ -12,63 +12,19 @@ import FirebaseAuth
 
 class CloudStorage {
     
-    static func insertShifts(items: [Shift], successHandler: @escaping () -> (), failureHandler: @escaping () -> ()) {
-        let db = Firestore.firestore()
-        let shiftsRef = db.collection("users/" + user.ID + "/shifts/")
-        var batch = db.batch()
-        
-        for i in 0..<items.count {
-            let newDocumentID = shiftsRef.document()
-            let shift = ShiftModel.createFromCoreData(s: items[i])
-            
-            if i % 500 == 0 {
-                // 500 items added to batch, should try and write to DB and delete 500 from the local storage
-                batch.commit { (error) in
-                    if error == nil {
-                        print("Made a batch write of 500 items")
-                    } else {
-                        print("Something went wrong. Aborting the migration of local data")
-                        print(error!.localizedDescription)
-                        return
-                    }
-                }
-                batch = db.batch()
-            }
-            
-            batch.setData([
-                "title": shift.title,
-                "date": shift.date.description,
-                "startingTime": shift.startingTime.description,
-                "endingTime": shift.endingTime.description,
-                "breakTime": shift.breakTime,
-                "note": shift.note,
-                "beginsNewPeriod": shift.beginsNewPeriod
-                ], forDocument: newDocumentID)
-        }
-        batch.commit { (error) in
-            if error == nil {
-                print("Made a batch write with the rest of items")
-                successHandler()
-            } else {
-                failureHandler()
-                print(error!.localizedDescription)
-            }
-        }
-    }
-    
-    static func getAllShifts(fromUser: String, completionHandler: @escaping ([ShiftModel]) -> ()) {
+    static func getAllShifts(fromUser: String, completionHandler: @escaping ([Shift]) -> ()) {
         let db = Firestore.firestore()
         
         let shiftsCollection = db.collection("users").document(fromUser).collection("shifts")
         print(shiftsCollection.path)
         shiftsCollection.getDocuments(completion: { (query, er) in
             if er == nil {
-                var arr = [ShiftModel]()
+                var arr = [Shift]()
                 for doc in ((query?.documents)!) {
                     let shiftID = doc.documentID
                     let shiftData = doc.data()
                     
-                    let s = ShiftModel(
+                    let s = Shift(
                         title:          shiftData["title"]!             as! String,
                         date:           (shiftData["date"]!             as! String).toDateTime(),
                         startingTime:   (shiftData["startingTime"]!     as! String).toDateTime(),
@@ -178,7 +134,7 @@ class CloudStorage {
         }
     }
     
-    static func addShift(toUser: String, shift: ShiftModel, completionHandler: @escaping () -> () ) {
+    static func addShift(toUser: String, shift: Shift, completionHandler: @escaping () -> () ) {
         let db = Firestore.firestore()
         let shiftsCollection = db.collection("users/" + toUser + "/shifts/")
         
@@ -202,7 +158,7 @@ class CloudStorage {
         shift.ID = document.documentID
     }
     
-    static func deleteShift(fromUser: String, shift: ShiftModel) {
+    static func deleteShift(fromUser: String, shift: Shift) {
         let db = Firestore.firestore()
         let shiftsCollection = db.collection("users/" + fromUser + "/shifts/")
         
@@ -215,7 +171,7 @@ class CloudStorage {
         }
     }
     
-    static func updateShift(from: ShiftModel, with: ShiftModel, user: String, completionHandler: @escaping () -> ()) {
+    static func updateShift(from: Shift, with: Shift, user: String, completionHandler: @escaping () -> ()) {
         let db = Firestore.firestore()
         let shiftsCollection = db.collection("users/" + user + "/shifts/")
         

@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 import UIKit
 
-class ShiftModel: CustomStringConvertible {
+class Shift: CustomStringConvertible {
     var title: String
     var date: Date
     var endingTime: Date
@@ -98,7 +98,7 @@ class ShiftModel: CustomStringConvertible {
         return ending
     }
     
-    func isEqual(to: ShiftModel) -> Bool{
+    func isEqual(to: Shift) -> Bool{
         
         let isTitleSame = self.title == to.title
         let isDateSame = self.date == to.date
@@ -109,27 +109,5 @@ class ShiftModel: CustomStringConvertible {
         let isBeginsNewPeriodSame = self.beginsNewPeriod == to.beginsNewPeriod
         
         return isTitleSame && isDateSame && isSTSame && isETSame && isBreakSame && isNoteSame && isBeginsNewPeriodSame
-    }
-    
-    func toCoreData() -> Shift {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        
-        let shift = Shift(context: context)
-        shift.date = self.date
-        shift.endingTime = self.endingTime
-        shift.startingTime = self.startingTime
-        shift.lunchTime = String(self.breakTime)
-        shift.note = self.title
-        shift.newMonth = (self.beginsNewPeriod) ? Int16(1) : Int16(0)
-        
-        return shift
-    }
-    
-    static func createFromCoreData(s: Shift) -> ShiftModel {
-        let breakTime = (s.lunchTime == "") ? 0 : Int(s.lunchTime!)!
-        let newMonth = s.newMonth == Int16(1)
-        
-        return ShiftModel(title: s.note!, date: s.date!, startingTime: s.startingTime!, endingTime: s.endingTime!,  breakTime: breakTime, note: "", newPeriod: newMonth, ID: "")
     }
 }

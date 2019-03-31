@@ -61,7 +61,7 @@ class AddVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITex
     
     @objc func onButtonPress() {
        
-        let shift = ShiftModel(
+        let shift = Shift(
             title: (titleField.text! == "") ? "No title" : titleField.text!,
             date: datePicker.date,
             startingTime: startingTimePicker.date,

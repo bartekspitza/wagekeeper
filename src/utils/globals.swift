@@ -11,9 +11,9 @@ import FirebaseAuth
 
 var user: MyUser!
 var shiftToEdit = [0,0]
-var shifts = [[ShiftModel]]()
+var shifts = [[Shift]]()
 var shiftsNeedsReOrganizing = false
-var periodsSeperatedByYear = [[[ShiftModel]]]()
+var periodsSeperatedByYear = [[[Shift]]]()
 var period: Period?
 var loginListener: AuthStateDidChangeListenerHandle!
 var indexForChosenPeriod = [0,0]
